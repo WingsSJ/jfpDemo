@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: serviceA
+  profiles:
+    active: local
+mybatis:
+  mapper-locations: mapper/*Mapper.xml
+server:
+  port: 21009
+#management 配置 服务端点信息  （依赖spring-boot-starter-actuator）
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+---
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: csj82913513_sd
+#  #日志配置
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1 #采样比例 默认为0.1 修改为1.0为全部采样
+  #zipkin 服务地址
+  zipkin:
+    base-url: http://localhost:23010
+  #redis 配置
+#服务地址
+eureka:
+  client:
+    registryFetchIntervalSeconds: 10 #表示eureka client间隔多久去拉取服务注册信息，默认为30秒
+    serviceUrl:
+      defaultZone: http://localhost:21002/eureka/
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10 #表示eureka client发送心跳给server端的频率，默认为30秒
+    health-check-url-path: /actuator/health #健康检查的地址（依赖spring-boot-starter-actuator）
+logging:
+  level:
+    com.demo.serviceA.mapper: DEBUG

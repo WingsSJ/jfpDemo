@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: eureka_server
+  profiles:
+    active: local
+---
+spring:
+  profiles: local
+server:
+  port: 21002                    # 指定该Eureka实例的端口
+eureka:
+  instance:
+    hostname: localhost         # 指定该Eureka实例的主机名
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+---
+spring:
+  profiles: test
+server:
+  port: 21002                    # 指定该Eureka实例的端口
+eureka:
+  instance:
+    hostname: localhost         # 指定该Eureka实例的主机名
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+---
+spring:
+  profiles: prod
+server:
+  port: 21002                    # 指定该Eureka实例的端口
+eureka:
+#  server:
+#    enable-self-preservation: false       #关闭自我保护机制
+#    eviction-interval-timer-in-ms: 5000   #清理无效节点的时间间隔
+  instance:
+    hostname: ms-nim-discovery  # 指定该Eureka实例的主机名
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

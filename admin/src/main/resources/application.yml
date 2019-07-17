@@ -1,0 +1,47 @@
+server:
+  port: 23003
+spring:
+  application:
+    name: admin
+  profiles:
+    active: local
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+---
+spring:
+  profiles: local
+#admin认证
+  security:
+    user:
+      name: 'admin'
+      password: 'j4p8848'
+#邮箱通知 (这里会做心跳检查 需要填写正确的地址)
+#  mail:
+#    host:
+#    username:
+#    password:
+#  boot:
+#    admin:
+#      notify:
+#        mail:
+#          to: j4p@sina.com
+#          from: j4p@sina.com
+#服务注册地址
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:21002/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    # Eureka 中的 metadataMap 是专门用来存放一些自定义的数据 会自动放入请求头
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+    preferIpAddress: true
