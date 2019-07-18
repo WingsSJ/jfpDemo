@@ -3,8 +3,8 @@ package io.leangen.graphql.samples.dto;
 import lombok.Data;
 
 @Data
-public class User {
+public class Book {
     private String id;
-    private String name;
-    private String age;
+    private String userId;
+    private String context;
 }
