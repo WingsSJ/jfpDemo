@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @FeignClient(value = "serviceB",fallback = FeginServiceBImpl.class,configuration = FeignConfigB.class)
 public interface FeignServiceB {
-    @RequestMapping("/tim/group/test")
+    @RequestMapping("/serviceB/hello")
     String test();
 }
