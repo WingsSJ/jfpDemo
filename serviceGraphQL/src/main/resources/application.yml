@@ -13,7 +13,6 @@ mybatis:
   mapper-locations: mapper/*Mapper.xml
 server:
   port: 23110
-#management 配置 服务端点信息  （依赖spring-boot-starter-actuator）
 management:
   endpoints:
     web:
@@ -29,17 +28,16 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: csj82913513_sd
-#服务地址
+    password: root
 eureka:
   client:
-    registryFetchIntervalSeconds: 10 #表示eureka client间隔多久去拉取服务注册信息，默认为30秒
+    registryFetchIntervalSeconds: 10
     serviceUrl:
       defaultZone: http://localhost:21002/eureka/
   instance:
     preferIpAddress: true
-    leaseRenewalIntervalInSeconds: 10 #表示eureka client发送心跳给server端的频率，默认为30秒
-    health-check-url-path: /actuator/health #健康检查的地址（依赖spring-boot-starter-actuator）
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
 logging:
   level:
     com.whty.ms.nim.discuss.mapper: DEBUG
