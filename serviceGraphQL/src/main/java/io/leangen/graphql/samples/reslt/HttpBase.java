@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class HttpBase {
-    private String code;
+    private Integer code;
     private String description;
 }
