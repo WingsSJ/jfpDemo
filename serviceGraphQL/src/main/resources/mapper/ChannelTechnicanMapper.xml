@@ -5,14 +5,84 @@
 
 
 <mapper namespace="io.leangen.graphql.samples.mapper.ChannelTechnicanMapper">
-    <insert id="createOneChannelTechnicanRecord" parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO">
+    <insert id="createOneChannelTechnicanRecord"
+            parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO">
         insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time)
         values (channelTechnicanAddDTODTO.personId,channelTechnicanAddDTODTO.companyId,channelTechnicanAddDTODTO.personName,
         channelTechnicanAddDTODTO.companyName,channelTechnicanAddDTODTO.personGender,channelTechnicanAddDTODTO.identityCard,
         channelTechnicanAddDTODTO.brithday,channelTechnicanAddDTODTO.phone,channelTechnicanAddDTODTO.province,channelTechnicanAddDTODTO.city,
         channelTechnicanAddDTODTO.county,channelTechnicanAddDTODTO.address,channelTechnicanAddDTODTO.job,channelTechnicanAddDTODTO.email,
-        channelTechnicanAddDTODTO.hireDate,channelTechnicanAddDTODTO.qqNum,channelTechnicanAddDTODTO.telephone,channelTechnicanAddDTODTO.reviewStatus,
+        channelTechnicanAddDTODTO.hireDate,channelTechnicanAddDTODTO.qqNum,channelTechnicanAddDTODTO.telephone,2,
         now())
     </insert>
+
+    <resultMap id="resultMap" type="io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO">
+        <result column="person_id" jdbcType="VARCHAR" property="personId"/>
+        <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="person_gender" jdbcType="INTEGER" property="personGender"/>
+        <result column="identity_card" jdbcType="VARCHAR" property="identityCard"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="county" jdbcType="VARCHAR" property="county"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="hire_date" jdbcType="TIMESTAMP" property="hireDate"/>
+        <result column="qq_num" jdbcType="VARCHAR" property="qqNum"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="review_status" jdbcType="VARCHAR" property="reviewStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="not_pass_cause" jdbcType="VARCHAR" property="notPassCause"/>
+        <result column="certificate_id" jdbcType="VARCHAR" property="certificateId"/>
+        <result column="certificate_direction" jdbcType="VARCHAR" property="certificateDirection"/>
+        <result column="certificate_level" jdbcType="VARCHAR" property="certificateLevel"/>
+        <result column="receive_certificate_time" jdbcType="TIMESTAMP" property="receiveCertificateTime"/>
+        <result column="invalid_certificate_time" jdbcType="TIMESTAMP" property="invalidCertificateTime"/>
+    </resultMap>
+
+    <select id="queryCheckPendingTechnicans" parameterType="map" resultMap="resultMap">
+        SELECT
+            ct.person_id,
+            ct.company_id,
+            ct.person_name,
+            ct.company_name,
+            ct.person_gender,
+            ct.identity_card,
+            ct.birthday,
+            ct.phone,
+            ct.province,
+            ct.city,
+            ct.county,
+            ct.address,
+            ct.job,
+            ct.email,
+            ct.hire_date,
+            ct.qq_num,
+            ct.telephone,
+            ct.review_status,
+            ct.create_time,
+            ct.update_time,
+            ct.not_pass_cause,
+            ct.have_delete,
+            tc.certificate_direction,
+            tc.certificate_id,
+            tc.certificate_level,
+            tc.invalid_certificate_time,
+            tc.receive_certificate_time
+        FROM
+            channel_technician ct
+            LEFT JOIN technican_certificate tc ON ct.person_id = tc.person_id
+        HAVING
+            ct.have_delete != 1
+            AND ct.review_status = 2
+        ORDER BY
+            ct.update_time DESC
+            LIMIT #{offSet}, #{rows}
+    </select>
 
 </mapper>

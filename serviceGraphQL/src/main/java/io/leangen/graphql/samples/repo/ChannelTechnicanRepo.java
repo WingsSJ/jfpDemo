@@ -4,11 +4,14 @@ import io.leangen.graphql.samples.mapper.ChannelTechnicanMapper;
 import io.leangen.graphql.samples.mapper.TechnicanCertificateMapper;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO;
 import io.leangen.graphql.samples.model.DTO.TechnicanCertificateAddDTO;
+import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ChannelTechnicanRepo {
@@ -39,5 +42,14 @@ public class ChannelTechnicanRepo {
         }else{
             return oneChannelTechnicanRecord > 0;
         }
+    }
+
+    public List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(int pageSize, int pageNum){
+        Map<String, Object> params = new HashMap<>(2);
+        Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
+        params.put("offSet", offSet);
+        params.put("rows", pageSize);
+        List<ChannelTechnicanQueryDTO> channelTechnicanVOList = channelTechnicanMapper.queryCheckPendingTechnicans(params);
+        return channelTechnicanVOList;
     }
 }
