@@ -37,6 +37,9 @@ public class BestTest {
             result.put(s,zsvoList);
         });
         System.out.println(result);
+        //将map转VO
+        List<UserVO> userVOList = new ArrayList<>();
+        //JDK8 集合转换
     }
 
     @Data
