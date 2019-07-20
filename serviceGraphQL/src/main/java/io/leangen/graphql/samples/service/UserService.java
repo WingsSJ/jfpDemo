@@ -1,8 +1,8 @@
 package io.leangen.graphql.samples.service;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
-import io.leangen.graphql.samples.dto.User;
-import io.leangen.graphql.samples.dto.UserOwnBook;
+import io.leangen.graphql.samples.model.User;
+import io.leangen.graphql.samples.model.UserOwnBook;
 import io.leangen.graphql.samples.repo.UserRepo;
 import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;

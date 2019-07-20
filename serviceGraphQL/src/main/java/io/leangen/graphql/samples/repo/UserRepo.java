@@ -1,7 +1,7 @@
 package io.leangen.graphql.samples.repo;
 
-import io.leangen.graphql.samples.dto.User;
-import io.leangen.graphql.samples.dto.UserOwnBook;
+import io.leangen.graphql.samples.model.User;
+import io.leangen.graphql.samples.model.UserOwnBook;
 import io.leangen.graphql.samples.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
 

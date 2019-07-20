@@ -1,9 +1,9 @@
 package io.leangen.graphql.samples.service;
 
 import io.leangen.graphql.annotations.*;
-import io.leangen.graphql.samples.dto.Status;
-import io.leangen.graphql.samples.dto.Task;
-import io.leangen.graphql.samples.dto.Type;
+import io.leangen.graphql.samples.model.Status;
+import io.leangen.graphql.samples.model.Task;
+import io.leangen.graphql.samples.model.Type;
 import io.leangen.graphql.samples.repo.TaskRepo;
 import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
 import io.leangen.graphql.spqr.spring.util.ConcurrentMultiRegistry;

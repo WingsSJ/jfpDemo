@@ -1,9 +1,9 @@
 package io.leangen.graphql.samples.repo;
 
-import io.leangen.graphql.samples.dto.Project;
-import io.leangen.graphql.samples.dto.Status;
-import io.leangen.graphql.samples.dto.Task;
-import io.leangen.graphql.samples.dto.Type;
+import io.leangen.graphql.samples.model.Project;
+import io.leangen.graphql.samples.model.Status;
+import io.leangen.graphql.samples.model.Task;
+import io.leangen.graphql.samples.model.Type;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;

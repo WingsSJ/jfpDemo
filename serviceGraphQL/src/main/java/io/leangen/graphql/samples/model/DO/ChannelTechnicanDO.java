@@ -1,8 +1,6 @@
-package io.leangen.graphql.samples.dto;
+package io.leangen.graphql.samples.model.DO;
 
-import io.leangen.graphql.samples.reslt.HttpBase;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -10,7 +8,7 @@ import java.util.Date;
  * 技术人员模型
  */
 @Data
-public class ChannelTechnican extends HttpBase {
+public class ChannelTechnicanDO {
     /**
      * 技术人员Id （唯一属性）
      */
@@ -34,7 +32,6 @@ public class ChannelTechnican extends HttpBase {
     /**
      * 技术人员生日（yyyy-MM-dd）
      */
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
     /**
      * 联系电话
@@ -67,7 +64,6 @@ public class ChannelTechnican extends HttpBase {
     /**
      * 入职日期 (yyyy-MM-dd)
      */
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date hireDate;
     /**
      * qq号
@@ -78,9 +74,9 @@ public class ChannelTechnican extends HttpBase {
      */
     private String telephone;
     /**
-     *审核状态 （wait） （pass）（not）
+     *审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
      */
-    private String reviewStatus;
+    private Integer reviewStatus;
     /**
      * 审核未通过的原因
      */

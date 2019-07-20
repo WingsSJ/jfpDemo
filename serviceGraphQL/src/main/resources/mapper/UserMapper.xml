@@ -5,15 +5,15 @@
 
 
 <mapper namespace="io.leangen.graphql.samples.mapper.UserMapper">
-    <resultMap id="resultMap" type="io.leangen.graphql.samples.dto.User">
+    <resultMap id="resultMap" type="io.leangen.graphql.samples.model.User">
         <result column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="age" jdbcType="VARCHAR" property="age"/>
     </resultMap>
 
-    <resultMap id="resultMap2" type="io.leangen.graphql.samples.dto.UserOwnBook">
+    <resultMap id="resultMap2" type="io.leangen.graphql.samples.model.UserOwnBook">
         <result column="userid" jdbcType="VARCHAR" property="userId"/>
-        <collection property="books" ofType="io.leangen.graphql.samples.dto.Book">
+        <collection property="books" ofType="io.leangen.graphql.samples.model.Book">
             <result column="bookId" jdbcType="VARCHAR" property="id" />
             <result column="context" jdbcType="VARCHAR" property="context" />
         </collection>

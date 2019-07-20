@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="io.leangen.graphql.samples.mapper.ChannelTechnicanMapper">
+    <insert id="createOneChannelTechnicanRecord" parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO">
+        insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time)
+        values (channelTechnicanAddDTODTO.personId,channelTechnicanAddDTODTO.companyId,channelTechnicanAddDTODTO.personName,
+        channelTechnicanAddDTODTO.companyName,channelTechnicanAddDTODTO.personGender,channelTechnicanAddDTODTO.identityCard,
+        channelTechnicanAddDTODTO.brithday,channelTechnicanAddDTODTO.phone,channelTechnicanAddDTODTO.province,channelTechnicanAddDTODTO.city,
+        channelTechnicanAddDTODTO.county,channelTechnicanAddDTODTO.address,channelTechnicanAddDTODTO.job,channelTechnicanAddDTODTO.email,
+        channelTechnicanAddDTODTO.hireDate,channelTechnicanAddDTODTO.qqNum,channelTechnicanAddDTODTO.telephone,channelTechnicanAddDTODTO.reviewStatus,
+        now())
+    </insert>
+
+</mapper>

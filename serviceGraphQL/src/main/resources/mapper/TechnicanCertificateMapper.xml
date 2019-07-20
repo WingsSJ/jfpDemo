@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.leangen.graphql.samples.mapper.TechnicanCertificateMapper">
+    <insert id="recordTechnicanCertificateRecords" parameterType="java.util.List">
+        INSERT INTO
+        technican_certificate(certificate_id, person_id, certificate_direction, certificate_level,
+        receive_certificate_time, invalid_certificate_time, create_time, have_delete)
+        VALUES
+        <foreach collection="technicanCertificateAddDTOList" index="index" item="technicanCertificateAddDTO"
+                 separator=",">
+            (#{technicanCertificateAddDTO.certificateId},#{technicanCertificateAddDTO.personId},
+            #{technicanCertificateAddDTO.certificateDirection},#{technicanCertificateAddDTO.certificateLevel},#{technicanCertificateAddDTO.receiveCertificateTime},
+            #{technicanCertificateAddDTO.invalidCertificateTime},now(),0)
+        </foreach>
+    </insert>
+</mapper>
