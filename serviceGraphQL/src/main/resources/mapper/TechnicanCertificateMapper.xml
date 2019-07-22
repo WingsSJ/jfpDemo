@@ -15,4 +15,17 @@
             #{technicanCertificateAddDTO.invalidCertificateTime},now(),0)
         </foreach>
     </insert>
+
+    <select id="findTechnicanCertificateByPersonIdList" parameterType="java.lang.String"
+            resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+        select certificate_id, person_id, certificate_direction, certificate_level, receive_certificate_time, invalid_certificate_time from technican_certificate
+            where person_id in #{personIdList}
+    </select>
+
+    <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
+            resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+        select certificate_id, person_id, certificate_direction, certificate_level, receive_certificate_time, invalid_certificate_time from technican_certificate
+            where person_id = #{personId}
+    </select>
+
 </mapper>

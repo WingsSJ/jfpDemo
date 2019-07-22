@@ -1,31 +1,27 @@
 package io.leangen.graphql.samples.model.DTO;
 
-import io.leangen.graphql.samples.model.VO.ChannelTechnicanVO;
-import io.leangen.graphql.samples.model.VO.TechnicanCertificateVO;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import java.util.Date;
-import java.util.HashMap;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 技术人员
+ * 技术人员模型
  */
 @Data
-public class ChannelTechnicanQueryDTO{
+public class ChannelTechnicanUpdateDTO implements Serializable,Cloneable{
     /**
      * 技术人员Id （唯一属性）
      */
+    @NotBlank
     private String personId;
     /**
      * 公司Id
      */
     private String companyId;
-    /**
-     *
-     */
-    private String companyName;
     /**
      * 技术人员姓名
      */
@@ -41,21 +37,22 @@ public class ChannelTechnicanQueryDTO{
     /**
      * 技术人员生日（yyyy-MM-dd）
      */
+    @JSONField(name = "birthday",format = "yyyy-MM-dd")
     private String birthday;
     /**
      * 联系电话
      */
     private String phone;
     /**
-     * 省
+     * 人员公司所在省
      */
     private String province;
     /**
-     * 市
+     * 人员公司所在市
      */
     private String city;
     /**
-     * 镇
+     * 人员公司所在镇
      */
     private String county;
     /**
@@ -73,6 +70,7 @@ public class ChannelTechnicanQueryDTO{
     /**
      * 入职日期 (yyyy-MM-dd)
      */
+    @JSONField(name = "hireDate",format = "yyyy-MM-dd")
     private String hireDate;
     /**
      * qq号
@@ -83,30 +81,7 @@ public class ChannelTechnicanQueryDTO{
      */
     private String telephone;
     /**
-     *审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
+     * 人员相关证书
      */
-    private Integer reviewStatus;
-    /**
-     * 审核未通过的原因
-     */
-    private String notPassCause;
-    /**
-     * 创建时间
-     */
-    private String createTime;
-    /**
-     * 数据更新时间
-     */
-    private String updateTime;
-
-    /**
-     * 将DTO 转 VO
-     */
-    public static List<ChannelTechnicanVO> trans(List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList){
-        Map map = new HashMap();
-        for(ChannelTechnicanQueryDTO channelTechnicanQueryDTO:channelTechnicanQueryDTOList){
-            //具体查看编写的测试用例
-        }
-        return null;
-    }
+    private List<TechnicanCertificateAddDTO> technicanCertificateAddDTOS;
 }

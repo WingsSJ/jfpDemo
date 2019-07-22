@@ -28,18 +28,23 @@ public class BestTest {
         userDTOList.add(userDTO5);
         userDTOList.add(userDTO6);
         Map<String,List<ZSVO>> result = new HashMap<>();
+        List<UserVO> userVOList = new ArrayList<>();
         userDTOList.stream().collect(Collectors.groupingBy(UserDTO::getId)).forEach((s, userDTOS) -> {
             List<ZSVO> zsvoList = new ArrayList<>();
             for(UserDTO userDTO7 :userDTOS){
                 ZSVO zsvo = new ZSVO(userDTO7.getZSid(),userDTO7.getZSContext());
                 zsvoList.add(zsvo);
             }
+            //重新构造user实体 并将zsvoList放入到证书信息
+            for(UserDTO userDTO7 :userDTOS){
+                UserVO userVO = new UserVO(userDTO7,zsvoList);
+                userVOList.add(userVO);
+            }
             result.put(s,zsvoList);
         });
-        System.out.println(result);
-        //将map转VO
-        List<UserVO> userVOList = new ArrayList<>();
-        //JDK8 集合转换
+        //去重userVOList
+        List<UserVO> userVOList2 = userVOList.stream().distinct().collect(Collectors.toList());
+        System.out.println(userVOList2);
 
     }
 
@@ -63,6 +68,12 @@ public class BestTest {
         private String name;
         private String id;
         private List<ZSVO> zsvoList;
+
+        public UserVO(UserDTO userDTO, List<ZSVO> zsvoList) {
+            this.name = userDTO.name;
+            this.id = userDTO.id;
+            this.zsvoList = zsvoList;
+        }
     }
 
     @Data

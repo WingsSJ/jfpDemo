@@ -14,6 +14,10 @@ public class TechnicanCertificateQueryDTO {
      */
     private String certificateId;
     /**
+     *
+     */
+    private String personId;
+    /**
      * 证书方向
      */
     private String certificateDirection;

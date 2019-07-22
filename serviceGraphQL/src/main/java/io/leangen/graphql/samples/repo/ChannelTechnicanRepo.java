@@ -3,6 +3,7 @@ package io.leangen.graphql.samples.repo;
 import io.leangen.graphql.samples.mapper.ChannelTechnicanMapper;
 import io.leangen.graphql.samples.mapper.TechnicanCertificateMapper;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO;
+import io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO;
 import io.leangen.graphql.samples.model.DTO.TechnicanCertificateAddDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import org.apache.commons.collections4.CollectionUtils;
@@ -44,12 +45,80 @@ public class ChannelTechnicanRepo {
         }
     }
 
-    public List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(int pageSize, int pageNum){
+    public List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(int pageSize, int pageNum,String companyName,String personName){
         Map<String, Object> params = new HashMap<>(2);
         Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
+        params.put("companyName", companyName);
+        params.put("personName", personName);
         params.put("offSet", offSet);
         params.put("rows", pageSize);
-        List<ChannelTechnicanQueryDTO> channelTechnicanVOList = channelTechnicanMapper.queryCheckPendingTechnicans(params);
-        return channelTechnicanVOList;
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.queryCheckPendingTechnicans(params);
+        return channelTechnicanQueryDTOList;
+    }
+
+    public List<ChannelTechnicanQueryDTO> queryHaveCheckTechnicans(int pageSize, int pageNum,String companyName,String personName){
+        Map<String, Object> params = new HashMap<>(4);
+        Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
+        params.put("companyName", companyName);
+        params.put("personName", personName);
+        params.put("offSet", offSet);
+        params.put("rows", pageSize);
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.queryHaveCheckTechnicans(params);
+        return channelTechnicanQueryDTOList;
+    }
+
+    public ChannelTechnicanQueryDTO previewTechnicanInfo(String personId){
+        return channelTechnicanMapper.previewTechnicanInfo(personId);
+    }
+
+    public int queryCheckPendingTechnicansTotal(String companyName,String personName){
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("companyName", companyName);
+        params.put("personName", personName);
+        return channelTechnicanMapper.queryCheckPendingTechnicansTotal(params);
+    }
+
+    public int queryHaveCheckTechnicansTotal(String companyName,String personName){
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("companyName", companyName);
+        params.put("personName", personName);
+        return channelTechnicanMapper.queryHaveCheckTechnicansTotal(params);
+    }
+
+    public boolean reviewOperation(String personId,Integer review){
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("personId", personId);
+        params.put("review", review);
+        return channelTechnicanMapper.reviewOperation(params)>0;
+    }
+
+    public boolean updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
+        int updateOperate = channelTechnicanMapper.updateTechnicanInfo(channelTechnicanUpdateDTO);
+        if(updateOperate>0){
+            List<TechnicanCertificateAddDTO> technicanCertificateAddDTOS = channelTechnicanUpdateDTO.getTechnicanCertificateAddDTOS();
+            if(CollectionUtils.isNotEmpty(technicanCertificateAddDTOS)){
+                technicanCertificateAddDTOS.forEach(dto->dto.setPersonId(channelTechnicanUpdateDTO.getPersonId()));
+                //传参校验
+                boolean checkParam = technicanCertificateAddDTOS.stream().anyMatch(technicanCertificateAddDTO ->
+                        technicanCertificateAddDTO.getCertificateDirection().isEmpty() |technicanCertificateAddDTO.getCertificateId().isEmpty()
+                                | technicanCertificateAddDTO.getCertificateLevel().isEmpty()
+                                | technicanCertificateAddDTO.getReceiveCertificateTime().isEmpty());
+                if(checkParam){
+                    //TODO 自定义传参异常 回滚
+                    throw new RuntimeException();
+                }else {
+                    int recordTechnicanCertificateRecords = technicanCertificateMapper.recordTechnicanCertificateRecords(technicanCertificateAddDTOS);
+                    return recordTechnicanCertificateRecords>0;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteTechnican(String personId){
+        //更新相关人员和证书数据
+        int deleteTechnican = channelTechnicanMapper.deleteTechnican(personId);
+        return deleteTechnican>0;
     }
 }

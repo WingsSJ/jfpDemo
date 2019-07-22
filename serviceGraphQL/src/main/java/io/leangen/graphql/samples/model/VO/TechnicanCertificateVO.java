@@ -27,4 +27,12 @@ public class TechnicanCertificateVO {
      *证书失效时间
      */
     private String invalidCertificateTime;
+
+    public TechnicanCertificateVO(String certificateId, String certificateDirection, String certificateLevel, String receiveCertificateTime, String invalidCertificateTime) {
+        this.certificateId = certificateId;
+        this.certificateDirection = certificateDirection;
+        this.certificateLevel = certificateLevel;
+        this.receiveCertificateTime = receiveCertificateTime;
+        this.invalidCertificateTime = invalidCertificateTime;
+    }
 }

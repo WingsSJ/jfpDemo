@@ -16,6 +16,58 @@
         now())
     </insert>
 
+    <update id="updateTechnicanInfo" parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO">
+        UPDATE channel_technician
+        SET
+        <if test="channelTechnicanUpdateDTO.personName != null and  channelTechnicanUpdateDTO.personName !='' ">
+            person_name = #{channelTechnicanUpdateDTO.personName},
+        </if>
+        <if test="channelTechnicanUpdateDTO.person_gender != null and  channelTechnicanUpdateDTO.person_gender !='' ">
+            person_gender = #{channelTechnicanUpdateDTO.person_gender},
+        </if>
+        <if test="channelTechnicanUpdateDTO.identityCard != null and  channelTechnicanUpdateDTO.identityCard !='' ">
+            identity_card = #{channelTechnicanUpdateDTO.identityCard},
+        </if>
+        <if test="channelTechnicanUpdateDTO.birthday != null and  channelTechnicanUpdateDTO.birthday !='' ">
+            birthday = #{channelTechnicanUpdateDTO.birthday},
+        </if>
+        <if test="channelTechnicanUpdateDTO.phone != null and  channelTechnicanUpdateDTO.phone !='' ">
+            phone = #{channelTechnicanUpdateDTO.phone},
+        </if>
+        <if test="channelTechnicanUpdateDTO.province != null and  channelTechnicanUpdateDTO.province !='' ">
+            province = #{channelTechnicanUpdateDTO.province},
+        </if>
+        <if test="channelTechnicanUpdateDTO.city != null and  channelTechnicanUpdateDTO.city !='' ">
+            city = #{channelTechnicanUpdateDTO.city},
+        </if>
+        <if test="channelTechnicanUpdateDTO.county != null and  channelTechnicanUpdateDTO.county !='' ">
+            county = #{channelTechnicanUpdateDTO.county},
+        </if>
+        <if test="channelTechnicanUpdateDTO.address != null and  channelTechnicanUpdateDTO.address !='' ">
+            address = #{channelTechnicanUpdateDTO.address},
+        </if>
+        <if test="channelTechnicanUpdateDTO.job != null and  channelTechnicanUpdateDTO.job !='' ">
+            job = #{channelTechnicanUpdateDTO.job},
+        </if>
+        <if test="channelTechnicanUpdateDTO.email != null and  channelTechnicanUpdateDTO.email !='' ">
+            email = #{channelTechnicanUpdateDTO.email},
+        </if>
+        <if test="channelTechnicanUpdateDTO.qqNum != null and  channelTechnicanUpdateDTO.qqNum !='' ">
+            qq_num = #{channelTechnicanUpdateDTO.qqNum},
+        </if>
+        <if test="channelTechnicanUpdateDTO.hireDate != null and  channelTechnicanUpdateDTO.hireDate !='' ">
+            hire_Date = #{channelTechnicanUpdateDTO.hireDate},
+        </if>
+        <if test="channelTechnicanUpdateDTO.telephone != null and  channelTechnicanUpdateDTO.telephone !='' ">
+            telephone = #{channelTechnicanUpdateDTO.telephone},
+        </if>
+        review_status = 0,
+        update_time = now()
+        WHERE
+        person_Id = #{personId}
+        AND have_delete != 1
+    </update>
+
     <resultMap id="resultMap" type="io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO">
         <result column="person_id" jdbcType="VARCHAR" property="personId"/>
         <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
@@ -38,51 +90,169 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="not_pass_cause" jdbcType="VARCHAR" property="notPassCause"/>
-        <result column="certificate_id" jdbcType="VARCHAR" property="certificateId"/>
-        <result column="certificate_direction" jdbcType="VARCHAR" property="certificateDirection"/>
-        <result column="certificate_level" jdbcType="VARCHAR" property="certificateLevel"/>
-        <result column="receive_certificate_time" jdbcType="TIMESTAMP" property="receiveCertificateTime"/>
-        <result column="invalid_certificate_time" jdbcType="TIMESTAMP" property="invalidCertificateTime"/>
     </resultMap>
 
     <select id="queryCheckPendingTechnicans" parameterType="map" resultMap="resultMap">
         SELECT
-            ct.person_id,
-            ct.company_id,
-            ct.person_name,
-            ct.company_name,
-            ct.person_gender,
-            ct.identity_card,
-            ct.birthday,
-            ct.phone,
-            ct.province,
-            ct.city,
-            ct.county,
-            ct.address,
-            ct.job,
-            ct.email,
-            ct.hire_date,
-            ct.qq_num,
-            ct.telephone,
-            ct.review_status,
-            ct.create_time,
-            ct.update_time,
-            ct.not_pass_cause,
-            ct.have_delete,
-            tc.certificate_direction,
-            tc.certificate_id,
-            tc.certificate_level,
-            tc.invalid_certificate_time,
-            tc.receive_certificate_time
+        ct.person_id,
+        ct.company_id,
+        ct.person_name,
+        ct.company_name,
+        ct.person_gender,
+        ct.identity_card,
+        ct.birthday,
+        ct.phone,
+        ct.province,
+        ct.city,
+        ct.county,
+        ct.address,
+        ct.job,
+        ct.email,
+        ct.hire_date,
+        ct.qq_num,
+        ct.telephone,
+        ct.review_status,
+        ct.create_time,
+        ct.update_time,
+        ct.not_pass_cause,
+        ct.have_delete
         FROM
-            channel_technician ct
-            LEFT JOIN technican_certificate tc ON ct.person_id = tc.person_id
-        HAVING
-            ct.have_delete != 1
-            AND ct.review_status = 2
+        channel_technician ct
+        WHERE
+        ct.have_delete != 1
+        AND ct.review_status = 2
+        <if test="companyName != null and  companyName !='' ">
+            AND companyName like CONCAT('%',#{companyName},'%')
+        </if>
+        <if test="personName != null and  personName !='' ">
+            AND personName like CONCAT('%',#{personName},'%')
+        </if>
         ORDER BY
-            ct.update_time DESC
-            LIMIT #{offSet}, #{rows}
+        ct.update_time DESC
+        LIMIT #{offSet}, #{rows}
+    </select>
+    <select id="queryHaveCheckTechnicans" parameterType="map" resultMap="resultMap">
+        SELECT
+        ct.person_id,
+        ct.company_id,
+        ct.person_name,
+        ct.company_name,
+        ct.person_gender,
+        ct.identity_card,
+        ct.birthday,
+        ct.phone,
+        ct.province,
+        ct.city,
+        ct.county,
+        ct.address,
+        ct.job,
+        ct.email,
+        ct.hire_date,
+        ct.qq_num,
+        ct.telephone,
+        ct.review_status,
+        ct.create_time,
+        ct.update_time,
+        ct.not_pass_cause,
+        ct.have_delete
+        FROM
+        channel_technician ct
+        WHERE
+        ct.have_delete != 1
+        AND ct.review_status != 2
+        <if test="companyName != null and  companyName !='' ">
+            AND companyName like CONCAT('%',#{companyName},'%')
+        </if>
+        <if test="personName != null and  personName !='' ">
+            AND personName like CONCAT('%',#{personName},'%')
+        </if>
+        ORDER BY
+        ct.update_time DESC
+        LIMIT #{offSet}, #{rows}
     </select>
 
+    <select id="queryCheckPendingTechnicansTotal" parameterType="map" resultType="int">
+        SELECT
+        count(person_id)
+        FROM
+        channel_technician
+        WHERE
+        have_delete != 1
+        AND review_status = 2
+        <if test="companyName != null and  companyName !='' ">
+            AND companyName like CONCAT('%',#{companyName},'%')
+        </if>
+        <if test="personName != null and  personName !='' ">
+            AND personName like CONCAT('%',#{personName},'%')
+        </if>
+    </select>
+
+    <select id="queryHaveCheckTechnicansTotal" parameterType="map" resultType="int">
+        SELECT
+        count(person_id)
+        FROM
+        channel_technician
+        WHERE
+        have_delete != 1
+        AND review_status != 2
+        <if test="companyName != null and  companyName !='' ">
+            AND companyName like CONCAT('%',#{companyName},'%')
+        </if>
+        <if test="personName != null and  personName !='' ">
+            AND personName like CONCAT('%',#{personName},'%')
+        </if>
+    </select>
+
+    <update id="reviewOperation" parameterType="map">
+    UPDATE channel_technician
+    SET review_status = #{review},
+        update_time = now()
+    WHERE
+        person_Id = #{personId}
+    AND have_delete != 1
+    </update>
+
+    <select id="previewTechnicanInfo" parameterType="map" resultMap="resultMap">
+        SELECT
+        ct.person_id,
+        ct.company_id,
+        ct.person_name,
+        ct.company_name,
+        ct.person_gender,
+        ct.identity_card,
+        ct.birthday,
+        ct.phone,
+        ct.province,
+        ct.city,
+        ct.county,
+        ct.address,
+        ct.job,
+        ct.email,
+        ct.hire_date,
+        ct.qq_num,
+        ct.telephone,
+        ct.review_status,
+        ct.create_time,
+        ct.update_time,
+        ct.not_pass_cause,
+        ct.have_delete
+        FROM
+        channel_technician ct
+        WHERE
+        ct.have_delete != 1
+        AND
+        ct.person_id = #{personId}
+    </select>
+
+    <update id="deleteTechnican" parameterType="string">
+    UPDATE channel_technician ct
+    LEFT JOIN technican_certificate tc ON ct.person_id = tc.person_id
+    SET
+        ct.have_delete = 1,
+        tc.have_delete = 1,
+        ct.update_time = now(),
+        tc.update_time = now()
+    WHERE
+        ct.person_Id = #{personId}
+    </update>
 </mapper>

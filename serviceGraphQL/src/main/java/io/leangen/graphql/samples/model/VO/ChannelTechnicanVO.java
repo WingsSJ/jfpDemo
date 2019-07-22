@@ -1,8 +1,15 @@
 package io.leangen.graphql.samples.model.VO;
 
+import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
+import io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 技术人员
@@ -28,7 +35,7 @@ public class ChannelTechnicanVO{
     /**
      * 人员性别
      */
-    private Integer personGender;
+    private String personGender;
     /**
      * 人员身份证Id
      */
@@ -80,7 +87,7 @@ public class ChannelTechnicanVO{
     /**
      *审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
      */
-    private Integer reviewStatus;
+    private String reviewStatus;
     /**
      * 审核未通过的原因
      */
@@ -89,4 +96,84 @@ public class ChannelTechnicanVO{
      * 渠道技术人员证书信息
      */
     private List<TechnicanCertificateVO> technicanCertificateVOList;
+
+    public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO,List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList){
+        ChannelTechnicanVO channelTechnicanVO = transDTOToVO(channelTechnicanQueryDTO);
+        List<TechnicanCertificateVO> technicanCertificateVOList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(technicanCertificateQueryDTOList)) {
+            for (TechnicanCertificateQueryDTO technicanCertificateQueryDTO : technicanCertificateQueryDTOList) {
+                TechnicanCertificateVO technicanCertificateVO = new TechnicanCertificateVO(technicanCertificateQueryDTO.getCertificateId(),
+                        technicanCertificateQueryDTO.getCertificateDirection(),
+                        technicanCertificateQueryDTO.getCertificateLevel(),
+                        technicanCertificateQueryDTO.getReceiveCertificateTime(),
+                        technicanCertificateQueryDTO.getInvalidCertificateTime());
+                technicanCertificateVOList.add(technicanCertificateVO);
+            }
+            channelTechnicanVO.setTechnicanCertificateVOList(technicanCertificateVOList);
+        }
+        return channelTechnicanVO;
+    }
+
+
+    public static List<ChannelTechnicanVO> transToChannelTechnicanVOList( List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList,
+                                                                          List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList){
+
+        Map<String,List<TechnicanCertificateVO>> result = new HashMap<>();
+        List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(technicanCertificateQueryDTOList)){
+            //将证书信息整理为 Map<personId,List<TechnicanCertificateVO>>
+            technicanCertificateQueryDTOList.stream().collect(Collectors.groupingBy(TechnicanCertificateQueryDTO::getPersonId)).forEach((personId, technicanCertificateDTOS) -> {
+                List<TechnicanCertificateVO> technicanCertificateVOList = new ArrayList<>();
+                for(TechnicanCertificateQueryDTO technicanCertificateQueryDTO :technicanCertificateDTOS){
+                    TechnicanCertificateVO technicanCertificateVO = new TechnicanCertificateVO(technicanCertificateQueryDTO.getCertificateId(),
+                            technicanCertificateQueryDTO.getCertificateDirection(),
+                            technicanCertificateQueryDTO.getCertificateLevel(),
+                            technicanCertificateQueryDTO.getReceiveCertificateTime(),
+                            technicanCertificateQueryDTO.getInvalidCertificateTime());
+                    technicanCertificateVOList.add(technicanCertificateVO);
+                }
+                result.put(personId,technicanCertificateVOList);
+            });
+        }
+        //重新构造 ChannelTechnicanVO
+        for(ChannelTechnicanQueryDTO channelTechnicanQueryDTO:channelTechnicanQueryDTOList){
+            ChannelTechnicanVO channelTechnicanVO = transDTOToVO(channelTechnicanQueryDTO);
+            //如果有证书信息
+            if(result.containsKey(channelTechnicanQueryDTO.getPersonId())){
+                channelTechnicanVO.setTechnicanCertificateVOList(result.get(channelTechnicanQueryDTO.getPersonId()));
+            }
+            channelTechnicanVOList.add(channelTechnicanVO);
+        }
+        return channelTechnicanVOList;
+    }
+
+    private static ChannelTechnicanVO transDTOToVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO){
+        ChannelTechnicanVO channelTechnicanVO = new ChannelTechnicanVO();
+        channelTechnicanVO.setAddress(channelTechnicanQueryDTO.getAddress());
+        channelTechnicanVO.setBirthday(channelTechnicanQueryDTO.getBirthday());
+        channelTechnicanVO.setCity(channelTechnicanQueryDTO.getCity());
+        channelTechnicanVO.setCompanyName(channelTechnicanQueryDTO.getCompanyName());
+        channelTechnicanVO.setCounty(channelTechnicanQueryDTO.getCounty());
+        channelTechnicanVO.setEmail(channelTechnicanQueryDTO.getEmail());
+        channelTechnicanVO.setHireDate(channelTechnicanQueryDTO.getHireDate());
+        channelTechnicanVO.setIdentityCard(channelTechnicanQueryDTO.getIdentityCard());
+        channelTechnicanVO.setJob(channelTechnicanQueryDTO.getJob());
+        channelTechnicanVO.setNotPassCause(channelTechnicanQueryDTO.getNotPassCause());
+        channelTechnicanVO.setPersonGender(Integer.valueOf(1).equals(channelTechnicanQueryDTO.getPersonGender())? "男":"女");
+        channelTechnicanVO.setPersonName(channelTechnicanQueryDTO.getPersonName());
+        channelTechnicanVO.setPhone(channelTechnicanQueryDTO.getPhone());
+        channelTechnicanVO.setProvince(channelTechnicanQueryDTO.getProvince());
+        channelTechnicanVO.setQqNum(channelTechnicanQueryDTO.getQqNum());
+        //转成实际需要显示值
+        if(Integer.valueOf(0).equals(channelTechnicanQueryDTO.getReviewStatus())){
+            channelTechnicanVO.setReviewStatus("未通过");
+        }else if (Integer.valueOf(1).equals(channelTechnicanQueryDTO.getReviewStatus())){
+            channelTechnicanVO.setReviewStatus("通过");
+        }else {
+            channelTechnicanVO.setReviewStatus("待审核");
+        }
+        channelTechnicanVO.setTelephone(channelTechnicanQueryDTO.getTelephone());
+
+        return channelTechnicanVO;
+    }
 }
