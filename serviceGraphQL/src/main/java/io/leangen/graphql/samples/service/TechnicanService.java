@@ -135,7 +135,9 @@ public class TechnicanService {
     }
     //TODO 省市县录入为汉字 要转成行政编码
 
-    //TODO 批量导入功能（导入为xls文件 要做数据录入校验）
+
+
+    //TODO 批量导入功能（导入为xls文件 要做数据录入校验） 参考 https://hutool.cn/docs/#/
 
     //TODO 下载模板
 }
