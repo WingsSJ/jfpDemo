@@ -12,6 +12,7 @@ import io.leangen.graphql.samples.repo.ChannelTechnicanRepo;
 import io.leangen.graphql.samples.repo.TechnicanCertificateRepo;
 import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -138,6 +139,15 @@ public class TechnicanService {
 
 
     //TODO 批量导入功能（导入为xls文件 要做数据录入校验） 参考 https://hutool.cn/docs/#/
+    @GraphQLMutation
+    public HttpBaseVO batchImportTechnicans(String fileUrl){
+        if(StringUtils.isNotBlank(fileUrl)){
+
+        }
+        return null;
+    }
+
+
 
     //TODO 下载模板
 }
