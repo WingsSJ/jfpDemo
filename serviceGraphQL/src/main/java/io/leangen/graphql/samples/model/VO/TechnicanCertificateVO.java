@@ -19,20 +19,16 @@ public class TechnicanCertificateVO {
      * 证书级别
      */
     private String certificateLevel;
-    /**
-     *证书获取时间
-     */
-    private String receiveCertificateTime;
+
     /**
      *证书失效时间
      */
     private String invalidCertificateTime;
 
-    public TechnicanCertificateVO(String certificateId, String certificateDirection, String certificateLevel, String receiveCertificateTime, String invalidCertificateTime) {
+    public TechnicanCertificateVO(String certificateId, String certificateDirection, String certificateLevel, String invalidCertificateTime) {
         this.certificateId = certificateId;
         this.certificateDirection = certificateDirection;
         this.certificateLevel = certificateLevel;
-        this.receiveCertificateTime = receiveCertificateTime;
         this.invalidCertificateTime = invalidCertificateTime;
     }
 }

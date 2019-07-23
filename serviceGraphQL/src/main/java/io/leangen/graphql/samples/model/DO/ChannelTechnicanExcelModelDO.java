@@ -1,19 +1,25 @@
-package io.leangen.graphql.samples.model.DTO;
+package io.leangen.graphql.samples.model.DO;
 
 import lombok.Data;
 
+import java.util.Set;
+
+
+/**
+ * 渠道技术人员模型类
+ */
 @Data
-public class ChannelTechnicanExcelDTO {
+public class ChannelTechnicanExcelModelDO {
     /**
-     *
+     * 前端传递做属性填充
      */
     private String companyName;
     /**
-     *
+     * 前端传递做属性填充
      */
     private String companyId;
     /**
-     * 技术人员Id （唯一属性）
+     * 技术人员Id （服务端生成UUID）
      */
     private String personId;
     /**
@@ -72,4 +78,8 @@ public class ChannelTechnicanExcelDTO {
      * 座机电话（固话）
      */
     private String telephone;
+    /**
+     * 渠道技术人员证书信息
+     */
+    private Set<TechnicanCertificateExcelModelDO> technicanCertificateExcelModelDOS;
 }

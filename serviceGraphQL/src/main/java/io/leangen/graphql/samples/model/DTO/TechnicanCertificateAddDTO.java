@@ -32,12 +32,8 @@ public class TechnicanCertificateAddDTO implements Serializable,Cloneable {
     @NotBlank
     private String certificateLevel;
     /**
-     *证书获取时间
-     */
-    @NotBlank
-    private String receiveCertificateTime;
-    /**
      *证书失效时间
      */
+    @NotBlank
     private String invalidCertificateTime;
 }

@@ -5,15 +5,19 @@
 
 
 <mapper namespace="io.leangen.graphql.samples.mapper.ChannelTechnicanMapper">
+    <select id="queryOneChannelTechnicanHaveRecord" parameterType="string" resultType="int">
+        select count(1) from channel_technician where identity_card = #{identityCard} and have_delete != 1 and review_status != 0 ;
+    </select>
+
     <insert id="createOneChannelTechnicanRecord"
             parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO">
-        insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time)
-        values (channelTechnicanAddDTODTO.personId,channelTechnicanAddDTODTO.companyId,channelTechnicanAddDTODTO.personName,
-        channelTechnicanAddDTODTO.companyName,channelTechnicanAddDTODTO.personGender,channelTechnicanAddDTODTO.identityCard,
-        channelTechnicanAddDTODTO.brithday,channelTechnicanAddDTODTO.phone,channelTechnicanAddDTODTO.province,channelTechnicanAddDTODTO.city,
-        channelTechnicanAddDTODTO.county,channelTechnicanAddDTODTO.address,channelTechnicanAddDTODTO.job,channelTechnicanAddDTODTO.email,
-        channelTechnicanAddDTODTO.hireDate,channelTechnicanAddDTODTO.qqNum,channelTechnicanAddDTODTO.telephone,2,
-        now())
+        insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time,update_time)
+        values (#{channelTechnicanAddDTO.personId},#{channelTechnicanAddDTO.companyId},#{channelTechnicanAddDTO.personName},
+        #{channelTechnicanAddDTO.companyName},#{channelTechnicanAddDTO.personGender},#{channelTechnicanAddDTO.identityCard},
+        #{channelTechnicanAddDTO.birthday},#{channelTechnicanAddDTO.phone},#{channelTechnicanAddDTO.province},#{channelTechnicanAddDTO.city},
+        #{channelTechnicanAddDTO.county},#{channelTechnicanAddDTO.address},#{channelTechnicanAddDTO.job},#{channelTechnicanAddDTO.email},
+        #{channelTechnicanAddDTO.hireDate},#{channelTechnicanAddDTO.qqNum},#{channelTechnicanAddDTO.telephone},2,
+        now(),now())
     </insert>
 
     <update id="updateTechnicanInfo" parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO">

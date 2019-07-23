@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,9 +38,12 @@ public class TechnicanService {
 
     //TODO 1.需要添加插入判断 如果已经存在未删除记录 则无法录入 2.还未做接口测试
     @GraphQLMutation
-    public HttpBaseVO createOneChannelTechnicanRecord(ChannelTechnicanAddDTO channelTechnicanAddDTO){
-        //TODO 是否存在未处理记录
-
+    public HttpBaseVO createOneChannelTechnicanRecord(@Valid ChannelTechnicanAddDTO channelTechnicanAddDTO){
+        //是否存在未处理记录
+        boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
+        if(haveRecord){
+            return new HttpBaseVO(HttpStatus.BAD_REQUEST.value(),"this person have record");
+        }
         boolean success = channelTechnicanRepo.createOneChannelTechnicanRecord(channelTechnicanAddDTO);
         if(success){
             return new HttpBaseVO(HttpStatus.OK.value(),"add channelTechnican successful");
@@ -138,7 +142,7 @@ public class TechnicanService {
 
 
 
-    //TODO 批量导入功能（导入为xls文件 要做数据录入校验） 参考 https://hutool.cn/docs/#/
+    //TODO 批量导入功能（导入为xls文件 要做数据录入校验） 参考 https://hutool.cn/docs/#/  https://gitee.com/lemur/easypoi
     @GraphQLMutation
     public HttpBaseVO batchImportTechnicans(String fileUrl){
         if(StringUtils.isNotBlank(fileUrl)){

@@ -6,26 +6,26 @@
     <insert id="recordTechnicanCertificateRecords" parameterType="java.util.List">
         INSERT INTO
         technican_certificate(certificate_id, person_id, certificate_direction, certificate_level,
-        receive_certificate_time, invalid_certificate_time, create_time, have_delete)
+        invalid_certificate_time, create_time,update_time, have_delete)
         VALUES
         <foreach collection="technicanCertificateAddDTOList" index="index" item="technicanCertificateAddDTO"
                  separator=",">
             (#{technicanCertificateAddDTO.certificateId},#{technicanCertificateAddDTO.personId},
-            #{technicanCertificateAddDTO.certificateDirection},#{technicanCertificateAddDTO.certificateLevel},#{technicanCertificateAddDTO.receiveCertificateTime},
-            #{technicanCertificateAddDTO.invalidCertificateTime},now(),0)
+            #{technicanCertificateAddDTO.certificateDirection},#{technicanCertificateAddDTO.certificateLevel},
+            #{technicanCertificateAddDTO.invalidCertificateTime},now(),now(),0)
         </foreach>
     </insert>
 
-    <select id="findTechnicanCertificateByPersonIdList" parameterType="java.lang.String"
-            resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
-        select certificate_id, person_id, certificate_direction, certificate_level, receive_certificate_time, invalid_certificate_time from technican_certificate
-            where person_id in #{personIdList}
+    <select id="findTechnicanCertificateByPersonIdList" resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+        select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate where person_id in
+        <foreach collection="personIdList" index="index" item="personId" open="(" close=")" separator=",">
+            #{personId}
+        </foreach>            
     </select>
 
-    <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
-            resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
-        select certificate_id, person_id, certificate_direction, certificate_level, receive_certificate_time, invalid_certificate_time from technican_certificate
+   <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
+        resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+        select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate
             where person_id = #{personId}
     </select>
-
 </mapper>

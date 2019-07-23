@@ -40,4 +40,4 @@ eureka:
     health-check-url-path: /actuator/health
 logging:
   level:
-    com.whty.ms.nim.discuss.mapper: DEBUG
+    io.*: DEBUG

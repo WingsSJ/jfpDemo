@@ -1,18 +1,21 @@
 package io.leangen.graphql.samples.repo;
 
+import io.leangen.graphql.samples.Utils.CodeMapUtil;
 import io.leangen.graphql.samples.mapper.ChannelTechnicanMapper;
 import io.leangen.graphql.samples.mapper.TechnicanCertificateMapper;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO;
+import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO;
 import io.leangen.graphql.samples.model.DTO.TechnicanCertificateAddDTO;
-import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class ChannelTechnicanRepo {
@@ -20,8 +23,25 @@ public class ChannelTechnicanRepo {
     ChannelTechnicanMapper channelTechnicanMapper;
     @Resource
     TechnicanCertificateMapper technicanCertificateMapper;
-    
+
+    public boolean queryOneChannelTechnicanHaveRecord(ChannelTechnicanAddDTO channelTechnicanAddDTO){
+        String personId = channelTechnicanAddDTO.getIdentityCard();
+        int queryOneChannelTechnicanHaveRecord = channelTechnicanMapper.queryOneChannelTechnicanHaveRecord(personId);
+        return queryOneChannelTechnicanHaveRecord > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public boolean createOneChannelTechnicanRecord(ChannelTechnicanAddDTO channelTechnicanAddDTO){
+        //需要自己生成人员Id
+        channelTechnicanAddDTO.setPersonId(UUID.randomUUID().toString());
+        //传参校验
+        if(channelTechnicanAddDTO.checkNull()){
+            return false;
+        }
+        //获取相应的地区编码
+        channelTechnicanAddDTO.setProvince(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getProvince()));
+        channelTechnicanAddDTO.setCity(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getCity()));
+        channelTechnicanAddDTO.setCounty(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getCounty()));
         //记录渠道技术人员信息
         int oneChannelTechnicanRecord = channelTechnicanMapper.createOneChannelTechnicanRecord(channelTechnicanAddDTO);
         List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList = channelTechnicanAddDTO.getTechnicanCertificateAddDTOS();
@@ -32,7 +52,7 @@ public class ChannelTechnicanRepo {
             boolean checkParam = technicanCertificateAddDTOList.stream().anyMatch(technicanCertificateAddDTO ->
                     technicanCertificateAddDTO.getCertificateDirection().isEmpty() |technicanCertificateAddDTO.getCertificateId().isEmpty()
                     | technicanCertificateAddDTO.getCertificateLevel().isEmpty()
-                    | technicanCertificateAddDTO.getReceiveCertificateTime().isEmpty());
+                    | technicanCertificateAddDTO.getInvalidCertificateTime().isEmpty());
             if(checkParam){
                 return false;
             }else{
@@ -102,7 +122,7 @@ public class ChannelTechnicanRepo {
                 boolean checkParam = technicanCertificateAddDTOS.stream().anyMatch(technicanCertificateAddDTO ->
                         technicanCertificateAddDTO.getCertificateDirection().isEmpty() |technicanCertificateAddDTO.getCertificateId().isEmpty()
                                 | technicanCertificateAddDTO.getCertificateLevel().isEmpty()
-                                | technicanCertificateAddDTO.getReceiveCertificateTime().isEmpty());
+                                | technicanCertificateAddDTO.getInvalidCertificateTime().isEmpty());
                 if(checkParam){
                     //TODO 自定义传参异常 回滚
                     throw new RuntimeException();

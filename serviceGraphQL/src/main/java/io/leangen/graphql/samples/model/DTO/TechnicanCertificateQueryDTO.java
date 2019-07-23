@@ -26,10 +26,6 @@ public class TechnicanCertificateQueryDTO {
      */
     private String certificateLevel;
     /**
-     *证书获取时间
-     */
-    private String receiveCertificateTime;
-    /**
      *证书失效时间
      */
     private String invalidCertificateTime;

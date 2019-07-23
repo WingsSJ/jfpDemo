@@ -105,7 +105,6 @@ public class ChannelTechnicanVO{
                 TechnicanCertificateVO technicanCertificateVO = new TechnicanCertificateVO(technicanCertificateQueryDTO.getCertificateId(),
                         technicanCertificateQueryDTO.getCertificateDirection(),
                         technicanCertificateQueryDTO.getCertificateLevel(),
-                        technicanCertificateQueryDTO.getReceiveCertificateTime(),
                         technicanCertificateQueryDTO.getInvalidCertificateTime());
                 technicanCertificateVOList.add(technicanCertificateVO);
             }
@@ -128,7 +127,6 @@ public class ChannelTechnicanVO{
                     TechnicanCertificateVO technicanCertificateVO = new TechnicanCertificateVO(technicanCertificateQueryDTO.getCertificateId(),
                             technicanCertificateQueryDTO.getCertificateDirection(),
                             technicanCertificateQueryDTO.getCertificateLevel(),
-                            technicanCertificateQueryDTO.getReceiveCertificateTime(),
                             technicanCertificateQueryDTO.getInvalidCertificateTime());
                     technicanCertificateVOList.add(technicanCertificateVO);
                 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Mapper
 public interface ChannelTechnicanMapper {
+    int queryOneChannelTechnicanHaveRecord(@Param("identityCard")String identityCard);
     int createOneChannelTechnicanRecord(@Param("channelTechnicanAddDTO") ChannelTechnicanAddDTO channelTechnicanAddDTO);
     List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(Map params);
     List<ChannelTechnicanQueryDTO> queryHaveCheckTechnicans(Map params);

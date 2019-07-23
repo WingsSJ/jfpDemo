@@ -25,10 +25,7 @@ public class TechnicanCertificateDO {
      * 证书级别
      */
     private String certificateLevel;
-    /**
-     *证书获取时间
-     */
-    private Date receiveCertificateTime;
+
     /**
      *证书失效时间
      */

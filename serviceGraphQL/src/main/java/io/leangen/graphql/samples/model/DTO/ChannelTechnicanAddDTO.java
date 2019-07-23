@@ -2,6 +2,7 @@ package io.leangen.graphql.samples.model.DTO;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,13 +17,17 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
     /**
      * 技术人员Id （唯一属性）
      */
-    @NotBlank
     private String personId;
     /**
      * 公司Id
      */
     @NotBlank
     private String companyId;
+    /**
+     *  公司名
+     */
+    @NotBlank
+    private String companyName;
     /**
      * 技术人员姓名
      */
@@ -100,4 +105,9 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
      *审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
      */
     private Integer reviewStatus;
+
+    public boolean checkNull(){
+        return StringUtils.isAnyBlank(this.companyId,this.companyName,this.personName,
+                this.personGender.toString(),this.identityCard,this.birthday,this.phone,this.province,this.city,this.county,this.address,this.job,this.hireDate);
+    }
 }

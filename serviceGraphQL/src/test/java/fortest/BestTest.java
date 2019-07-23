@@ -1,5 +1,6 @@
 package fortest;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import org.junit.Test;
 
@@ -85,5 +86,16 @@ public class BestTest {
             this.ZSid = ZSid;
             this.ZSContext = ZSContext;
         }
+    }
+    @Test
+    public void test2(){
+        List<ZSVO> zsvoList = new ArrayList<>();
+        ZSVO zsvo1 = new ZSVO("1","jahs");
+        ZSVO zsvo2 = new ZSVO("1","jahs");
+        ZSVO zsvo3 = new ZSVO("1","jahs");
+        zsvoList.add(zsvo1);
+        zsvoList.add(zsvo2);
+        zsvoList.add(zsvo3);
+        System.out.println(JSON.toJSONString(zsvoList));
     }
 }
