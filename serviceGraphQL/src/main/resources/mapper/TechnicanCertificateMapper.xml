@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.leangen.graphql.samples.mapper.TechnicanCertificateMapper">
+    <resultMap id="resultMap" type="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+        <result column="certificate_id" jdbcType="VARCHAR" property="certificateId"/>
+        <result column="person_id" jdbcType="VARCHAR" property="personId"/>
+        <result column="certificate_direction" jdbcType="VARCHAR" property="certificateDirection"/>
+        <result column="certificate_level" jdbcType="VARCHAR" property="certificateLevel"/>
+        <result column="invalid_certificate_time" jdbcType="TIMESTAMP" property="invalidCertificateTime"/>
+    </resultMap>
     <insert id="recordTechnicanCertificateRecords" parameterType="java.util.List">
         INSERT INTO
         technican_certificate(certificate_id, person_id, certificate_direction, certificate_level,
@@ -16,15 +23,15 @@
         </foreach>
     </insert>
 
-    <select id="findTechnicanCertificateByPersonIdList" resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+    <select id="findTechnicanCertificateByPersonIdList" resultMap="resultMap">
         select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate where person_id in
-        <foreach collection="personIdList" index="index" item="personId" open="(" close=")" separator=",">
-            #{personId}
-        </foreach>            
+        <foreach collection="personIdList" index="index" item="personId" open="(" separator="," close=")">
+        #{personId}
+        </foreach>
     </select>
 
    <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
-        resultType="io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO">
+           resultMap="resultMap">
         select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate
             where person_id = #{personId}
     </select>

@@ -97,7 +97,9 @@ public class ChannelTechnicanVO{
      */
     private List<TechnicanCertificateVO> technicanCertificateVOList;
 
-    public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO,List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList){
+    private HttpBaseVO httpBaseVO;
+
+    public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO,List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList,HttpBaseVO httpBaseVO){
         ChannelTechnicanVO channelTechnicanVO = transDTOToVO(channelTechnicanQueryDTO);
         List<TechnicanCertificateVO> technicanCertificateVOList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(technicanCertificateQueryDTOList)) {
@@ -110,6 +112,7 @@ public class ChannelTechnicanVO{
             }
             channelTechnicanVO.setTechnicanCertificateVOList(technicanCertificateVOList);
         }
+        channelTechnicanVO.setHttpBaseVO(httpBaseVO);
         return channelTechnicanVO;
     }
 

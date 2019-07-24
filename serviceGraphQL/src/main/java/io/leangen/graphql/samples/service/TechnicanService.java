@@ -93,11 +93,20 @@ public class TechnicanService {
 
 
     //TODO 渠道技术人员管理页面 预览操作 （基本信息和认证信息展示 没有头像 账号 密码）
+    @GraphQLQuery
     public ChannelTechnicanVO previewTechnicanInfo(@GraphQLNonNull String personId){
         ChannelTechnicanQueryDTO channelTechnicanQueryDTO = channelTechnicanRepo.previewTechnicanInfo(personId);
-        List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList =technicanCertificateRepo.findTechnicanCertificateByPersonId(personId);
-        //重新组装为VO
-        return transToChannelTechnicanVO(channelTechnicanQueryDTO,technicanCertificateQueryDTOList);
+        if(channelTechnicanQueryDTO != null) {
+            List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList = technicanCertificateRepo.findTechnicanCertificateByPersonId(personId);
+            //重新组装为VO
+            HttpBaseVO httpBaseVO = new HttpBaseVO(HttpStatus.OK.value(),"query success");
+            return transToChannelTechnicanVO(channelTechnicanQueryDTO, technicanCertificateQueryDTOList,httpBaseVO);
+        }else {
+            HttpBaseVO httpBaseVO = new HttpBaseVO(HttpStatus.BAD_REQUEST.value(),"check personId");
+            ChannelTechnicanVO channelTechnicanVO = new ChannelTechnicanVO();
+            channelTechnicanVO.setHttpBaseVO(httpBaseVO);
+            return channelTechnicanVO;
+        }
     }
 
 
@@ -138,8 +147,6 @@ public class TechnicanService {
             return new HttpBaseVO(HttpStatus.BAD_REQUEST.value(),"check param: "+ personId);
         }
     }
-    //TODO 省市县录入为汉字 要转成行政编码
-
 
 
     //TODO 批量导入功能（导入为xls文件 要做数据录入校验） 参考 https://hutool.cn/docs/#/  https://gitee.com/lemur/easypoi
@@ -150,7 +157,6 @@ public class TechnicanService {
         }
         return null;
     }
-
 
 
     //TODO 下载模板

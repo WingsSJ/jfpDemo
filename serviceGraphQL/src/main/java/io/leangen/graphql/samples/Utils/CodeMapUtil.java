@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 public class CodeMapUtil  implements ApplicationRunner {
-    public static ConcurrentHashMap<String,String> CODE_MAP = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String,String> CODE_MAP = new ConcurrentHashMap<>();
     @Resource
     CasAreaMapper casAreaMapper;
     @Override
@@ -33,5 +33,16 @@ public class CodeMapUtil  implements ApplicationRunner {
             return "未能查询到区域";
         }
         return areaCode;
+    }
+
+    public static String getAreaNameByAreaCode(String areaCode){
+        String areaName = null;
+        //Map,HashMap并没有实现Iteratable接口.不能用于增强for循环.
+        for(String getKey: CODE_MAP.keySet()){
+            if(CODE_MAP.get(getKey).equals(areaCode)){
+                areaName = getKey;
+            }
+        }
+        return areaName;
     }
 }
