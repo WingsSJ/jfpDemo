@@ -11,6 +11,7 @@ import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import io.leangen.graphql.samples.model.DTO.*;
 import io.leangen.graphql.samples.model.VO.ChannelTechnicanVO;
 import io.leangen.graphql.samples.model.VO.PageVO;
+import io.leangen.graphql.samples.repo.ChannelTechnicanExcelRepo;
 import io.leangen.graphql.samples.repo.ChannelTechnicanRepo;
 import io.leangen.graphql.samples.repo.TechnicanCertificateRepo;
 import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
@@ -39,6 +40,8 @@ public class TechnicanService {
     private ChannelTechnicanRepo channelTechnicanRepo;
     @Autowired
     private TechnicanCertificateRepo technicanCertificateRepo;
+    @Autowired
+    private ChannelTechnicanExcelRepo channelTechnicanExcelRepo;
 
     @GraphQLMutation
     public JsonObject createOneChannelTechnicanRecord(@Valid ChannelTechnicanAddDTO channelTechnicanAddDTO){
@@ -171,8 +174,21 @@ public class TechnicanService {
                     ChannelTechnicanExcelModelDO.class,importParams);
             if(CollectionUtils.isNotEmpty(list)){
                 //TODO 数据校验 数据存入数据库
+                for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:list){
+                    if(channelTechnicanExcelModelDO.checkNull()){
+                        channelTechnicanExcelModelDO.setVerifyResult("数据不完整 personName:"+ channelTechnicanExcelModelDO.getPersonName());
+//                        channelTechnicanExcelRepo.batchImportTechnicans()
+                    }else {
+                        channelTechnicanExcelModelDO.setVerifyResult("数据校验通过");
+                    }
+                }
             }
         }
         return null;
     }
+
+    //TODO excel数据查询操作
+
+
+    //TODO excel数据删除操作
 }

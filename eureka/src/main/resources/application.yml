@@ -12,8 +12,8 @@ eureka:
   instance:
     hostname: localhost         # 指定该Eureka实例的主机名
   client:
-    registerWithEureka: false
-    fetchRegistry: true
+    registerWithEureka: false  # 是否向 Eureka 注册服务。
+    fetchRegistry: false # 是否检索服务
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 ---
