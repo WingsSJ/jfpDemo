@@ -5,6 +5,7 @@ import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
 import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class ChannelTechnicanExcelModelDO {
      * 技术人员生日
      */
     @Excel(name = "出生年月*",importFormat = "yyyy/MM/dd", orderNum = "3")
-    private String birthday;
+    private Date birthday;
     /**
      * 联系电话
      */
@@ -87,7 +88,7 @@ public class ChannelTechnicanExcelModelDO {
      * 入职日期
      */
     @Excel(name = "入职时间*",importFormat = "yyyy/MM/dd", orderNum = "1")
-    private String hireDate;
+    private Date hireDate;
     /**
      * qq号
      */
@@ -102,6 +103,6 @@ public class ChannelTechnicanExcelModelDO {
     /**
      * 渠道技术人员证书信息
      */
-    @ExcelCollection(name = "证书方向*,证书级别*,证书编号*,证书有效期*",type = TechnicanCertificateExcelModelDO.class)
+    @ExcelCollection(name = "证书",orderNum = "15")
     private List<TechnicanCertificateExcelModelDO> technicanCertificateExcelModelDOS;
 }

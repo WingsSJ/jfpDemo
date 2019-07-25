@@ -3,15 +3,9 @@ package exceltest;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 public class PoiTest {
@@ -60,8 +54,18 @@ public class PoiTest {
     public void easyPoiTest2(){
         ImportParams importParams = new ImportParams();
         importParams.setTitleRows(0);
-        importParams.setHeadRows(1);
+        importParams.setHeadRows(2);
         List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest2.xlsx"),
+                ChannelTechnicanExcelModelDO.class,importParams);
+        System.out.println(list.get(0));
+    }
+
+    @Test
+    public void easyPoiTest3(){
+        ImportParams importParams = new ImportParams();
+        importParams.setTitleRows(0);
+        importParams.setHeadRows(0);
+        List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest.xlsx"),
                 ChannelTechnicanExcelModelDO.class,importParams);
         System.out.println(list.get(0));
     }

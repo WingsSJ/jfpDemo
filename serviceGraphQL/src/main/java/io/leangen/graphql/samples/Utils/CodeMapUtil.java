@@ -9,40 +9,74 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
 public class CodeMapUtil  implements ApplicationRunner {
-    private static ConcurrentHashMap<String,String> CODE_MAP = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String,Object> CODE_MAP = new ConcurrentHashMap<>();
     @Resource
     CasAreaMapper casAreaMapper;
     @Override
     public void run(ApplicationArguments args){
         List<CasAreaMapDTO> casAreaMapDTOS = casAreaMapper.queryAll();
         for (CasAreaMapDTO casAreaMapDTO:casAreaMapDTOS){
-            CODE_MAP.put(casAreaMapDTO.getAreaName(),casAreaMapDTO.getCode());
+            CODE_MAP.put(casAreaMapDTO.getCode(),casAreaMapDTO);
         }
-        log.info("init success casAreaMap:{} Size: {}",CODE_MAP,CODE_MAP.size());
+        log.info("casAreaMap init success size: {}",CODE_MAP.size());
     }
 
-    public static String getAreaCodeByAreaName(String areaName){
-        String areaCode = CODE_MAP.get(areaName);
-        if(StringUtils.isBlank(areaCode)){
-            return "未能查询到区域";
+    public static Map<String,String> getAreaCodeByAreaName(String provinceName, String cityName, String countyName){
+        Map<String,String> map = new HashMap<>();
+        String provinceId = "";
+        String cityId = "";
+        /**
+         * 获取省级信息
+         */
+        for(String code:CODE_MAP.keySet()){
+            if(CODE_MAP.get(code) != null){
+                CasAreaMapDTO casAreaMapDTO = (CasAreaMapDTO)CODE_MAP.get(code);
+                if(casAreaMapDTO.getAreaName().equals(provinceName) && StringUtils.isBlank(casAreaMapDTO.getPid())){
+                    map.put("province",code);
+                    provinceId = casAreaMapDTO.getUuid();
+                }
+            }
         }
-        return areaCode;
+        /**
+         * 获取市级信息
+         */
+        for(String code:CODE_MAP.keySet()){
+            if(CODE_MAP.get(code) != null){
+                CasAreaMapDTO casAreaMapDTO = (CasAreaMapDTO)CODE_MAP.get(code);
+                if(StringUtils.isNotBlank(provinceId) && casAreaMapDTO.getAreaName().equals(cityName) && casAreaMapDTO.getPid().equals(provinceId)){
+                    map.put("city",code);
+                    cityId = casAreaMapDTO.getUuid();
+                }
+            }
+        }
+        /**
+         * 获取区县信息
+         */
+        for(String code:CODE_MAP.keySet()){
+            if(CODE_MAP.get(code) != null){
+                CasAreaMapDTO casAreaMapDTO = (CasAreaMapDTO)CODE_MAP.get(code);
+                if(StringUtils.isNotBlank(cityId) && casAreaMapDTO.getAreaName().equals(countyName) && casAreaMapDTO.getPid().equals(cityId)){
+                    map.put("county",code);
+                }
+            }
+        }
+        return map;
     }
 
     public static String getAreaNameByAreaCode(String areaCode){
-        String areaName = null;
-        //Map,HashMap并没有实现Iteratable接口.不能用于增强for循环.
-        for(String getKey: CODE_MAP.keySet()){
-            if(CODE_MAP.get(getKey).equals(areaCode)){
-                areaName = getKey;
-            }
+        if(CODE_MAP.get(areaCode)!= null){
+            CasAreaMapDTO casAreaMapDTO = (CasAreaMapDTO)CODE_MAP.get(areaCode);
+            return casAreaMapDTO.getAreaName();
+        }else {
+            return "not exist areaCode:"+areaCode;
         }
-        return areaName;
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
  * 技术人员证书信息
  */
 @Data
-public class TechnicanCertificateVO {
+public class TechnicanCertificateVO{
     /**
      * 证书Id
      */

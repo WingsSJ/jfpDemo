@@ -26,8 +26,8 @@
         <if test="channelTechnicanUpdateDTO.personName != null and  channelTechnicanUpdateDTO.personName !='' ">
             person_name = #{channelTechnicanUpdateDTO.personName},
         </if>
-        <if test="channelTechnicanUpdateDTO.person_gender != null and  channelTechnicanUpdateDTO.person_gender !='' ">
-            person_gender = #{channelTechnicanUpdateDTO.person_gender},
+        <if test="channelTechnicanUpdateDTO.personGender != null and  channelTechnicanUpdateDTO.personGender !='' ">
+            person_gender = #{channelTechnicanUpdateDTO.personGender},
         </if>
         <if test="channelTechnicanUpdateDTO.identityCard != null and  channelTechnicanUpdateDTO.identityCard !='' ">
             identity_card = #{channelTechnicanUpdateDTO.identityCard},
@@ -68,7 +68,7 @@
         review_status = 0,
         update_time = now()
         WHERE
-        person_Id = #{personId}
+        person_Id = #{channelTechnicanUpdateDTO.personId}
         AND have_delete != 1
     </update>
 
@@ -124,12 +124,12 @@
         channel_technician ct
         WHERE
         ct.have_delete != 1
-        AND ct.review_status = 2
+        AND ct.review_status = 0
         <if test="companyName != null and  companyName !='' ">
-            AND companyName like CONCAT('%',#{companyName},'%')
+            AND ct.company_name like CONCAT('%',#{companyName},'%')
         </if>
         <if test="personName != null and  personName !='' ">
-            AND personName like CONCAT('%',#{personName},'%')
+            AND ct.person_name like CONCAT('%',#{personName},'%')
         </if>
         ORDER BY
         ct.update_time DESC
@@ -163,7 +163,7 @@
         channel_technician ct
         WHERE
         ct.have_delete != 1
-        AND ct.review_status != 2
+        AND ct.review_status != 0
         <if test="companyName != null and  companyName !='' ">
             AND companyName like CONCAT('%',#{companyName},'%')
         </if>
@@ -182,12 +182,12 @@
         channel_technician
         WHERE
         have_delete != 1
-        AND review_status = 2
+        AND review_status = 0
         <if test="companyName != null and  companyName !='' ">
-            AND companyName like CONCAT('%',#{companyName},'%')
+            AND company_name like CONCAT('%',#{companyName},'%')
         </if>
         <if test="personName != null and  personName !='' ">
-            AND personName like CONCAT('%',#{personName},'%')
+            AND person_name like CONCAT('%',#{personName},'%')
         </if>
     </select>
 
@@ -198,18 +198,19 @@
         channel_technician
         WHERE
         have_delete != 1
-        AND review_status != 2
+        AND review_status != 0
         <if test="companyName != null and  companyName !='' ">
-            AND companyName like CONCAT('%',#{companyName},'%')
+            AND company_name like CONCAT('%',#{companyName},'%')
         </if>
         <if test="personName != null and  personName !='' ">
-            AND personName like CONCAT('%',#{personName},'%')
+            AND person_name like CONCAT('%',#{personName},'%')
         </if>
     </select>
 
     <update id="reviewOperation" parameterType="map">
     UPDATE channel_technician
     SET review_status = #{review},
+        not_pass_cause = #{notPassCause},
         update_time = now()
     WHERE
         person_Id = #{personId}

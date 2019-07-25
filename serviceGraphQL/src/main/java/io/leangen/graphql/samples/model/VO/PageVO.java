@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PageVO<T> {
+public class PageVO<T>{
     /**
      * 当前页数
      */
@@ -23,10 +23,16 @@ public class PageVO<T> {
      */
     private List<T> entityList;
 
+    private Integer result;
+
+    private String message;
+
     public PageVO(Integer currentPageNum, Integer perPageSize, Integer totalCount, List<T> entityList) {
         this.currentPageNum = currentPageNum;
         this.perPageSize = perPageSize;
         this.totalCount = totalCount;
         this.entityList = entityList;
+        this.message = "query success";
+        this.result = 0;
     }
 }

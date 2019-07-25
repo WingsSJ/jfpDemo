@@ -39,9 +39,10 @@ public class ChannelTechnicanRepo {
             return false;
         }
         //获取相应的地区编码
-        channelTechnicanAddDTO.setProvince(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getProvince()));
-        channelTechnicanAddDTO.setCity(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getCity()));
-        channelTechnicanAddDTO.setCounty(CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getCounty()));
+        Map<String,String> areaCodeByAreaName = CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getProvince(), channelTechnicanAddDTO.getCity(), channelTechnicanAddDTO.getCounty());
+        channelTechnicanAddDTO.setProvince(areaCodeByAreaName.get("province"));
+        channelTechnicanAddDTO.setCity(areaCodeByAreaName.get("city"));
+        channelTechnicanAddDTO.setCounty(areaCodeByAreaName.get("county"));
         //记录渠道技术人员信息
         int oneChannelTechnicanRecord = channelTechnicanMapper.createOneChannelTechnicanRecord(channelTechnicanAddDTO);
         List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList = channelTechnicanAddDTO.getTechnicanCertificateAddDTOS();
@@ -105,10 +106,11 @@ public class ChannelTechnicanRepo {
         return channelTechnicanMapper.queryHaveCheckTechnicansTotal(params);
     }
 
-    public boolean reviewOperation(String personId,Integer review){
-        Map<String, Object> params = new HashMap<>(2);
+    public boolean reviewOperation(String personId,Integer review,String notPassCause){
+        Map<String, Object> params = new HashMap<>(3);
         params.put("personId", personId);
         params.put("review", review);
+        params.put("notPassCause", notPassCause);
         return channelTechnicanMapper.reviewOperation(params)>0;
     }
 

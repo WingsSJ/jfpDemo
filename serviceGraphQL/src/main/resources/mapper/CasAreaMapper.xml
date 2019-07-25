@@ -5,10 +5,12 @@
 
 <mapper namespace="io.leangen.graphql.samples.mapper.CasAreaMapper">
     <resultMap id="resultMap" type="io.leangen.graphql.samples.model.DTO.CasAreaMapDTO">
-        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="code" jdbcType="INTEGER" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
     </resultMap>
     <select id="queryAll" resultMap="resultMap">
-        select code,name from cas_area
+        select uuid,name,code,pid from cas_area
     </select>
 </mapper>

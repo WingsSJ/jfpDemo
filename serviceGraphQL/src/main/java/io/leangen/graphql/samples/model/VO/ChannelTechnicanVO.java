@@ -1,5 +1,6 @@
 package io.leangen.graphql.samples.model.VO;
 
+import io.leangen.graphql.samples.Utils.CodeMapUtil;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import io.leangen.graphql.samples.model.DTO.TechnicanCertificateQueryDTO;
 import lombok.Data;
@@ -97,9 +98,12 @@ public class ChannelTechnicanVO{
      */
     private List<TechnicanCertificateVO> technicanCertificateVOList;
 
-    private HttpBaseVO httpBaseVO;
+    private Integer result = 0;
 
-    public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO,List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList,HttpBaseVO httpBaseVO){
+    private String message = "query success";
+
+
+    public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO, List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList){
         ChannelTechnicanVO channelTechnicanVO = transDTOToVO(channelTechnicanQueryDTO);
         List<TechnicanCertificateVO> technicanCertificateVOList = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(technicanCertificateQueryDTOList)) {
@@ -112,7 +116,6 @@ public class ChannelTechnicanVO{
             }
             channelTechnicanVO.setTechnicanCertificateVOList(technicanCertificateVOList);
         }
-        channelTechnicanVO.setHttpBaseVO(httpBaseVO);
         return channelTechnicanVO;
     }
 
@@ -150,31 +153,33 @@ public class ChannelTechnicanVO{
 
     private static ChannelTechnicanVO transDTOToVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO){
         ChannelTechnicanVO channelTechnicanVO = new ChannelTechnicanVO();
+        channelTechnicanVO.setPersonId(channelTechnicanQueryDTO.getPersonId());
         channelTechnicanVO.setAddress(channelTechnicanQueryDTO.getAddress());
         channelTechnicanVO.setBirthday(channelTechnicanQueryDTO.getBirthday());
-        channelTechnicanVO.setCity(channelTechnicanQueryDTO.getCity());
+        channelTechnicanVO.setCompanyId(channelTechnicanQueryDTO.getCompanyId());
         channelTechnicanVO.setCompanyName(channelTechnicanQueryDTO.getCompanyName());
-        channelTechnicanVO.setCounty(channelTechnicanQueryDTO.getCounty());
         channelTechnicanVO.setEmail(channelTechnicanQueryDTO.getEmail());
         channelTechnicanVO.setHireDate(channelTechnicanQueryDTO.getHireDate());
         channelTechnicanVO.setIdentityCard(channelTechnicanQueryDTO.getIdentityCard());
         channelTechnicanVO.setJob(channelTechnicanQueryDTO.getJob());
         channelTechnicanVO.setNotPassCause(channelTechnicanQueryDTO.getNotPassCause());
-        channelTechnicanVO.setPersonGender(Integer.valueOf(1).equals(channelTechnicanQueryDTO.getPersonGender())? "男":"女");
+        channelTechnicanVO.setPersonGender(Integer.valueOf(0).equals(channelTechnicanQueryDTO.getPersonGender())? "男":"女");
         channelTechnicanVO.setPersonName(channelTechnicanQueryDTO.getPersonName());
         channelTechnicanVO.setPhone(channelTechnicanQueryDTO.getPhone());
-        channelTechnicanVO.setProvince(channelTechnicanQueryDTO.getProvince());
         channelTechnicanVO.setQqNum(channelTechnicanQueryDTO.getQqNum());
+        //code 转化为实际的名字
+        channelTechnicanVO.setCounty(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCounty()));
+        channelTechnicanVO.setCity(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCity()));
+        channelTechnicanVO.setProvince(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getProvince()));
         //转成实际需要显示值
-        if(Integer.valueOf(0).equals(channelTechnicanQueryDTO.getReviewStatus())){
-            channelTechnicanVO.setReviewStatus("未通过");
+        if(Integer.valueOf(2).equals(channelTechnicanQueryDTO.getReviewStatus())){
+            channelTechnicanVO.setReviewStatus("审核未通过");
         }else if (Integer.valueOf(1).equals(channelTechnicanQueryDTO.getReviewStatus())){
             channelTechnicanVO.setReviewStatus("通过");
         }else {
             channelTechnicanVO.setReviewStatus("待审核");
         }
         channelTechnicanVO.setTelephone(channelTechnicanQueryDTO.getTelephone());
-
         return channelTechnicanVO;
     }
 }

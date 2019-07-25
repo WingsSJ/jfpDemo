@@ -19,6 +19,6 @@ public interface ChannelTechnicanMapper {
     int queryHaveCheckTechnicansTotal(Map map);
     int reviewOperation(Map params);
     ChannelTechnicanQueryDTO previewTechnicanInfo(@Param("personId")String personId);
-    int updateTechnicanInfo(@Param("channelTechnicanAddDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
+    int updateTechnicanInfo(@Param("channelTechnicanUpdateDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
     int deleteTechnican(@Param("personId")String personId);
 }
