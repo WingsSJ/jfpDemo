@@ -1,12 +1,17 @@
 package io.leangen.graphql.samples.model.DTO;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
+import io.leangen.graphql.samples.model.DO.TechnicanCertificateExcelModelDO;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -109,5 +114,62 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
     public boolean checkNull(){
         return StringUtils.isAnyBlank(this.companyId,this.companyName,this.personName,
                 this.personGender.toString(),this.identityCard,this.birthday,this.phone,this.province,this.city,this.county,this.address,this.job,this.hireDate);
+    }
+
+    //将ModelDTO转未AddDTO
+    public static List<ChannelTechnicanAddDTO> transExcelModelDTOStoAddDTOS(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOList){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOList)){
+            for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:channelTechnicanExcelModelDOList){
+                ChannelTechnicanAddDTO channelTechnicanAddDTO = new ChannelTechnicanAddDTO();
+                channelTechnicanAddDTO.setCounty(channelTechnicanExcelModelDO.getCounty());
+                channelTechnicanAddDTO.setCity(channelTechnicanExcelModelDO.getCity());
+                channelTechnicanAddDTO.setProvince(channelTechnicanExcelModelDO.getProvince());
+                channelTechnicanAddDTO.setPersonId(channelTechnicanExcelModelDO.getPersonId());
+                channelTechnicanAddDTO.setPersonName(channelTechnicanExcelModelDO.getPersonName());
+                channelTechnicanAddDTO.setAddress(channelTechnicanExcelModelDO.getAddress());
+                //处理异常
+                String brithday = format.format(channelTechnicanExcelModelDO.getBirthday());
+                channelTechnicanAddDTO.setBirthday(brithday);
+                channelTechnicanAddDTO.setCompanyId(channelTechnicanExcelModelDO.getCompanyId());
+                channelTechnicanAddDTO.setCompanyName(channelTechnicanExcelModelDO.getCompanyName());
+                channelTechnicanAddDTO.setEmail(channelTechnicanExcelModelDO.getEmail());
+                //处理异常
+                String hireDate = format.format(channelTechnicanExcelModelDO.getHireDate());
+                channelTechnicanAddDTO.setHireDate(hireDate);
+                channelTechnicanAddDTO.setIdentityCard(channelTechnicanExcelModelDO.getIdentityCard());
+                channelTechnicanAddDTO.setJob(channelTechnicanExcelModelDO.getJob());
+                //男0 女1
+                if("男".equals(channelTechnicanExcelModelDO.getPersonGender().trim())) {
+                    channelTechnicanAddDTO.setPersonGender(0);
+                }else {
+                    channelTechnicanAddDTO.setPersonGender(1);
+                }
+                channelTechnicanAddDTO.setTelephone(channelTechnicanExcelModelDO.getTelephone());
+                channelTechnicanAddDTO.setPhone(channelTechnicanExcelModelDO.getPhone());
+                //审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
+                channelTechnicanAddDTO.setReviewStatus(2);
+                channelTechnicanAddDTO.setQqNum(channelTechnicanExcelModelDO.getQqNum());
+                if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDO.getTechnicanCertificateExcelModelDOS())){
+                    List<TechnicanCertificateExcelModelDO> technicanCertificateExcelModelDOS = channelTechnicanExcelModelDO.getTechnicanCertificateExcelModelDOS();
+                    List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList = new ArrayList<>();
+                    //转换
+                    for(TechnicanCertificateExcelModelDO technicanCertificateExcelModelDO:technicanCertificateExcelModelDOS){
+                        TechnicanCertificateAddDTO technicanCertificateAddDTO = new TechnicanCertificateAddDTO();
+                        technicanCertificateAddDTO.setPersonId(technicanCertificateExcelModelDO.getPersonId());
+                        technicanCertificateAddDTO.setCertificateDirection(technicanCertificateExcelModelDO.getCertificateDirection());
+                        technicanCertificateAddDTO.setCertificateId(technicanCertificateExcelModelDO.getCertificateId());
+                        technicanCertificateAddDTO.setCertificateLevel(technicanCertificateExcelModelDO.getCertificateLevel());
+                        String invalidCertificateTime = format.format(technicanCertificateExcelModelDO.getInvalidCertificateTime());
+                        technicanCertificateAddDTO.setInvalidCertificateTime(invalidCertificateTime);
+                        technicanCertificateAddDTOList.add(technicanCertificateAddDTO);
+                    }
+                    channelTechnicanAddDTO.setTechnicanCertificateAddDTOS(technicanCertificateAddDTOList);
+                }
+                channelTechnicanAddDTOS.add(channelTechnicanAddDTO);
+            }
+        }
+        return channelTechnicanAddDTOS;
     }
 }

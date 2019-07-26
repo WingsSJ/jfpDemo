@@ -6,6 +6,9 @@ import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import org.junit.Test;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class PoiTest {
@@ -58,6 +61,15 @@ public class PoiTest {
         List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest2.xlsx"),
                 ChannelTechnicanExcelModelDO.class,importParams);
         System.out.println(list.get(0));
+        Date hireDate = list.get(0).getHireDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            String parse = format.format(hireDate);
+            System.out.println(parse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(hireDate);
     }
 
     @Test

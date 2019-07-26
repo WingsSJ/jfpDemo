@@ -11,7 +11,6 @@ import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import io.leangen.graphql.samples.model.DTO.*;
 import io.leangen.graphql.samples.model.VO.ChannelTechnicanVO;
 import io.leangen.graphql.samples.model.VO.PageVO;
-import io.leangen.graphql.samples.repo.ChannelTechnicanExcelRepo;
 import io.leangen.graphql.samples.repo.ChannelTechnicanRepo;
 import io.leangen.graphql.samples.repo.TechnicanCertificateRepo;
 import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS;
 import static io.leangen.graphql.samples.model.VO.ChannelTechnicanVO.transToChannelTechnicanVO;
 import static io.leangen.graphql.samples.model.VO.ChannelTechnicanVO.transToChannelTechnicanVOList;
 
@@ -40,9 +40,10 @@ public class TechnicanService {
     private ChannelTechnicanRepo channelTechnicanRepo;
     @Autowired
     private TechnicanCertificateRepo technicanCertificateRepo;
-    @Autowired
-    private ChannelTechnicanExcelRepo channelTechnicanExcelRepo;
 
+    /**
+     * 创建一条技术人员记录
+     */
     @GraphQLMutation
     public JsonObject createOneChannelTechnicanRecord(@Valid ChannelTechnicanAddDTO channelTechnicanAddDTO){
         //是否存在未处理记录
@@ -57,7 +58,9 @@ public class TechnicanService {
         return new JsonObject(HttpStatus.BAD_REQUEST.value(),"add channelTechnican fail");
     }
 
-    /****** 查询接口 ******/
+    /**
+     * 查询所有待审核的技术人员
+     */
     @GraphQLQuery
     public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(@GraphQLNonNull int pageSize, @GraphQLNonNull int pageNum,String companyName,String personName){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
@@ -77,7 +80,10 @@ public class TechnicanService {
         return new PageVO(pageNum,pageSize,totalNum,channelTechnicanVOList);
     }
 
-    //TODO 渠道技术人员查询 （通过或者不通过的人员） 3
+
+    /**
+     *渠道技术人员查询 （通过或者不通过的人员）
+     */
     @GraphQLQuery
     public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(@GraphQLNonNull int pageSize, @GraphQLNonNull int pageNum,String companyName,String personName){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
@@ -98,7 +104,9 @@ public class TechnicanService {
     }
 
 
-    //TODO 渠道技术人员管理页面 预览操作
+    /**
+     * 渠道技术人员管理页面 预览操作
+     */
     @GraphQLQuery
     public ChannelTechnicanVO previewTechnicanInfo(@GraphQLNonNull String personId){
         ChannelTechnicanQueryDTO channelTechnicanQueryDTO = channelTechnicanRepo.previewTechnicanInfo(personId);
@@ -118,8 +126,9 @@ public class TechnicanService {
     }
 
 
-    /****** 修改接口 ******/
-    //TODO  1审核通过 2审核不通过
+    /**
+     *审核接口 0待审核 1审核通过 2审核不通过
+     */
     @GraphQLMutation
     public JsonObject reviewOperation(@GraphQLNonNull String personId , @GraphQLNonNull int review, String notPassCause){
         //如果审核不通过要说明不通过的原因
@@ -140,7 +149,9 @@ public class TechnicanService {
         }
     }
 
-    //TODO 渠道技术人员管理页面 修改操作 （可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
+    /**
+     * 修改操作（可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
+     */
     @GraphQLMutation
     public JsonObject updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
         boolean operate = channelTechnicanRepo.updateTechnicanInfo(channelTechnicanUpdateDTO);
@@ -151,7 +162,9 @@ public class TechnicanService {
         }
     }
 
-    //TODO 测试 （删除人员信息和相关证书信息）
+    /**
+     * 删除人员信息和相关证书信息
+     */
     @GraphQLMutation
     public JsonObject deleteTechnican(@GraphQLNonNull String personId){
         boolean operate = channelTechnicanRepo.deleteTechnican(personId);
@@ -163,32 +176,56 @@ public class TechnicanService {
     }
 
 
-    //TODO 数据校验 数据入库
+    /**
+     * 导入数据校验
+     */
     @GraphQLMutation
-    public JsonObject batchImportTechnicans(String fileUrl){
-        if(StringUtils.isNotBlank(fileUrl)){
+    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl,String companyName,String companyId){
+        List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
+        if(StringUtils.isNoneBlank(fileUrl,companyName,companyId)){
             ImportParams importParams = new ImportParams();
             importParams.setTitleRows(0);
             importParams.setHeadRows(2);
             List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File(fileUrl),
                     ChannelTechnicanExcelModelDO.class,importParams);
             if(CollectionUtils.isNotEmpty(list)){
-                //TODO 数据校验 数据存入数据库
+                //数据校验
                 for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:list){
+                    //存入公司名和公司id
+                    channelTechnicanExcelModelDO.setCompanyId(companyId);
+                    channelTechnicanExcelModelDO.setCompanyName(companyName);
                     if(channelTechnicanExcelModelDO.checkNull()){
-                        channelTechnicanExcelModelDO.setVerifyResult("数据不完整 personName:"+ channelTechnicanExcelModelDO.getPersonName());
-//                        channelTechnicanExcelRepo.batchImportTechnicans()
+                        channelTechnicanExcelModelDO.setVerifyResult("数据校验不通过");
+                        channelTechnicanExcelModelDO.setVerifyCode(1);
                     }else {
                         channelTechnicanExcelModelDO.setVerifyResult("数据校验通过");
+                        channelTechnicanExcelModelDO.setVerifyCode(0);
                     }
                 }
             }
         }
-        return null;
+        return new PageVO(0,channelTechnicanExcelModelDOS.size(),channelTechnicanExcelModelDOS.size(),channelTechnicanExcelModelDOS);
     }
 
-    //TODO excel数据查询操作
 
-
-    //TODO excel数据删除操作
+    /**
+     * excel数据批量录入 //TODO 服务测试
+     */
+    @GraphQLMutation
+    public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
+        boolean batchInsert = false;
+        if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOS)){
+            //将channelTechnicanExcelModelDOS 转化为 AddDTO
+            List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = transExcelModelDTOStoAddDTOS(channelTechnicanExcelModelDOS);
+            if(CollectionUtils.isNotEmpty(channelTechnicanAddDTOS)){
+                //做批量插入操作
+                batchInsert = channelTechnicanRepo.batchInsertTechnicans(channelTechnicanAddDTOS);
+            }
+        }
+        if(batchInsert){
+            return new JsonObject(0,"batchInsert success");
+        }else {
+            return new JsonObject(1,"batchInsert failed");
+        }
+    }
 }

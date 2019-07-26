@@ -1,10 +1,18 @@
 package io.leangen.graphql.samples.model.DO;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class TechnicanCertificateExcelModelDO {
+    /**
+     *
+     */
+    @ExcelIgnore
+    private String personId;
     /**
      * 证书方向
      */
@@ -24,5 +32,5 @@ public class TechnicanCertificateExcelModelDO {
      *证书失效时间
      */
     @Excel(name = "证书有效期*", orderNum = "18")
-    private String invalidCertificateTime;
+    private Date invalidCertificateTime;
 }

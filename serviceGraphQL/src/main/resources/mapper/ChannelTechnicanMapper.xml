@@ -260,4 +260,17 @@
     WHERE
         ct.person_Id = #{personId}
     </update>
+
+    <insert id="batchInsertTechnicans" parameterType="io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO">
+        insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time,update_time)
+        <foreach collection="channelTechnicanAddDTOS" index="index" item="channelTechnicanAddDTO"
+                 separator=",">
+        values (#{channelTechnicanAddDTO.personId},#{channelTechnicanAddDTO.companyId},#{channelTechnicanAddDTO.personName},
+        #{channelTechnicanAddDTO.companyName},#{channelTechnicanAddDTO.personGender},#{channelTechnicanAddDTO.identityCard},
+        #{channelTechnicanAddDTO.birthday},#{channelTechnicanAddDTO.phone},#{channelTechnicanAddDTO.province},#{channelTechnicanAddDTO.city},
+        #{channelTechnicanAddDTO.county},#{channelTechnicanAddDTO.address},#{channelTechnicanAddDTO.job},#{channelTechnicanAddDTO.email},
+        #{channelTechnicanAddDTO.hireDate},#{channelTechnicanAddDTO.qqNum},#{channelTechnicanAddDTO.telephone},2,
+        now(),now())
+        </foreach>
+    </insert>
 </mapper>

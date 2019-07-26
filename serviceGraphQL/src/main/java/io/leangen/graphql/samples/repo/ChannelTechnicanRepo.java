@@ -3,6 +3,7 @@ package io.leangen.graphql.samples.repo;
 import io.leangen.graphql.samples.Utils.CodeMapUtil;
 import io.leangen.graphql.samples.mapper.ChannelTechnicanMapper;
 import io.leangen.graphql.samples.mapper.TechnicanCertificateMapper;
+import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO;
@@ -114,6 +115,7 @@ public class ChannelTechnicanRepo {
         return channelTechnicanMapper.reviewOperation(params)>0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
         int updateOperate = channelTechnicanMapper.updateTechnicanInfo(channelTechnicanUpdateDTO);
         if(updateOperate>0){
@@ -126,7 +128,7 @@ public class ChannelTechnicanRepo {
                                 | technicanCertificateAddDTO.getCertificateLevel().isEmpty()
                                 | technicanCertificateAddDTO.getInvalidCertificateTime().isEmpty());
                 if(checkParam){
-                    //TODO 自定义传参异常 回滚
+                    //自定义传参异常 回滚
                     throw new RuntimeException();
                 }else {
                     int recordTechnicanCertificateRecords = technicanCertificateMapper.recordTechnicanCertificateRecords(technicanCertificateAddDTOS);
@@ -142,5 +144,22 @@ public class ChannelTechnicanRepo {
         //更新相关人员和证书数据
         int deleteTechnican = channelTechnicanMapper.deleteTechnican(personId);
         return deleteTechnican>0;
+    }
+
+    /**
+     * 批量插入人员表和证书表
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean batchInsertTechnicans(List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS){
+        //批量插入人员
+        int insertRecord = channelTechnicanMapper.batchInsertTechnicans(channelTechnicanAddDTOS);
+        //批量插入证书
+        for(ChannelTechnicanAddDTO channelTechnicanAddDTO:channelTechnicanAddDTOS){
+            List<TechnicanCertificateAddDTO> technicanCertificateAddDTOS = channelTechnicanAddDTO.getTechnicanCertificateAddDTOS();
+            if(CollectionUtils.isNotEmpty(technicanCertificateAddDTOS)){
+                technicanCertificateMapper.recordTechnicanCertificateRecords(technicanCertificateAddDTOS);
+            }
+        }
+        return insertRecord > 0;
     }
 }

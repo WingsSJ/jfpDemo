@@ -6,6 +6,7 @@ import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class ChannelTechnicanExcelModelDO {
      * 技术人员生日
      */
     @Excel(name = "出生年月*",importFormat = "yyyy/MM/dd", orderNum = "3")
-    private String birthday;
+    private Date birthday;
     /**
      * 联系电话
      */
@@ -87,8 +88,8 @@ public class ChannelTechnicanExcelModelDO {
     /**
      * 入职日期
      */
-    @Excel(name = "入职时间*",importFormat = "yyyy/MM/dd", orderNum = "1")
-    private String hireDate;
+    @Excel(name = "入职时间*",importFormat = "yyyy/MM/dd",exportFormat = "yyyy/MM/dd",orderNum = "1")
+    private Date hireDate;
     /**
      * qq号
      */
@@ -111,12 +112,16 @@ public class ChannelTechnicanExcelModelDO {
     @ExcelIgnore
     private String verifyResult;
     /**
-     * 是否录入
+     * 对应数据校验状态码 校验通过
      */
-    private Integer haveRecord;
+    @ExcelIgnore
+    private Integer verifyCode;
 
+    /**
+     * 非空校验
+     */
     public boolean checkNull(){
         return StringUtils.isAnyBlank(this.companyId,this.companyName,this.personName,
-                this.personGender,this.identityCard,this.birthday,this.phone,this.province,this.city,this.county,this.address,this.job,this.hireDate);
+                this.personGender,this.identityCard,this.phone,this.province,this.city,this.county,this.address,this.job);
     }
 }
