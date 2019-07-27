@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSON;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
-import io.leangen.graphql.samples.Utils.JsonObject;
+import io.leangen.graphql.samples.utils.JsonObject;
 import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import io.leangen.graphql.samples.model.DTO.*;
 import io.leangen.graphql.samples.model.VO.ChannelTechnicanVO;

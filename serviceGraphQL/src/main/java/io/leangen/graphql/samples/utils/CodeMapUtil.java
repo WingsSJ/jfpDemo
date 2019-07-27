@@ -1,4 +1,4 @@
-package io.leangen.graphql.samples.Utils;
+package io.leangen.graphql.samples.utils;
 
 import io.leangen.graphql.samples.mapper.CasAreaMapper;
 import io.leangen.graphql.samples.model.DTO.CasAreaMapDTO;

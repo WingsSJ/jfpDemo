@@ -1,9 +1,8 @@
 package io.leangen.graphql.samples.repo;
 
-import io.leangen.graphql.samples.Utils.CodeMapUtil;
+import io.leangen.graphql.samples.utils.CodeMapUtil;
 import io.leangen.graphql.samples.mapper.ChannelTechnicanMapper;
 import io.leangen.graphql.samples.mapper.TechnicanCertificateMapper;
-import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanQueryDTO;
 import io.leangen.graphql.samples.model.DTO.ChannelTechnicanUpdateDTO;

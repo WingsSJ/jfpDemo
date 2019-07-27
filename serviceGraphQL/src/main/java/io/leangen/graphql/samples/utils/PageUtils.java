@@ -1,5 +1,5 @@
 
-package io.leangen.graphql.samples.Utils;
+package io.leangen.graphql.samples.utils;
 
 import lombok.Data;
 
