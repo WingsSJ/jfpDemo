@@ -1,19 +1,18 @@
-package io.leangen.graphql.samples.service;
+package com.demo.channel.service;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSON;
-import io.leangen.graphql.annotations.GraphQLMutation;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
-import io.leangen.graphql.samples.utils.JsonObject;
-import io.leangen.graphql.samples.model.DO.ChannelTechnicanExcelModelDO;
-import io.leangen.graphql.samples.model.DTO.*;
-import io.leangen.graphql.samples.model.VO.ChannelTechnicanVO;
-import io.leangen.graphql.samples.model.VO.PageVO;
-import io.leangen.graphql.samples.repo.ChannelTechnicanRepo;
-import io.leangen.graphql.samples.repo.TechnicanCertificateRepo;
-import io.leangen.graphql.spqr.spring.annotation.GraphQLApi;
+import com.demo.channel.model.DO.ChannelTechnicanExcelModelDO;
+import com.demo.channel.model.DTO.ChannelTechnicanAddDTO;
+import com.demo.channel.model.DTO.ChannelTechnicanQueryDTO;
+import com.demo.channel.model.DTO.ChannelTechnicanUpdateDTO;
+import com.demo.channel.model.DTO.TechnicanCertificateQueryDTO;
+import com.demo.channel.model.VO.ChannelTechnicanVO;
+import com.demo.channel.model.VO.PageVO;
+import com.demo.channel.repo.ChannelTechnicanRepo;
+import com.demo.channel.repo.TechnicanCertificateRepo;
+import com.demo.channel.utils.JsonObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.leangen.graphql.samples.model.DTO.ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS;
-import static io.leangen.graphql.samples.model.VO.ChannelTechnicanVO.transToChannelTechnicanVO;
-import static io.leangen.graphql.samples.model.VO.ChannelTechnicanVO.transToChannelTechnicanVOList;
+import static com.demo.channel.model.DTO.ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS;
+import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVO;
+import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVOList;
 
 /**
  * 渠道技术人员服务 （所属模块渠道服务）
  * @author Wings
  */
-@GraphQLApi
 @Service
-public class TechnicanService {
+public class ChannelTechnicanService {
     @Autowired
     private ChannelTechnicanRepo channelTechnicanRepo;
     @Autowired
@@ -45,7 +43,6 @@ public class TechnicanService {
     /**
      * 创建一条技术人员记录 //TODO 数据库操作转移service
      */
-    @GraphQLMutation
     public JsonObject createOneChannelTechnicanRecord(@Valid ChannelTechnicanAddDTO channelTechnicanAddDTO){
         //是否存在未处理记录
         boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
@@ -62,8 +59,7 @@ public class TechnicanService {
     /**
      * 查询所有待审核的技术人员
      */
-    @GraphQLQuery
-    public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(@GraphQLNonNull int pageSize, @GraphQLNonNull int pageNum,String companyName,String personName){
+    public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(int pageSize, int pageNum, String companyName, String personName){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
         List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryCheckPendingTechnicans(pageSize, pageNum,companyName,personName);
@@ -85,8 +81,7 @@ public class TechnicanService {
     /**
      *渠道技术人员查询 （通过或者不通过的人员）
      */
-    @GraphQLQuery
-    public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(@GraphQLNonNull int pageSize, @GraphQLNonNull int pageNum,String companyName,String personName){
+    public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(int pageSize,int pageNum,String companyName,String personName){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
         List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryHaveCheckTechnicans(pageSize, pageNum,companyName,personName);
@@ -108,8 +103,7 @@ public class TechnicanService {
     /**
      * 渠道技术人员管理页面 预览操作
      */
-    @GraphQLQuery
-    public ChannelTechnicanVO previewTechnicanInfo(@GraphQLNonNull String personId){
+    public ChannelTechnicanVO previewTechnicanInfo(String personId){
         ChannelTechnicanQueryDTO channelTechnicanQueryDTO = channelTechnicanRepo.previewTechnicanInfo(personId);
         ChannelTechnicanVO channelTechnicanVO = new ChannelTechnicanVO();
         if(channelTechnicanQueryDTO != null) {
@@ -130,8 +124,7 @@ public class TechnicanService {
     /**
      *审核接口 0待审核 1审核通过 2审核不通过
      */
-    @GraphQLMutation
-    public JsonObject reviewOperation(@GraphQLNonNull String personId , @GraphQLNonNull int review, String notPassCause){
+    public JsonObject reviewOperation(String personId ,int review, String notPassCause){
         //如果审核不通过要说明不通过的原因
         if(2 == review){
             if(StringUtils.isBlank(notPassCause)){
@@ -153,7 +146,6 @@ public class TechnicanService {
     /**
      * 修改操作（可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
      */
-    @GraphQLMutation
     public JsonObject updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
         boolean operate = channelTechnicanRepo.updateTechnicanInfo(channelTechnicanUpdateDTO);
         if(operate){
@@ -166,8 +158,7 @@ public class TechnicanService {
     /**
      * 删除人员信息和相关证书信息
      */
-    @GraphQLMutation
-    public JsonObject deleteTechnican(@GraphQLNonNull String personId){
+    public JsonObject deleteTechnican(String personId){
         boolean operate = channelTechnicanRepo.deleteTechnican(personId);
         if(operate){
             return new JsonObject(0,"delete success");
@@ -180,8 +171,7 @@ public class TechnicanService {
     /**
      * 导入数据校验
      */
-    @GraphQLMutation
-    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl,String companyName,String companyId){
+    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl, String companyName, String companyId){
         List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
         if(StringUtils.isNoneBlank(fileUrl,companyName,companyId)){
             ImportParams importParams = new ImportParams();
@@ -212,7 +202,6 @@ public class TechnicanService {
     /**
      * excel数据批量录入 //TODO 服务测试
      */
-    @GraphQLMutation
     public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
         boolean batchInsert = false;
         if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOS)){

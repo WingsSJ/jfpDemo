@@ -11,18 +11,18 @@
         <module name="serviceGraphQL" />
         <module name="eureka" />
         <module name="serviceB" />
-        <module name="serviceA" />
+        <module name="channelService" />
         <module name="zipkin" />
         <module name="admin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="admin" target="1.8" />
+      <module name="channelService" target="1.8" />
       <module name="eureka" target="1.8" />
       <module name="jfp" target="1.8" />
       <module name="serivceA" target="1.8" />
       <module name="serivceB" target="1.8" />
-      <module name="serviceA" target="1.8" />
       <module name="serviceB" target="1.8" />
       <module name="serviceGraphQL" target="1.8" />
       <module name="zipkin" target="1.8" />
@@ -31,8 +31,8 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="admin" options="-parameters" />
+      <module name="channelService" options="-parameters" />
       <module name="eureka" options="-parameters" />
-      <module name="serviceA" options="-parameters" />
       <module name="serviceB" options="-parameters" />
       <module name="serviceGraphQL" options="-parameters -parameters" />
       <module name="zipkin" options="-parameters" />
