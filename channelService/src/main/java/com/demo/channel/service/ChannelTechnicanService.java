@@ -3,15 +3,15 @@ package com.demo.channel.service;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSON;
-import com.demo.channel.model.ChannelTechnicanVO;
+import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.repo.ChannelTechnicanRepo;
 import com.demo.channel.repo.TechnicanCertificateRepo;
-import com.demo.channel.utils.JsonObject;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
 import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
 import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
+import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.demo.channel.model.ChannelTechnicanVO.transToChannelTechnicanVO;
-import static com.demo.channel.model.ChannelTechnicanVO.transToChannelTechnicanVOList;
+import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVO;
+import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVOList;
 
 
 /**
@@ -171,7 +171,7 @@ public class ChannelTechnicanService {
     /**
      * 导入数据校验
      */
-    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl, String companyName, String companyId){
+    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl, String companyName, String companyId){
         List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
         if(StringUtils.isNoneBlank(fileUrl,companyName,companyId)){
             ImportParams importParams = new ImportParams();
@@ -192,10 +192,11 @@ public class ChannelTechnicanService {
                         channelTechnicanExcelModelDO.setVerifyResult("数据校验通过");
                         channelTechnicanExcelModelDO.setVerifyCode(0);
                     }
+                    channelTechnicanExcelModelDOS.add(channelTechnicanExcelModelDO);
                 }
             }
         }
-        return new PageVO(0,channelTechnicanExcelModelDOS.size(),channelTechnicanExcelModelDOS.size(),channelTechnicanExcelModelDOS);
+        return channelTechnicanExcelModelDOS;
     }
 
 

@@ -1,4 +1,4 @@
-package com.demo.channel.model;
+package com.demo.channel.model.VO;
 
 import com.demo.channel.utils.CodeMapUtil;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;

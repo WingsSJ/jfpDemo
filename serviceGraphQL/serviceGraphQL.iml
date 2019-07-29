@@ -209,7 +209,7 @@
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: cn.afterturn:easypoi-web:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: cn.afterturn:easypoi-annotation:3.1.0" level="project" />
-    <orderEntry type="module" module-name="cmmon" />
+    <orderEntry type="module" module-name="common" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework.boot:spring-boot-devtools:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.6.RELEASE" level="project" />

@@ -1,10 +1,10 @@
 package com.demo.channel.controller;
 
-import com.demo.channel.model.ChannelTechnicanVO;
+import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.service.ChannelTechnicanService;
-import com.demo.channel.utils.JsonObject;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
 import com.demo.common.module.DTO.*;
+import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,7 @@ public class ChannelTechnicanController {
         this.channelTechnicanService = channelTechnicanService;
     }
     //TODO
-    // 1.编写controller层 (Done)
-    // 2.在graphQL中编写fegin调用 (Done)
     // 3.重新定义传参和返回（需要符合规范）删除graphQL中无用的代码 (泛型嵌套)
-    // 4.复用重复的代码（参考ers的处理方式 定义common模块）(Done)
     // 5.测试接口 注意有的语句需要添加时间为最近一条的条件语句
 
     /**
@@ -70,7 +67,7 @@ public class ChannelTechnicanController {
      * @author Wings
      * @apiNote 预览技术人员详情
      */
-    @RequestMapping("/preview/technican/info")
+    @RequestMapping("/preview/technican/info/{personId}")
     public ChannelTechnicanVO previewTechnicanInfo(@PathVariable("personId") String personId){
         return channelTechnicanService.previewTechnicanInfo(personId);
     }
@@ -101,7 +98,7 @@ public class ChannelTechnicanController {
      *@author Wings
      *@apiNote 删除人员信息和相关证书信息
      */
-    @RequestMapping("/delete/technican")
+    @RequestMapping("/delete/technican/{personId}")
     public JsonObject deleteTechnican(@PathVariable("personId") String personId){
         return channelTechnicanService.deleteTechnican(personId);
     }
@@ -111,7 +108,7 @@ public class ChannelTechnicanController {
      * @apiNote 批量校验导入excel文件数据
      */
     @PostMapping("/batch/check")
-    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@Valid @RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){
+    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@Valid @RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){
         return channelTechnicanService.batchCheckTechnicans(
                 channelTechnicanBatchCheckDTO.getFileUrl(),
                 channelTechnicanBatchCheckDTO.getCompanyName(),

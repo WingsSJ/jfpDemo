@@ -4,7 +4,7 @@ import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
 import com.demo.common.module.DTO.*;
 import io.leangen.graphql.samples.model.ChannelTechnicanVO;
 import com.demo.common.module.VO.PageVO;
-import io.leangen.graphql.samples.utils.JsonObject;
+import com.demo.common.module.VO.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +56,7 @@ public class ChannelFeginServiceImpl implements ChannelFeginService {
     }
 
     @Override
-    public PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO) {
+    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO) {
         log.error("fall back");
         return null;
     }

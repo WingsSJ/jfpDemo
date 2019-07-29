@@ -9,8 +9,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class StarterDemoApplication {
+public class GraphqlServiceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(StarterDemoApplication.class, args);
+		SpringApplication.run(GraphqlServiceApplication.class, args);
 	}
 }

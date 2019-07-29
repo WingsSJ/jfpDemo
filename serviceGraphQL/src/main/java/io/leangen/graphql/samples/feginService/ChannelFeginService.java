@@ -4,13 +4,10 @@ import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
 import com.demo.common.module.DTO.*;
 import io.leangen.graphql.samples.model.ChannelTechnicanVO;
 import com.demo.common.module.VO.PageVO;
-import io.leangen.graphql.samples.utils.JsonObject;
+import com.demo.common.module.VO.JsonObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,16 +20,16 @@ public interface ChannelFeginService {
     PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(@RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO);
     @PostMapping("/channel/query/have/check/technicans")
     PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(@RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO);
-    @RequestMapping("/channel/preview/technican/info")
-    ChannelTechnicanVO previewTechnicanInfo(@RequestParam(name = "personId") String personId);
+    @RequestMapping("/channel/preview/technican/info/{personId}")
+    ChannelTechnicanVO previewTechnicanInfo(@PathVariable(name = "personId") String personId);
     @PostMapping("/channel/review/technican")
     JsonObject reviewOperation(@RequestBody ChannelTechnicanCheckDTO channelTechnicanCheckDTO);
     @PostMapping("/channel/update/technican")
     JsonObject updateTechnicanInfo(@RequestBody ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
     @RequestMapping("/channel/delete/technican")
-    JsonObject deleteTechnican(@RequestParam("personId") String personId);
+    JsonObject deleteTechnican(@PathVariable(name = "personId") String personId);
     @PostMapping("/channel/batch/check")
-    PageVO<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO);
+    List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO);
     @PostMapping("/channel/batch/insert")
     JsonObject batchInsertTechnicans(@RequestBody List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS);
 }

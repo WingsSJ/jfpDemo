@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/admin/admin.iml" filepath="$PROJECT_DIR$/admin/admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/channelService/channelService.iml" filepath="$PROJECT_DIR$/channelService/channelService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cmmon/cmmon.iml" filepath="$PROJECT_DIR$/cmmon/cmmon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/jfp.iml" filepath="$PROJECT_DIR$/jfp.iml" />
       <module fileurl="file://$PROJECT_DIR$/serviceB/serviceB.iml" filepath="$PROJECT_DIR$/serviceB/serviceB.iml" />

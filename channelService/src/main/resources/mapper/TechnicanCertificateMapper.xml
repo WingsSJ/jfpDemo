@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.channel.mapper.TechnicanCertificateMapper">
-    <resultMap id="resultMap" type="com.demo.channel.model.DTO.TechnicanCertificateQueryDTO">
+    <resultMap id="resultMap" type="com.demo.common.module.DTO.TechnicanCertificateQueryDTO">
         <result column="certificate_id" jdbcType="VARCHAR" property="certificateId"/>
         <result column="person_id" jdbcType="VARCHAR" property="personId"/>
         <result column="certificate_direction" jdbcType="VARCHAR" property="certificateDirection"/>

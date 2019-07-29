@@ -3,6 +3,7 @@ package com.demo.common.module.DO;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
 import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,6 +50,7 @@ public class ChannelTechnicanExcelModelDO {
      * 技术人员生日
      */
     @Excel(name = "出生年月*",importFormat = "yyyy/MM/dd", orderNum = "3")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date birthday;
     /**
      * 联系电话
@@ -89,6 +91,7 @@ public class ChannelTechnicanExcelModelDO {
      * 入职日期
      */
     @Excel(name = "入职时间*",importFormat = "yyyy/MM/dd",exportFormat = "yyyy/MM/dd",orderNum = "1")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date hireDate;
     /**
      * qq号

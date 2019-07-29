@@ -15,7 +15,7 @@
         <module>serviceB</module>
         <module>zipkin</module>
         <module>serviceGraphQL</module>
-        <module>cmmonModule</module>
+        <module>common</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
