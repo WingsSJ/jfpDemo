@@ -1,8 +1,8 @@
 package com.demo.channel.mapper;
 
 
-import com.demo.channel.model.DTO.TechnicanCertificateAddDTO;
-import com.demo.channel.model.DTO.TechnicanCertificateQueryDTO;
+import com.demo.common.module.DTO.TechnicanCertificateAddDTO;
+import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

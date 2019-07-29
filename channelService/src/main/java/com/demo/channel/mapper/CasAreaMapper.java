@@ -1,6 +1,6 @@
 package com.demo.channel.mapper;
 
-import com.demo.channel.model.DTO.CasAreaMapDTO;
+import com.demo.common.module.DTO.CasAreaMapDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

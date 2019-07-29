@@ -9,6 +9,14 @@
         select count(1) from channel_technician where identity_card = #{identityCard} and have_delete != 1 and review_status != 0 ;
     </select>
 
+    <select id="batchCheckTechnicans" parameterType="string" resultType="int">
+        SELECT COUNT(1) FROM channel_technician where identity_card in
+        <foreach collection="identityCardList" index="index" item="identityCard" open="(" separator="," close=")">
+            #{identityCard}
+        </foreach>
+        AND have_delete ! = 1 AND review_status != 0
+    </select>
+
     <insert id="createOneChannelTechnicanRecord"
             parameterType="com.demo.channel.model.DTO.ChannelTechnicanAddDTO">
         insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time,update_time)
@@ -215,6 +223,7 @@
     WHERE
         person_Id = #{personId}
     AND have_delete != 1
+    AND review_status = 0
     </update>
 
     <select id="previewTechnicanInfo" parameterType="map" resultMap="resultMap">

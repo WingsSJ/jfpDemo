@@ -2,11 +2,11 @@ package com.demo.channel.repo;
 
 import com.demo.channel.mapper.ChannelTechnicanMapper;
 import com.demo.channel.mapper.TechnicanCertificateMapper;
-import com.demo.channel.model.DTO.ChannelTechnicanAddDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanQueryDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanUpdateDTO;
-import com.demo.channel.model.DTO.TechnicanCertificateAddDTO;
 import com.demo.channel.utils.CodeMapUtil;
+import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
+import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
+import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
+import com.demo.common.module.DTO.TechnicanCertificateAddDTO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +23,16 @@ public class ChannelTechnicanRepo {
     ChannelTechnicanMapper channelTechnicanMapper;
     @Resource
     TechnicanCertificateMapper technicanCertificateMapper;
+
+
+    public boolean batchCheckTechnicans(List<String> identityCardList){
+        if(CollectionUtils.isNotEmpty(identityCardList)){
+            //如果大于0 代表有未处理的数据 操作失败
+            return channelTechnicanMapper.batchCheckTechnicans(identityCardList) > 0;
+        }else {
+            return true;
+        }
+    }
 
     public boolean queryOneChannelTechnicanHaveRecord(ChannelTechnicanAddDTO channelTechnicanAddDTO){
         String personId = channelTechnicanAddDTO.getIdentityCard();

@@ -9,16 +9,18 @@
         <module name="serivceB" />
         <module name="serivceA" />
         <module name="serviceGraphQL" />
-        <module name="eureka" />
         <module name="serviceB" />
-        <module name="channelService" />
-        <module name="zipkin" />
+        <module name="eureka" />
         <module name="admin" />
+        <module name="cmmon" />
+        <module name="zipkin" />
+        <module name="channelService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="admin" target="1.8" />
       <module name="channelService" target="1.8" />
+      <module name="cmmon" target="1.8" />
       <module name="eureka" target="1.8" />
       <module name="jfp" target="1.8" />
       <module name="serivceA" target="1.8" />
@@ -32,6 +34,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="admin" options="-parameters" />
       <module name="channelService" options="-parameters" />
+      <module name="cmmon" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="serviceB" options="-parameters" />
       <module name="serviceGraphQL" options="-parameters -parameters" />

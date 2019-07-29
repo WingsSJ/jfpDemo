@@ -3,31 +3,31 @@ package com.demo.channel.service;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSON;
-import com.demo.channel.model.DO.ChannelTechnicanExcelModelDO;
-import com.demo.channel.model.DTO.ChannelTechnicanAddDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanQueryDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanUpdateDTO;
-import com.demo.channel.model.DTO.TechnicanCertificateQueryDTO;
-import com.demo.channel.model.VO.ChannelTechnicanVO;
-import com.demo.channel.model.VO.PageVO;
+import com.demo.channel.model.ChannelTechnicanVO;
 import com.demo.channel.repo.ChannelTechnicanRepo;
 import com.demo.channel.repo.TechnicanCertificateRepo;
 import com.demo.channel.utils.JsonObject;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
+import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
+import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
+import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
+import com.demo.common.module.VO.PageVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.demo.channel.model.DTO.ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS;
-import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVO;
-import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnicanVOList;
+import static com.demo.channel.model.ChannelTechnicanVO.transToChannelTechnicanVO;
+import static com.demo.channel.model.ChannelTechnicanVO.transToChannelTechnicanVOList;
+
 
 /**
  * 渠道技术人员服务 （所属模块渠道服务）
@@ -43,7 +43,7 @@ public class ChannelTechnicanService {
     /**
      * 创建一条技术人员记录 //TODO 数据库操作转移service
      */
-    public JsonObject createOneChannelTechnicanRecord(@Valid ChannelTechnicanAddDTO channelTechnicanAddDTO){
+    public JsonObject importTechnican(ChannelTechnicanAddDTO channelTechnicanAddDTO){
         //是否存在未处理记录
         boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
         if(haveRecord){
@@ -200,13 +200,21 @@ public class ChannelTechnicanService {
 
 
     /**
-     * excel数据批量录入 //TODO 服务测试
+     * excel数据批量录入
+     * //TODO 服务测试
      */
     public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
+        List<String> identityCardList = channelTechnicanExcelModelDOS.stream().map(ChannelTechnicanExcelModelDO::getIdentityCard).collect(Collectors.toList());
+        boolean b = channelTechnicanRepo.batchCheckTechnicans(identityCardList);
+        if(b){
+            return new JsonObject(1,"batchInsert failed have exist personId");
+        }
         boolean batchInsert = false;
         if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOS)){
             //将channelTechnicanExcelModelDOS 转化为 AddDTO
-            List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = transExcelModelDTOStoAddDTOS(channelTechnicanExcelModelDOS);
+            List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS(channelTechnicanExcelModelDOS);
+            //过滤相同 生成personId
+            channelTechnicanAddDTOS.stream().distinct().forEach(dto->dto.setPersonId(UUID.randomUUID().toString()));
             if(CollectionUtils.isNotEmpty(channelTechnicanAddDTOS)){
                 //做批量插入操作
                 batchInsert = channelTechnicanRepo.batchInsertTechnicans(channelTechnicanAddDTOS);

@@ -1,7 +1,7 @@
 package io.leangen.graphql.samples.utils;
 
+import com.demo.common.module.DTO.CasAreaMapDTO;
 import io.leangen.graphql.samples.mapper.CasAreaMapper;
-import io.leangen.graphql.samples.model.DTO.CasAreaMapDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.ApplicationArguments;

@@ -1,8 +1,8 @@
 package com.demo.channel.mapper;
 
-import com.demo.channel.model.DTO.ChannelTechnicanAddDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanQueryDTO;
-import com.demo.channel.model.DTO.ChannelTechnicanUpdateDTO;
+import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
+import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
+import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +22,5 @@ public interface ChannelTechnicanMapper {
     int updateTechnicanInfo(@Param("channelTechnicanUpdateDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
     int deleteTechnican(@Param("personId") String personId);
     int batchInsertTechnicans(@Param("channelTechnicanAddDTOS") List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS);
+    int batchCheckTechnicans(@Param("identityCardList") List<String> identityCardList);
 }

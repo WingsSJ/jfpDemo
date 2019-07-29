@@ -1,7 +1,7 @@
 package com.demo.channel.utils;
 
 import com.demo.channel.mapper.CasAreaMapper;
-import com.demo.channel.model.DTO.CasAreaMapDTO;
+import com.demo.common.module.DTO.CasAreaMapDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.ApplicationArguments;

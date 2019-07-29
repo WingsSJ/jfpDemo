@@ -9,7 +9,7 @@ public class JsonObject implements Serializable {
     private Integer result;
     private String message;
 
-    protected JsonObject(){
+    public JsonObject(){
 
     }
 

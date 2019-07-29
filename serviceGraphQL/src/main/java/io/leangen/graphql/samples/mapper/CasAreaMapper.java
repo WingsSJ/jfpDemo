@@ -1,6 +1,6 @@
 package io.leangen.graphql.samples.mapper;
 
-import io.leangen.graphql.samples.model.DTO.CasAreaMapDTO;
+import com.demo.common.module.DTO.CasAreaMapDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

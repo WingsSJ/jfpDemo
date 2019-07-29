@@ -1,7 +1,7 @@
 package com.demo.channel.repo;
 
 import com.demo.channel.mapper.TechnicanCertificateMapper;
-import com.demo.channel.model.DTO.TechnicanCertificateQueryDTO;
+import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
