@@ -20,13 +20,7 @@ public class ChannelFeginServiceImpl implements ChannelFeginService {
     }
 
     @Override
-    public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO) {
-        log.error("fall back");
-        return null;
-    }
-
-    @Override
-    public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO) {
+    public PageVO<ChannelTechnicanVO> queryAllTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO) {
         log.error("fall back");
         return null;
     }

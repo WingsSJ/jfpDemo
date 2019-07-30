@@ -13,10 +13,8 @@ import java.util.Map;
 public interface ChannelTechnicanMapper {
     int queryOneChannelTechnicanHaveRecord(@Param("identityCard") String identityCard);
     int createOneChannelTechnicanRecord(@Param("channelTechnicanAddDTO") ChannelTechnicanAddDTO channelTechnicanAddDTO);
-    List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(Map params);
-    List<ChannelTechnicanQueryDTO> queryHaveCheckTechnicans(Map params);
+    List<ChannelTechnicanQueryDTO> queryAllTechnicans(Map params);
     int queryCheckPendingTechnicansTotal(Map map);
-    int queryHaveCheckTechnicansTotal(Map map);
     int reviewOperation(Map params);
     ChannelTechnicanQueryDTO previewTechnicanInfo(@Param("personId") String personId);
     int updateTechnicanInfo(@Param("channelTechnicanUpdateDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);

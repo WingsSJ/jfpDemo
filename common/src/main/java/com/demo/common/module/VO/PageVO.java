@@ -9,11 +9,11 @@ public class PageVO<T>{
     /**
      * 当前页数
      */
-    private Integer currentPageNum;
+    private Integer currPage;
     /**
      * 每页的数量
      */
-    private Integer perPageSize;
+    private Integer pageSize;
     /**
      * 总记录数
      */
@@ -21,18 +21,12 @@ public class PageVO<T>{
     /**
      *当前页中数据
      */
-    private List<T> entityList;
+    private List<T> list;
 
-    private Integer result;
-
-    private String message;
-
-    public PageVO(Integer currentPageNum, Integer perPageSize, Integer totalCount, List<T> entityList) {
-        this.currentPageNum = currentPageNum;
-        this.perPageSize = perPageSize;
+    public PageVO(Integer currPage, Integer pageSize, Integer totalCount, List<T> list) {
+        this.currPage = currPage;
+        this.pageSize = pageSize;
         this.totalCount = totalCount;
-        this.entityList = entityList;
-        this.message = "query success";
-        this.result = 0;
+        this.list = list;
     }
 }

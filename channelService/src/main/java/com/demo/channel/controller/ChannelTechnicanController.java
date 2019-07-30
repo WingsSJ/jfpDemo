@@ -39,27 +39,14 @@ public class ChannelTechnicanController {
      * @author Wings
      * @apiNote 查询所有待审核技术人员 支持按照公司名和人员名模糊查询
      */
-    @PostMapping("query/check/pending/technicans")
-    public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(@Valid @RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
-        return channelTechnicanService.queryCheckPendingTechnicans(
+    @PostMapping("query/all/technicans")
+    public PageVO<ChannelTechnicanVO> queryAllTechnicans(@Valid @RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
+        return channelTechnicanService.queryAllTechnicans(
                 channelTechnicanListQueryDTO.getPageSize(),
                 channelTechnicanListQueryDTO.getPageNum(),
                 channelTechnicanListQueryDTO.getCompanyName(),
-                channelTechnicanListQueryDTO.getPersonName()
-        );
-    }
-
-    /**
-     * @author Wings
-     * @apiNote 渠道技术人员查询所有审核通过或者审核不通过的人员 支持按照公司名和人员名模糊查询
-     */
-    @PostMapping("query/have/check/technicans")
-    public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(@Valid @RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
-        return channelTechnicanService.queryHaveCheckTechnicans(
-                channelTechnicanListQueryDTO.getPageSize(),
-                channelTechnicanListQueryDTO.getPageNum(),
-                channelTechnicanListQueryDTO.getCompanyName(),
-                channelTechnicanListQueryDTO.getPersonName()
+                channelTechnicanListQueryDTO.getPersonName(),
+                channelTechnicanListQueryDTO.getReviewStatus()
         );
     }
 

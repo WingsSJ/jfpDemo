@@ -59,10 +59,10 @@ public class ChannelTechnicanService {
     /**
      * 查询所有待审核的技术人员
      */
-    public PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(int pageSize, int pageNum, String companyName, String personName){
+    public PageVO<ChannelTechnicanVO> queryAllTechnicans(int pageSize, int pageNum, String companyName, String personName,Integer reviewStatus){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
-        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryCheckPendingTechnicans(pageSize, pageNum,companyName,personName);
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryAllTechnicans(pageSize, pageNum,companyName,personName,reviewStatus);
         if(CollectionUtils.isNotEmpty(channelTechnicanQueryDTOList)){
             //查询出所有的证书信息
             List<String> personIdList = channelTechnicanQueryDTOList.stream().map(ChannelTechnicanQueryDTO::getPersonId).collect(Collectors.toList());
@@ -73,28 +73,6 @@ public class ChannelTechnicanService {
             }
             //查询出所有记录
             totalNum = channelTechnicanRepo.queryCheckPendingTechnicansTotal(companyName,personName);
-        }
-        return new PageVO(pageNum,pageSize,totalNum,channelTechnicanVOList);
-    }
-
-
-    /**
-     *渠道技术人员查询 （通过或者不通过的人员）
-     */
-    public PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(int pageSize,int pageNum,String companyName,String personName){
-        List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
-        int totalNum = 0;
-        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryHaveCheckTechnicans(pageSize, pageNum,companyName,personName);
-        if(CollectionUtils.isNotEmpty(channelTechnicanQueryDTOList)){
-            //查询出所有的证书信息
-            List<String> personIdList = channelTechnicanQueryDTOList.stream().map(ChannelTechnicanQueryDTO::getPersonId).collect(Collectors.toList());
-            if(CollectionUtils.isNotEmpty(personIdList)){
-                List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList = technicanCertificateRepo.findTechnicanCertificateByPersonIdList(personIdList);
-                //重新组装为VO
-                channelTechnicanVOList = transToChannelTechnicanVOList(channelTechnicanQueryDTOList, technicanCertificateQueryDTOList);
-            }
-            //查询出所有记录
-            totalNum = channelTechnicanRepo.queryHaveCheckTechnicansTotal(companyName,personName);
         }
         return new PageVO(pageNum,pageSize,totalNum,channelTechnicanVOList);
     }

@@ -16,10 +16,8 @@ import java.util.List;
 public interface ChannelFeginService {
     @PostMapping("/channel/import/technican")
     JsonObject importTechnican(@RequestBody ChannelTechnicanAddDTO channelTechnicanAddDTO);
-    @PostMapping("/channel/query/check/pending/technicans")
-    PageVO<ChannelTechnicanVO> queryCheckPendingTechnicans(@RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO);
-    @PostMapping("/channel/query/have/check/technicans")
-    PageVO<ChannelTechnicanVO> queryHaveCheckTechnicans(@RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO);
+    @PostMapping("/channel/query/all/technicans")
+    PageVO<ChannelTechnicanVO> queryAllTechnicans(@RequestBody ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO);
     @RequestMapping("/channel/preview/technican/info/{personId}")
     ChannelTechnicanVO previewTechnicanInfo(@PathVariable(name = "personId") String personId);
     @PostMapping("/channel/review/technican")

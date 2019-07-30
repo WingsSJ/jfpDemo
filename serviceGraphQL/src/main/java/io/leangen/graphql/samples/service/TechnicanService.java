@@ -35,21 +35,11 @@ public class TechnicanService {
     }
 
     /**
-     * 查询所有待审核的技术人员
+     * 查询所有 待审核 通过 未通过 的技术人员
      */
     @GraphQLQuery
-    public JsonObject<PageVO<ChannelTechnicanVO>> queryCheckPendingTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
-        PageVO<ChannelTechnicanVO> pageVO =channelFeginService.queryCheckPendingTechnicans(channelTechnicanListQueryDTO);
-        return new JsonObject<PageVO<ChannelTechnicanVO>>(0,"query success",pageVO);
-    }
-
-
-    /**
-     *渠道技术人员查询 （通过或者不通过的人员）
-     */
-    @GraphQLQuery
-    public JsonObject<PageVO<ChannelTechnicanVO>> queryHaveCheckTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
-        PageVO<ChannelTechnicanVO> pageVO = channelFeginService.queryHaveCheckTechnicans(channelTechnicanListQueryDTO);
+    public JsonObject<PageVO<ChannelTechnicanVO>> queryAllTechnicans(ChannelTechnicanListQueryDTO channelTechnicanListQueryDTO){
+        PageVO<ChannelTechnicanVO> pageVO =channelFeginService.queryAllTechnicans(channelTechnicanListQueryDTO);
         return new JsonObject<PageVO<ChannelTechnicanVO>>(0,"query success",pageVO);
     }
 
@@ -91,7 +81,7 @@ public class TechnicanService {
 
 
     /**
-     * 导入数据校验
+     * 导入数据校验 //TODO 修改为rest风格
      */
     @GraphQLMutation
     public JsonObject<List<ChannelTechnicanExcelModelDO>> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){

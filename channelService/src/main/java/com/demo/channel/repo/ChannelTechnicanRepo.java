@@ -76,27 +76,18 @@ public class ChannelTechnicanRepo {
         }
     }
 
-    public List<ChannelTechnicanQueryDTO> queryCheckPendingTechnicans(int pageSize, int pageNum, String companyName, String personName){
+    public List<ChannelTechnicanQueryDTO> queryAllTechnicans(int pageSize, int pageNum, String companyName, String personName,Integer reviewStatus){
         Map<String, Object> params = new HashMap<>(2);
         Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
         params.put("companyName", companyName);
         params.put("personName", personName);
+        params.put("reviewStatus", reviewStatus);
         params.put("offSet", offSet);
         params.put("rows", pageSize);
-        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.queryCheckPendingTechnicans(params);
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.queryAllTechnicans(params);
         return channelTechnicanQueryDTOList;
     }
 
-    public List<ChannelTechnicanQueryDTO> queryHaveCheckTechnicans(int pageSize, int pageNum,String companyName,String personName){
-        Map<String, Object> params = new HashMap<>(4);
-        Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
-        params.put("companyName", companyName);
-        params.put("personName", personName);
-        params.put("offSet", offSet);
-        params.put("rows", pageSize);
-        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.queryHaveCheckTechnicans(params);
-        return channelTechnicanQueryDTOList;
-    }
 
     public ChannelTechnicanQueryDTO previewTechnicanInfo(String personId){
         return channelTechnicanMapper.previewTechnicanInfo(personId);
@@ -109,12 +100,6 @@ public class ChannelTechnicanRepo {
         return channelTechnicanMapper.queryCheckPendingTechnicansTotal(params);
     }
 
-    public int queryHaveCheckTechnicansTotal(String companyName,String personName){
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("companyName", companyName);
-        params.put("personName", personName);
-        return channelTechnicanMapper.queryHaveCheckTechnicansTotal(params);
-    }
 
     public boolean reviewOperation(String personId,Integer review,String notPassCause){
         Map<String, Object> params = new HashMap<>(3);

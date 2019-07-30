@@ -37,7 +37,7 @@ public class ChannelTechnicanVO {
     /**
      * 人员性别
      */
-    private String personGender;
+    private Integer personGender;
     /**
      * 人员身份证Id
      */
@@ -89,7 +89,7 @@ public class ChannelTechnicanVO {
     /**
      *审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
      */
-    private String reviewStatus;
+    private Integer reviewStatus;
     /**
      * 审核未通过的原因
      */
@@ -99,9 +99,6 @@ public class ChannelTechnicanVO {
      */
     private List<TechnicanCertificateVO> technicanCertificateVOList;
 
-    private Integer result = 0;
-
-    private String message = "query success";
 
 
     public static ChannelTechnicanVO transToChannelTechnicanVO(ChannelTechnicanQueryDTO channelTechnicanQueryDTO, List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList){
@@ -164,7 +161,7 @@ public class ChannelTechnicanVO {
         channelTechnicanVO.setIdentityCard(channelTechnicanQueryDTO.getIdentityCard());
         channelTechnicanVO.setJob(channelTechnicanQueryDTO.getJob());
         channelTechnicanVO.setNotPassCause(channelTechnicanQueryDTO.getNotPassCause());
-        channelTechnicanVO.setPersonGender(Integer.valueOf(0).equals(channelTechnicanQueryDTO.getPersonGender())? "男":"女");
+        channelTechnicanVO.setPersonGender(channelTechnicanQueryDTO.getPersonGender());
         channelTechnicanVO.setPersonName(channelTechnicanQueryDTO.getPersonName());
         channelTechnicanVO.setPhone(channelTechnicanQueryDTO.getPhone());
         channelTechnicanVO.setQqNum(channelTechnicanQueryDTO.getQqNum());
@@ -173,13 +170,14 @@ public class ChannelTechnicanVO {
         channelTechnicanVO.setCity(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCity()));
         channelTechnicanVO.setProvince(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getProvince()));
         //转成实际需要显示值
-        if(Integer.valueOf(2).equals(channelTechnicanQueryDTO.getReviewStatus())){
-            channelTechnicanVO.setReviewStatus("审核未通过");
-        }else if (Integer.valueOf(1).equals(channelTechnicanQueryDTO.getReviewStatus())){
-            channelTechnicanVO.setReviewStatus("通过");
-        }else {
-            channelTechnicanVO.setReviewStatus("待审核");
-        }
+        channelTechnicanVO.setReviewStatus(channelTechnicanQueryDTO.getReviewStatus());
+//        if(Integer.valueOf(2).equals(channelTechnicanQueryDTO.getReviewStatus())){
+//            channelTechnicanVO.setReviewStatus("审核未通过");
+//        }else if (Integer.valueOf(1).equals(channelTechnicanQueryDTO.getReviewStatus())){
+//            channelTechnicanVO.setReviewStatus("通过");
+//        }else {
+//            channelTechnicanVO.setReviewStatus("待审核");
+//        }
         channelTechnicanVO.setTelephone(channelTechnicanQueryDTO.getTelephone());
         return channelTechnicanVO;
     }
