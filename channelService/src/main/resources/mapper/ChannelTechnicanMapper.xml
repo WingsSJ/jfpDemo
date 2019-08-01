@@ -146,14 +146,67 @@
         LIMIT #{offSet}, #{rows}
     </select>
 
-    <select id="queryCheckPendingTechnicansTotal" parameterType="map" resultType="int">
+    <select id="conditionQueryTechnicans" parameterType="map" resultMap="resultMap">
+        SELECT
+        ct.person_id,
+        ct.company_id,
+        ct.person_name,
+        ct.company_name,
+        ct.person_gender,
+        ct.identity_card,
+        ct.birthday,
+        ct.phone,
+        ct.province,
+        ct.city,
+        ct.county,
+        ct.address,
+        ct.job,
+        ct.email,
+        ct.hire_date,
+        ct.qq_num,
+        ct.telephone,
+        ct.review_status,
+        ct.create_time,
+        ct.update_time,
+        ct.not_pass_cause,
+        ct.have_delete
+        FROM
+        channel_technician ct
+        WHERE
+        ct.have_delete != 1
+        <if test="searchCondition != null and  searchCondition !='' ">
+            AND (ct.company_name like CONCAT('%',#{searchCondition},'%')
+            OR ct.person_name like CONCAT('%',#{searchCondition},'%'))
+        </if>
+        ORDER BY
+        ct.update_time DESC
+        LIMIT #{offSet}, #{rows}
+    </select>
+
+    <select id="conditionQueryTechnicansTotal" parameterType="map" resultType="int">
         SELECT
         count(person_id)
         FROM
         channel_technician
         WHERE
         have_delete != 1
-        AND review_status = 0
+        <if test="searchCondition != null and  searchCondition !='' ">
+            AND (ct.company_name like CONCAT('%',#{searchCondition},'%')
+            OR ct.person_name like CONCAT('%',#{searchCondition},'%'))
+        </if>
+    </select>
+
+
+    <select id="queryAllTechnicansTotal" parameterType="map" resultType="int">
+        SELECT
+        count(person_id)
+        FROM
+        channel_technician
+        WHERE
+        have_delete != 1
+        <if test="reviewStatus != null">
+            AND ct.review_status = #{reviewStatus}
+        </if>
         <if test="companyName != null and  companyName !='' ">
             AND company_name like CONCAT('%',#{companyName},'%')
         </if>

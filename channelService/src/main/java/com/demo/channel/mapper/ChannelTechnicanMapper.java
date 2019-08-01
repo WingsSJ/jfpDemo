@@ -14,7 +14,9 @@ public interface ChannelTechnicanMapper {
     int queryOneChannelTechnicanHaveRecord(@Param("identityCard") String identityCard);
     int createOneChannelTechnicanRecord(@Param("channelTechnicanAddDTO") ChannelTechnicanAddDTO channelTechnicanAddDTO);
     List<ChannelTechnicanQueryDTO> queryAllTechnicans(Map params);
-    int queryCheckPendingTechnicansTotal(Map map);
+    List<ChannelTechnicanQueryDTO> conditionQueryTechnicans(Map params);
+    int conditionQueryTechnicansTotal(Map map);
+    int queryAllTechnicansTotal(Map map);
     int reviewOperation(Map params);
     ChannelTechnicanQueryDTO previewTechnicanInfo(@Param("personId") String personId);
     int updateTechnicanInfo(@Param("channelTechnicanUpdateDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);

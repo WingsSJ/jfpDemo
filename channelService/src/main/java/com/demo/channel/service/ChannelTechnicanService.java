@@ -7,10 +7,7 @@ import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.repo.ChannelTechnicanRepo;
 import com.demo.channel.repo.TechnicanCertificateRepo;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
-import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
-import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
-import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
-import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
+import com.demo.common.module.DTO.*;
 import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
 import org.apache.commons.collections4.CollectionUtils;
@@ -72,7 +69,7 @@ public class ChannelTechnicanService {
                 channelTechnicanVOList = transToChannelTechnicanVOList(channelTechnicanQueryDTOList, technicanCertificateQueryDTOList);
             }
             //查询出所有记录
-            totalNum = channelTechnicanRepo.queryCheckPendingTechnicansTotal(companyName,personName);
+            totalNum = channelTechnicanRepo.queryAllTechnicansTotal(companyName,personName,reviewStatus);
         }
         return new PageVO(pageNum,pageSize,totalNum,channelTechnicanVOList);
     }
@@ -204,5 +201,33 @@ public class ChannelTechnicanService {
         }else {
             return new JsonObject(1,"batchInsert failed");
         }
+    }
+
+    /**
+     * conditionQueryTechnicans 条件查询技术人员信息
+     */
+    public PageVO<ChannelTechnicanVO> conditionQueryTechnicans(ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO){
+        List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
+        int totalNum = 0;
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOS = channelTechnicanRepo.conditionQueryTechnicans(
+                channelTechnicanListQueryByConditionDTO.getPageSize(),
+                channelTechnicanListQueryByConditionDTO.getPageNum(),
+                channelTechnicanListQueryByConditionDTO.getSearchCondition()
+        );
+        if(CollectionUtils.isNotEmpty(channelTechnicanQueryDTOS)){
+            //查询出所有的证书信息
+            List<String> personIdList = channelTechnicanQueryDTOS.stream().map(ChannelTechnicanQueryDTO::getPersonId).collect(Collectors.toList());
+            if(CollectionUtils.isNotEmpty(personIdList)){
+                List<TechnicanCertificateQueryDTO> technicanCertificateQueryDTOList = technicanCertificateRepo.findTechnicanCertificateByPersonIdList(personIdList);
+                //重新组装为VO
+                channelTechnicanVOList = transToChannelTechnicanVOList(channelTechnicanQueryDTOS, technicanCertificateQueryDTOList);
+            }
+            //查询出所有记录
+            totalNum = channelTechnicanRepo.conditionQueryTechnicansTotal(
+                    channelTechnicanListQueryByConditionDTO.getSearchCondition());
+        }
+        return new PageVO(channelTechnicanListQueryByConditionDTO.getPageNum(),
+                channelTechnicanListQueryByConditionDTO.getPageSize(),
+                totalNum,channelTechnicanVOList);
     }
 }

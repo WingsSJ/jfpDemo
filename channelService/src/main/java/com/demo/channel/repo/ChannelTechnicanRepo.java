@@ -88,16 +88,34 @@ public class ChannelTechnicanRepo {
         return channelTechnicanQueryDTOList;
     }
 
+    public List<ChannelTechnicanQueryDTO> conditionQueryTechnicans(int pageSize,int pageNum,String searchCondition){
+        Map<String, Object> params = new HashMap<>(3);
+        Integer offSet = pageSize * pageNum <= 0 ? 0 : pageSize * pageNum;
+        params.put("offSet",offSet);
+        params.put("rows",pageSize);
+        params.put("searchCondition",searchCondition);
+        List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList = channelTechnicanMapper.conditionQueryTechnicans(params);
+        return channelTechnicanQueryDTOList;
+    }
+
+    public int conditionQueryTechnicansTotal(String searchCondition){
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("searchCondition",searchCondition);
+        int total = channelTechnicanMapper.conditionQueryTechnicansTotal(params);
+        return total;
+    }
+
 
     public ChannelTechnicanQueryDTO previewTechnicanInfo(String personId){
         return channelTechnicanMapper.previewTechnicanInfo(personId);
     }
 
-    public int queryCheckPendingTechnicansTotal(String companyName,String personName){
-        Map<String, Object> params = new HashMap<>(2);
+    public int queryAllTechnicansTotal(String companyName,String personName,Integer reviewStatus){
+        Map<String, Object> params = new HashMap<>(3);
         params.put("companyName", companyName);
         params.put("personName", personName);
-        return channelTechnicanMapper.queryCheckPendingTechnicansTotal(params);
+        params.put("reviewStatus", reviewStatus);
+        return channelTechnicanMapper.queryAllTechnicansTotal(params);
     }
 
 

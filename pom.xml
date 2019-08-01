@@ -12,7 +12,7 @@
         <module>eureka</module>
         <module>channelService</module>
         <module>admin</module>
-        <module>serviceB</module>
+        <module>serviceGRPC</module>
         <module>zipkin</module>
         <module>serviceGraphQL</module>
         <module>common</module>

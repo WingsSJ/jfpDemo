@@ -1,5 +1,6 @@
 package com.demo.channel.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.service.ChannelTechnicanService;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
@@ -23,7 +24,6 @@ public class ChannelTechnicanController {
         this.channelTechnicanService = channelTechnicanService;
     }
     //TODO
-    // 3.重新定义传参和返回（需要符合规范）删除graphQL中无用的代码 (泛型嵌套)
     // 5.测试接口 注意有的语句需要添加时间为最近一条的条件语句
 
     /**
@@ -75,6 +75,7 @@ public class ChannelTechnicanController {
     /**
      *@author Wings
      *@apiNote 修改操作（可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
+     * // TODO 可以修改证书信息
      */
     @PostMapping("/update/technican")
     public JsonObject updateTechnicanInfo(@RequestBody ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
@@ -105,10 +106,20 @@ public class ChannelTechnicanController {
 
     /**
      * @author Wings
-     * @apiNote excel数据批量录入 //TODO 服务测试 逻辑完善 数据录入要进行反查
+     * @apiNote excel数据批量录入 //TODO
      */
     @PostMapping("batch/insert")
     public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
         return channelTechnicanService.batchInsertTechnicans(channelTechnicanExcelModelDOS);
+    }
+
+    /**
+     * @author Wings
+     * @apiNote APP 后台使用 根据搜索条件模糊查询渠道技术人员列表
+     */
+    @PostMapping("condition/query/technicans")
+    public JsonObject<PageVO<ChannelTechnicanVO>> conditionQueryTechnicans(ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO){
+        PageVO<ChannelTechnicanVO> channelTechnicanVOPageVO = channelTechnicanService.conditionQueryTechnicans(channelTechnicanListQueryByConditionDTO);
+        return new JsonObject(0,"query success",channelTechnicanVOPageVO);
     }
 }

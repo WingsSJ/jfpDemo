@@ -8,13 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="serivceB" />
         <module name="serivceA" />
+        <module name="serviceGRPC" />
         <module name="common" />
         <module name="serviceGraphQL" />
-        <module name="serviceB" />
         <module name="eureka" />
-        <module name="admin" />
-        <module name="zipkin" />
         <module name="channelService" />
+        <module name="zipkin" />
+        <module name="admin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -25,8 +25,8 @@
       <module name="jfp" target="1.8" />
       <module name="serivceA" target="1.8" />
       <module name="serivceB" target="1.8" />
-      <module name="serviceB" target="1.8" />
       <module name="serviceGraphQL" target="1.8" />
+      <module name="serviceGRPC" target="1.8" />
       <module name="zipkin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -36,7 +36,7 @@
       <module name="channelService" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="eureka" options="-parameters" />
-      <module name="serviceB" options="-parameters" />
+      <module name="serviceGRPC" options="-parameters" />
       <module name="serviceGraphQL" options="-parameters -parameters" />
       <module name="zipkin" options="-parameters" />
     </option>

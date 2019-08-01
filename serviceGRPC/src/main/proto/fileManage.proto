@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.topsec.mobiapi.proto;
+
+import "baseMessage.proto";
+
+service FsmService {
+    rpc getFileList(FileQueryRequest) returns (GetFileInfoResponse);
+}
+
+message FileQueryRequest {
+    string searchCondition = 1;
+    Times times=2;
+    //时间
+    enum Times {
+        DAY = 0; //1天内
+        WEEK = 1; //一周内
+        MONTH = 2; //一个月内
+    }
+    PageContent pageContent = 3;
+}
+
+message GetFileInfoResponse {
+    BaseResponse baseResponse = 1;
+    PageContent pageContent = 2;
+    repeated FileInfo fileList = 3;
+}
+
+//文件信息
+message FileInfo {
+    string fid         = 1; //文件ID
+    string name        = 2; //文件名称
+    string size        = 3;  //文件大小
+    string category    = 4;  //文件类型
+    string type        = 5;  //文件分类
+    string watchUrl    = 6;  //文件预览路径
+    int32 shareNumber = 7;  //文件分享次数
+    int32 downloadNumber = 8;  //文件下载次数
+    string createdId    = 9;  //创建人ID
+    string createdName    = 10; //创建人姓名
+    string ctime    = 11; //创建时间
+    string updatedId = 12; //更新人ID
+    string updatedName = 13; //更新人姓名
+    string utime   = 14; //更新时间
+    string version   = 15; //版本
+}
+
