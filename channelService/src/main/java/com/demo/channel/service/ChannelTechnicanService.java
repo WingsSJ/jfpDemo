@@ -44,13 +44,13 @@ public class ChannelTechnicanService {
         //是否存在未处理记录
         boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
         if(haveRecord){
-            return new JsonObject(HttpStatus.BAD_REQUEST.value(),"this person have record");
+            return new JsonObject(1,"this person have record");
         }
         boolean success = channelTechnicanRepo.createOneChannelTechnicanRecord(channelTechnicanAddDTO);
         if(success){
-            return new JsonObject(HttpStatus.OK.value(),"add channelTechnican successful");
+            return new JsonObject(0,"add channelTechnican successful");
         }
-        return new JsonObject(HttpStatus.BAD_REQUEST.value(),"add channelTechnican fail");
+        return new JsonObject(1,"add channelTechnican fail");
     }
 
     /**

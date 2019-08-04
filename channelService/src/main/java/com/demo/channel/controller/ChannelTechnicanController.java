@@ -1,6 +1,5 @@
 package com.demo.channel.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.service.ChannelTechnicanService;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
