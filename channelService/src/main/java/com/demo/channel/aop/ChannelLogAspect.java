@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-//todo log.info
+//todo 测试
 @Aspect
 @Component
 @Slf4j
 public class ChannelLogAspect {
     /**
      * 定义切入点，切入点为com.demo.channel.controller下的所有函数
+     * 修改* ，（..）,throw 拦截指定方法的返回 传参 还有 抛出异常拦截
      */
     @Pointcut("execution(public * com.demo.channel.controller..*.*(..))")
     public void ChannelLog() {

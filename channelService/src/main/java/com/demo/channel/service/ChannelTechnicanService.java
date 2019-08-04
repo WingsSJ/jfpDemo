@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class ChannelTechnicanService {
     /**
      * 创建一条技术人员记录 //TODO 数据库操作转移service
      */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject importTechnican(ChannelTechnicanAddDTO channelTechnicanAddDTO){
         //是否存在未处理记录
         boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
@@ -56,6 +60,7 @@ public class ChannelTechnicanService {
     /**
      * 查询所有待审核的技术人员
      */
+    @Transactional(readOnly = true)
     public PageVO<ChannelTechnicanVO> queryAllTechnicans(int pageSize, int pageNum, String companyName, String personName,Integer reviewStatus){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
@@ -78,6 +83,7 @@ public class ChannelTechnicanService {
     /**
      * 渠道技术人员管理页面 预览操作
      */
+    @Transactional(readOnly = true)
     public ChannelTechnicanVO previewTechnicanInfo(String personId){
         ChannelTechnicanQueryDTO channelTechnicanQueryDTO = channelTechnicanRepo.previewTechnicanInfo(personId);
         ChannelTechnicanVO channelTechnicanVO = new ChannelTechnicanVO();
@@ -99,6 +105,7 @@ public class ChannelTechnicanService {
     /**
      *审核接口 0待审核 1审核通过 2审核不通过
      */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject reviewOperation(String personId ,int review, String notPassCause){
         //如果审核不通过要说明不通过的原因
         if(2 == review){
@@ -121,6 +128,7 @@ public class ChannelTechnicanService {
     /**
      * 修改操作（可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
      */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
         boolean operate = channelTechnicanRepo.updateTechnicanInfo(channelTechnicanUpdateDTO);
         if(operate){
@@ -133,6 +141,7 @@ public class ChannelTechnicanService {
     /**
      * 删除人员信息和相关证书信息
      */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject deleteTechnican(String personId){
         boolean operate = channelTechnicanRepo.deleteTechnican(personId);
         if(operate){
@@ -146,6 +155,7 @@ public class ChannelTechnicanService {
     /**
      * 导入数据校验
      */
+    @Transactional(readOnly = true)
     public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl, String companyName, String companyId){
         List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
         if(StringUtils.isNoneBlank(fileUrl,companyName,companyId)){
@@ -179,6 +189,7 @@ public class ChannelTechnicanService {
      * excel数据批量录入
      * //TODO 服务测试
      */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
         List<String> identityCardList = channelTechnicanExcelModelDOS.stream().map(ChannelTechnicanExcelModelDO::getIdentityCard).collect(Collectors.toList());
         boolean b = channelTechnicanRepo.batchCheckTechnicans(identityCardList);
@@ -206,6 +217,7 @@ public class ChannelTechnicanService {
     /**
      * conditionQueryTechnicans 条件查询技术人员信息
      */
+    @Transactional(readOnly = true)
     public PageVO<ChannelTechnicanVO> conditionQueryTechnicans(ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
