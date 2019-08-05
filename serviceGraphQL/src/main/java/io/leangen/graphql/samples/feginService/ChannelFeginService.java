@@ -24,7 +24,7 @@ public interface ChannelFeginService {
     JsonObject reviewOperation(@RequestBody ChannelTechnicanCheckDTO channelTechnicanCheckDTO);
     @PostMapping("/channel/update/technican")
     JsonObject updateTechnicanInfo(@RequestBody ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
-    @RequestMapping("/channel/delete/technican")
+    @RequestMapping("/channel/delete/technican/{personId}")
     JsonObject deleteTechnican(@PathVariable(name = "personId") String personId);
     @PostMapping("/channel/batch/check")
     List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO);

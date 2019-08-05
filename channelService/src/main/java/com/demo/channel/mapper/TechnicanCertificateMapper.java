@@ -13,4 +13,5 @@ public interface TechnicanCertificateMapper {
     int recordTechnicanCertificateRecords(@Param("technicanCertificateAddDTOList") List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList);
     List<TechnicanCertificateQueryDTO> findTechnicanCertificateByPersonIdList(@Param("personIdList") List<String> personIdList);
     List<TechnicanCertificateQueryDTO> findTechnicanCertificateByPersonId(@Param("personId") String personId);
+    int updateTechnicanCertificateRecords(@Param("technicanCertificateAddDTOList") List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList);
 }

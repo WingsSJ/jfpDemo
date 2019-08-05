@@ -3,19 +3,23 @@ package com.demo.grpc.service;
 import com.demo.common.module.DTO.ChannelTechnicanListQueryByConditionDTO;
 import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
+import com.demo.grpc.annotation.GrpcInterceptor;
 import com.demo.grpc.feginService.ChannelFeginService;
+import com.demo.grpc.interceptor.PtokenServerInterceptor;
 import com.demo.grpc.model.ChannelTechnicanVO;
 import com.topsec.mobiapi.proto.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO  自测
-@GRpcService
+//TODO 自测
+@GRpcService(interceptors = {PtokenServerInterceptor.class})
+@Slf4j
 public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBase{
     @Autowired
     ChannelFeginService channelFeginService;
@@ -23,8 +27,8 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
     public void queryAllChannelTechnicians(ChannelTechnicianInfoRequest request, StreamObserver<ChannelTechnicianInfoListResponse> responseObserver) {
         //获取请求
         JsonObject<PageVO<ChannelTechnicanVO>> channelTechnicanVOPageVO = channelFeginService.conditionQueryTechnicans(new ChannelTechnicanListQueryByConditionDTO(
-                request.getPageContent().getPageSize(),
-                request.getPageContent().getCurrPage(),
+                request.getPageSize(),
+                request.getCurrPage(),
                 request.getSearchCondition()
         ));
         //
@@ -62,12 +66,11 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
             Integer pageSize = channelTechnicanVOPageVO.getObjEntity().getPageSize();
             int totalPage = (int)Math.ceil((double)totalCount/pageSize);
             for(int index = 0; index < channelTechnicianInfos.size();index++) {
-                ChannelTechnicianInfoListResponse.newBuilder().setCtInfo(index,channelTechnicianInfos.get(index));
+                ChannelTechnicianEntity.newBuilder().setList(index,channelTechnicianInfos.get(index));
             }
-            ChannelTechnicianInfoListResponse channelTechnicianInfoListResponse
-                    = ChannelTechnicianInfoListResponse.newBuilder().setPageContent(
-                    BaseMessage.PageContent.newBuilder().setCurrPage(currPage).setPageSize(pageSize).setTotalCount(totalCount).setTotalPage(totalPage)).setBaseResponse(
-                            BaseMessage.BaseResponse.newBuilder().setResult(0).setMesssage("success")).build();
+        ChannelTechnicianEntity channelTechnicianEntity = ChannelTechnicianEntity.newBuilder().setCurrPage(currPage).setPageSize(pageSize).setTotalCount(totalCount).setTotalPage(totalPage).build();
+        ChannelTechnicianInfoListResponse channelTechnicianInfoListResponse
+                    = ChannelTechnicianInfoListResponse.newBuilder().setObjEntity(channelTechnicianEntity).setMesssage("success").setResult(0).build();
         responseObserver.onNext(channelTechnicianInfoListResponse);
         responseObserver.onCompleted();
     }

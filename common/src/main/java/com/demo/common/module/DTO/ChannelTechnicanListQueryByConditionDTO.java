@@ -12,10 +12,8 @@ import java.io.Serializable;
 @Data
 public class ChannelTechnicanListQueryByConditionDTO implements Serializable,Cloneable {
     @NotNull
-    @Range(min = 1 , max = 20)
     int pageSize;
     @NotNull
-    @Range(min = 0)
     int pageNum;
     String searchCondition;
 

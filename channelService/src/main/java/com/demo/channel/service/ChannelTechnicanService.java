@@ -45,7 +45,7 @@ public class ChannelTechnicanService {
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public JsonObject importTechnican(ChannelTechnicanAddDTO channelTechnicanAddDTO){
-        //是否存在未处理记录
+        //是否存在未处理记录 (排除已经删除的和审核未通过的)
         boolean haveRecord = channelTechnicanRepo.queryOneChannelTechnicanHaveRecord(channelTechnicanAddDTO);
         if(haveRecord){
             return new JsonObject(1,"this person have record");
@@ -156,13 +156,13 @@ public class ChannelTechnicanService {
      * 导入数据校验
      */
     @Transactional(readOnly = true)
-    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(String fileUrl, String companyName, String companyId){
+    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(File file, String companyName, String companyId){
         List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
-        if(StringUtils.isNoneBlank(fileUrl,companyName,companyId)){
+        if(StringUtils.isNoneBlank(companyName,companyId) && file != null){
             ImportParams importParams = new ImportParams();
             importParams.setTitleRows(0);
             importParams.setHeadRows(2);
-            List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File(fileUrl),
+            List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(file,
                     ChannelTechnicanExcelModelDO.class,importParams);
             if(CollectionUtils.isNotEmpty(list)){
                 //数据校验

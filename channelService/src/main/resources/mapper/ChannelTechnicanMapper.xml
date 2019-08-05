@@ -14,7 +14,7 @@
         <foreach collection="identityCardList" index="index" item="identityCard" open="(" separator="," close=")">
             #{identityCard}
         </foreach>
-        AND have_delete ! = 1 AND review_status != 0
+        AND have_delete ! = 1 AND review_status != 2
     </select>
 
     <insert id="createOneChannelTechnicanRecord"

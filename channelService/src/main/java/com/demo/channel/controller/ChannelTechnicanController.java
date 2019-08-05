@@ -74,7 +74,7 @@ public class ChannelTechnicanController {
     /**
      *@author Wings
      *@apiNote 修改操作（可以修改人员信息 或者给技术人员添加认证信息 并且该条状态重新进入待审核状态）
-     * // TODO 可以修改证书信息
+     * // TODO 只能做修改操作
      */
     @PostMapping("/update/technican")
     public JsonObject updateTechnicanInfo(@RequestBody ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
@@ -97,7 +97,7 @@ public class ChannelTechnicanController {
     @PostMapping("/batch/check")
     public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@Valid @RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){
         return channelTechnicanService.batchCheckTechnicans(
-                channelTechnicanBatchCheckDTO.getFileUrl(),
+                channelTechnicanBatchCheckDTO.getFile(),
                 channelTechnicanBatchCheckDTO.getCompanyName(),
                 channelTechnicanBatchCheckDTO.getCompanyId()
         );

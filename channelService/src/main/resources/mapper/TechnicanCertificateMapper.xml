@@ -21,17 +21,37 @@
             #{technicanCertificateAddDTO.certificateDirection},#{technicanCertificateAddDTO.certificateLevel},
             #{technicanCertificateAddDTO.invalidCertificateTime},now(),now(),0)
         </foreach>
+        where have_delete != 1
     </insert>
 
+    <update id="updateTechnicanCertificateRecords" parameterType="java.util.List">
+        <foreach collection="technicanCertificateAddDTOList" item="technicanCertificateAddDTO" index="index" open="" close="" separator=";">
+            UPDATE technican_certificate
+            <set>
+                <if test="technicanCertificateAddDTO.certificateDirection != null and  technicanCertificateAddDTO.certificateDirection !='' ">
+                certificate_direction=#{technicanCertificateAddDTO.certificateDirection},
+                </if>
+                <if test="technicanCertificateAddDTO.certificateLevel != null and  technicanCertificateAddDTO.certificateLevel !='' ">
+                certificate_level= #{technicanCertificateAddDTO.certificateLevel},
+                </if>
+                <if test="technicanCertificateAddDTO.invalidCertificateTime != null and  technicanCertificateAddDTO.invalidCertificateTime !='' ">
+                invalid_certificate_time = #{technicanCertificateAddDTO.invalidCertificateTime}
+                </if>
+            </set>
+            where certificate_id=#{technicanCertificateAddDTO.certificateId}
+        </foreach>
+    </update>
+
     <select id="findTechnicanCertificateByPersonIdList" resultMap="resultMap">
-        select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate where person_id in
+        select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from
+        technican_certificate where person_id in
         <foreach collection="personIdList" index="index" item="personId" open="(" separator="," close=")">
-        #{personId}
+            #{personId}
         </foreach>
     </select>
 
-   <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
-           resultMap="resultMap">
+    <select id="findTechnicanCertificateByPersonId" parameterType="java.lang.String"
+            resultMap="resultMap">
         select certificate_id, person_id, certificate_direction, certificate_level, invalid_certificate_time from technican_certificate
             where person_id = #{personId}
     </select>

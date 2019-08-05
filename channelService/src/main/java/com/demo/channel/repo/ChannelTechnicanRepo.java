@@ -8,6 +8,7 @@ import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
 import com.demo.common.module.DTO.TechnicanCertificateAddDTO;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,6 +130,15 @@ public class ChannelTechnicanRepo {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean updateTechnicanInfo(ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO){
+        //将省市县名字转平台码
+        if(StringUtils.isNoneBlank(channelTechnicanUpdateDTO.getProvince(),channelTechnicanUpdateDTO.getCity(),channelTechnicanUpdateDTO.getCounty())) {
+            Map<String, String> areaCodeByAreaName = CodeMapUtil.getAreaCodeByAreaName(channelTechnicanUpdateDTO.getProvince(),
+                    channelTechnicanUpdateDTO.getCity(),
+                    channelTechnicanUpdateDTO.getCounty());
+            channelTechnicanUpdateDTO.setProvince(areaCodeByAreaName.get("province"));
+            channelTechnicanUpdateDTO.setCity(areaCodeByAreaName.get("city"));
+            channelTechnicanUpdateDTO.setCounty(areaCodeByAreaName.get("county"));
+        }
         int updateOperate = channelTechnicanMapper.updateTechnicanInfo(channelTechnicanUpdateDTO);
         if(updateOperate>0){
             List<TechnicanCertificateAddDTO> technicanCertificateAddDTOS = channelTechnicanUpdateDTO.getTechnicanCertificateAddDTOS();
@@ -143,7 +153,7 @@ public class ChannelTechnicanRepo {
                     //自定义传参异常 回滚
                     throw new RuntimeException();
                 }else {
-                    int recordTechnicanCertificateRecords = technicanCertificateMapper.recordTechnicanCertificateRecords(technicanCertificateAddDTOS);
+                    int recordTechnicanCertificateRecords = technicanCertificateMapper.updateTechnicanCertificateRecords(technicanCertificateAddDTOS);
                     return recordTechnicanCertificateRecords>0;
                 }
             }
