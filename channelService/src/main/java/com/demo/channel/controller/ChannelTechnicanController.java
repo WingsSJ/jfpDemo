@@ -117,7 +117,7 @@ public class ChannelTechnicanController {
      * @apiNote APP 后台使用 根据搜索条件模糊查询渠道技术人员列表
      */
     @PostMapping("condition/query/technicans")
-    public JsonObject<PageVO<ChannelTechnicanVO>> conditionQueryTechnicans(ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO){
+    public JsonObject<PageVO<ChannelTechnicanVO>> conditionQueryTechnicans(@Valid @RequestBody ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO){
         PageVO<ChannelTechnicanVO> channelTechnicanVOPageVO = channelTechnicanService.conditionQueryTechnicans(channelTechnicanListQueryByConditionDTO);
         return new JsonObject(0,"query success",channelTechnicanVOPageVO);
     }
