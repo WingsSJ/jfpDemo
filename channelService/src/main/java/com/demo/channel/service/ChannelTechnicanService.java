@@ -3,22 +3,25 @@ package com.demo.channel.service;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSON;
-import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.repo.ChannelTechnicanRepo;
 import com.demo.channel.repo.TechnicanCertificateRepo;
 import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
 import com.demo.common.module.DTO.*;
+import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ import static com.demo.channel.model.VO.ChannelTechnicanVO.transToChannelTechnic
  * @author Wings
  */
 @Service
+@Slf4j
 public class ChannelTechnicanService {
     @Autowired
     private ChannelTechnicanRepo channelTechnicanRepo;
@@ -61,7 +65,7 @@ public class ChannelTechnicanService {
      * 查询所有待审核的技术人员
      */
     @Transactional(readOnly = true)
-    public PageVO<ChannelTechnicanVO> queryAllTechnicans(int pageSize, int pageNum, String companyName, String personName,Integer reviewStatus){
+    public PageVO<ChannelTechnicanVO> queryAllTechnicans(int pageSize, int pageNum, String companyName, String personName, Integer reviewStatus){
         List<ChannelTechnicanVO> channelTechnicanVOList = new ArrayList<>();
         int totalNum = 0;
         List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOList =  channelTechnicanRepo.queryAllTechnicans(pageSize, pageNum,companyName,personName,reviewStatus);
@@ -156,52 +160,76 @@ public class ChannelTechnicanService {
      * 导入数据校验
      */
     @Transactional(readOnly = true)
-    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(File file, String companyName, String companyId){
+    public JsonObject<List<ChannelTechnicanExcelModelDO>> batchCheckTechnicans(MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response){
         List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS = new ArrayList<>();
-        if(StringUtils.isNoneBlank(companyName,companyId) && file != null){
-            ImportParams importParams = new ImportParams();
-            importParams.setTitleRows(0);
-            importParams.setHeadRows(2);
-            List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(file,
-                    ChannelTechnicanExcelModelDO.class,importParams);
-            if(CollectionUtils.isNotEmpty(list)){
-                //数据校验
-                for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:list){
-                    //存入公司名和公司id
-                    channelTechnicanExcelModelDO.setCompanyId(companyId);
-                    channelTechnicanExcelModelDO.setCompanyName(companyName);
-                    if(channelTechnicanExcelModelDO.checkNull()){
-                        channelTechnicanExcelModelDO.setVerifyResult("数据校验不通过");
-                        channelTechnicanExcelModelDO.setVerifyCode(1);
-                    }else {
-                        channelTechnicanExcelModelDO.setVerifyResult("数据校验通过");
-                        channelTechnicanExcelModelDO.setVerifyCode(0);
+        response.setHeader("Access-Control-Allow-Origin","*");
+        JsonObject jsonObject = new JsonObject(-1,null);
+        File toFile = null;
+        try {
+            if ( multipartFile != null) {
+                String path = request.getServletContext().getRealPath("/") + System.currentTimeMillis() + multipartFile.getOriginalFilename();
+                toFile = new File(path);
+                multipartFile.transferTo(toFile);
+                ImportParams importParams = new ImportParams();
+                importParams.setTitleRows(0);
+                importParams.setHeadRows(2);
+                List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(toFile,
+                        ChannelTechnicanExcelModelDO.class, importParams);
+                if (CollectionUtils.isNotEmpty(list)) {
+                    //数据校验
+                    for (ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO : list) {
+                        //存入公司名和公司id
+                        if (channelTechnicanExcelModelDO.checkNull()) {
+                            channelTechnicanExcelModelDO.setVerifyResult("数据校验不通过:"+channelTechnicanExcelModelDO.checkNullInfo());
+                            channelTechnicanExcelModelDO.setVerifyCode(1);
+                        } else {
+                            channelTechnicanExcelModelDO.setVerifyResult("数据校验通过");
+                            channelTechnicanExcelModelDO.setVerifyCode(0);
+                        }
+                        channelTechnicanExcelModelDOS.add(channelTechnicanExcelModelDO);
                     }
-                    channelTechnicanExcelModelDOS.add(channelTechnicanExcelModelDO);
                 }
             }
+            //填充personId
+            channelTechnicanExcelModelDOS.stream().distinct().forEach(dto->dto.setPersonId(UUID.randomUUID().toString()));
+            jsonObject.setResult(0);
+            jsonObject.setObjEntity(channelTechnicanExcelModelDOS);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("解析技术服务商Excel出错",e);
+            jsonObject.setMessage("EXCEL解析错误,请确认文件格式的正确性!");
+        }finally {
+            if(toFile != null){
+                toFile.delete();
+            }
         }
-        return channelTechnicanExcelModelDOS;
+        return jsonObject;
     }
 
 
     /**
      * excel数据批量录入
-     * //TODO 服务测试
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
-    public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS){
+    public JsonObject batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS,String companyName,String companyId){
         List<String> identityCardList = channelTechnicanExcelModelDOS.stream().map(ChannelTechnicanExcelModelDO::getIdentityCard).collect(Collectors.toList());
+        int size = channelTechnicanExcelModelDOS.stream().map(ChannelTechnicanExcelModelDO::getIdentityCard).distinct().collect(Collectors.toList()).size();
+        //数据中不允许有重复身份证id和未经过校验的数据
+        if(channelTechnicanExcelModelDOS.stream().anyMatch(dto->dto.getVerifyCode().equals(1))
+        || identityCardList.size() != size){
+            return new JsonObject(1,"params check fail there has same identityCard");
+        }
         boolean b = channelTechnicanRepo.batchCheckTechnicans(identityCardList);
         if(b){
             return new JsonObject(1,"batchInsert failed have exist personId");
         }
         boolean batchInsert = false;
         if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOS)){
+            //填充companyName companyId
+            channelTechnicanExcelModelDOS.stream().distinct().forEach(dto->dto.setCompanyName(companyName));
+            channelTechnicanExcelModelDOS.stream().distinct().forEach(dto->dto.setCompanyId(companyId));
             //将channelTechnicanExcelModelDOS 转化为 AddDTO
             List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = ChannelTechnicanAddDTO.transExcelModelDTOStoAddDTOS(channelTechnicanExcelModelDOS);
-            //过滤相同 生成personId
-            channelTechnicanAddDTOS.stream().distinct().forEach(dto->dto.setPersonId(UUID.randomUUID().toString()));
             if(CollectionUtils.isNotEmpty(channelTechnicanAddDTOS)){
                 //做批量插入操作
                 batchInsert = channelTechnicanRepo.batchInsertTechnicans(channelTechnicanAddDTOS);
@@ -223,7 +251,7 @@ public class ChannelTechnicanService {
         int totalNum = 0;
         List<ChannelTechnicanQueryDTO> channelTechnicanQueryDTOS = channelTechnicanRepo.conditionQueryTechnicans(
                 channelTechnicanListQueryByConditionDTO.getPageSize(),
-                channelTechnicanListQueryByConditionDTO.getPageNum(),
+                channelTechnicanListQueryByConditionDTO.getCurrPage(),
                 channelTechnicanListQueryByConditionDTO.getSearchCondition()
         );
         if(CollectionUtils.isNotEmpty(channelTechnicanQueryDTOS)){
@@ -238,7 +266,7 @@ public class ChannelTechnicanService {
             totalNum = channelTechnicanRepo.conditionQueryTechnicansTotal(
                     channelTechnicanListQueryByConditionDTO.getSearchCondition());
         }
-        return new PageVO(channelTechnicanListQueryByConditionDTO.getPageNum(),
+        return new PageVO(channelTechnicanListQueryByConditionDTO.getCurrPage(),
                 channelTechnicanListQueryByConditionDTO.getPageSize(),
                 totalNum,channelTechnicanVOList);
     }

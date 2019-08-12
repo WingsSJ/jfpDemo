@@ -10,9 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 技术人员模型
@@ -118,7 +121,7 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
 
     //将ModelDTO转未AddDTO
     public static List<ChannelTechnicanAddDTO> transExcelModelDTOStoAddDTOS(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOList){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+
         List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOList)){
             for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:channelTechnicanExcelModelDOList){
@@ -129,15 +132,29 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
                 channelTechnicanAddDTO.setPersonId(channelTechnicanExcelModelDO.getPersonId());
                 channelTechnicanAddDTO.setPersonName(channelTechnicanExcelModelDO.getPersonName());
                 channelTechnicanAddDTO.setAddress(channelTechnicanExcelModelDO.getAddress());
-                //处理异常
-                String brithday = format.format(channelTechnicanExcelModelDO.getBirthday());
-                channelTechnicanAddDTO.setBirthday(brithday);
+                //处理异常 字符串时间戳转化为yyyy/MM/dd
+                try {
+                    //考虑到SimpleDateFormat线程安全的问题 后面改为工具类
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                    Date birthday = sdf.parse(channelTechnicanExcelModelDO.getBirthday());
+                    sdf=new SimpleDateFormat("yyyy/MM/dd");
+                    channelTechnicanAddDTO.setBirthday(sdf.format(birthday));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 channelTechnicanAddDTO.setCompanyId(channelTechnicanExcelModelDO.getCompanyId());
                 channelTechnicanAddDTO.setCompanyName(channelTechnicanExcelModelDO.getCompanyName());
                 channelTechnicanAddDTO.setEmail(channelTechnicanExcelModelDO.getEmail());
                 //处理异常
-                String hireDate = format.format(channelTechnicanExcelModelDO.getHireDate());
-                channelTechnicanAddDTO.setHireDate(hireDate);
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                    Date hireday = sdf.parse(channelTechnicanExcelModelDO.getBirthday());
+                    sdf=new SimpleDateFormat("yyyy/MM/dd");
+                    channelTechnicanAddDTO.setHireDate(sdf.format(hireday));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 channelTechnicanAddDTO.setIdentityCard(channelTechnicanExcelModelDO.getIdentityCard());
                 channelTechnicanAddDTO.setJob(channelTechnicanExcelModelDO.getJob());
                 //男0 女1
@@ -161,8 +178,15 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
                         technicanCertificateAddDTO.setCertificateDirection(technicanCertificateExcelModelDO.getCertificateDirection());
                         technicanCertificateAddDTO.setCertificateId(technicanCertificateExcelModelDO.getCertificateId());
                         technicanCertificateAddDTO.setCertificateLevel(technicanCertificateExcelModelDO.getCertificateLevel());
-                        String invalidCertificateTime = format.format(technicanCertificateExcelModelDO.getInvalidCertificateTime());
-                        technicanCertificateAddDTO.setInvalidCertificateTime(invalidCertificateTime);
+                        //处理时间戳
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                            Date invalidCertificateDate = sdf.parse(technicanCertificateExcelModelDO.getInvalidCertificateTime());
+                            sdf=new SimpleDateFormat("yyyy/MM/dd");
+                            technicanCertificateAddDTO.setInvalidCertificateTime(sdf.format(invalidCertificateDate));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         technicanCertificateAddDTOList.add(technicanCertificateAddDTO);
                     }
                     channelTechnicanAddDTO.setTechnicanCertificateAddDTOS(technicanCertificateAddDTOList);

@@ -1,0 +1,278 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.topsec.mobiapi.proto";
+
+package com.topsec.mobiapi.proto;
+
+// 渠道服务
+service ChannelService{
+    // 分页查询出所有的渠道技术人员
+    rpc QueryAllChannelTechnicians(ChannelTechnicianInfoRequest) returns (ChannelTechnicianInfoListResponse) {}
+    // 分页查询出所有的渠道商
+    rpc QueryAllChannelCompanys(ChannelCompanyInfoRequest) returns (ChannelCompanyInfoListResponse){}
+    //
+}
+
+// 渠道技术人员查询条件
+message ChannelTechnicianInfoRequest {
+    //模糊查询条件
+    string searchCondition = 1;
+    int32 pageSize = 2; //每页数据量大小
+    int32 currPage   = 3; //当前页码
+}
+
+message ChannelTechnicianInfoListResponse{
+    int32 result   = 1; //结果 0 成功，1 失败
+    string messsage = 2; //说明（成功）    “结果”
+    ChannelTechnicianEntity objEntity = 3;//返回的对象
+
+}
+
+message ChannelTechnicianEntity{
+    int32 pageSize = 1; //每页数据量大小
+    int32 currPage   = 2; //当前页码
+    int32 totalCount = 3; //总记录数
+    int32 totalPage = 4; //总页数
+    repeated ChannelTechnicianInfo list = 5; //人员信息 + 证书信息
+}
+
+message ChannelCompanyInfoListResponse{
+    int32 result   = 1; //结果 0 成功，1 失败
+    string messsage = 2; //说明（成功）    “结果”
+    ChannelCompanyInfoEntity objEntity = 3;//返回的对象
+}
+
+message ChannelCompanyInfoEntity{
+    int32 pageSize = 1; //每页数据量大小
+    int32 currPage   = 2; //当前页码
+    int32 totalCount = 3; //总记录数
+    int32 totalPage = 4; //总页数
+    repeated ChannelCompanyInfo list = 5; //公司信息
+}
+
+// 渠道商条件查询条件
+message ChannelCompanyInfoRequest{
+    //服务商星级
+    int32 starLevel = 1;
+    //服务商所在省份
+    string province = 2;
+    //模糊查询条件
+    string searchCondition = 3;
+    int32 pageSize = 4; //每页数据量大小
+    int32 currPage   = 5; //当前页码
+}
+
+
+//渠道商信息
+message ChannelCompanyInfo{
+    //主键id
+    string cid =1;
+    //公司名字
+    string cname=2;
+    //公司地址
+    string addr=3;
+    //公司邮箱
+    string cemail=4;
+    //邮政编码
+    string postalCode=5;
+    //传真
+    string fax = 6;
+    //电话
+    string telephone=7;
+    //所属省份*")
+    string province=8;
+    //地市s
+    string city=9;
+    /**
+     * 所属区域
+     */
+    string county=10;
+    /**
+     * 服务星级 1-5
+     */
+    int32 cstar=11;
+    /**
+    * 是否是供货商
+    */
+    int32 isSupplier=12;
+    /**
+    * 供货商级别{ "总代_0", "金牌_1","银牌_2" })
+    */
+    int32 clevel=13;
+    /**
+    * 公司规模
+    */
+    int32 cscale=14;
+    /**
+    * 服务范围
+    */
+    string cscope=15;
+    /**
+    * 主营品牌
+    */
+    string mainBus=16;
+    /**
+    * 公司网址
+    */
+    string curl=17;
+    /**
+    * 统一社会信用码
+    */
+    string credCode=18;
+    /**
+     * 注册资本(万元)
+     */
+    double registeredCapital=19;
+    /**
+     * 注册类型
+     */
+    string registeredType=20;
+    /**
+     * 注册时间
+     */
+    string registeredDate=21;
+
+    /**
+     * 法人姓名
+     */
+    string legalName=22;
+
+    /**
+     * 法人性别
+     */
+    int32 legalSex=23;
+
+    /**
+     * 公司税号
+     */
+    string corpTax=24;
+
+    /**
+     * 开户行
+     */
+    string cbank=25;
+
+    /**
+     * 银行账号
+     */
+    string caccount=26;
+
+    /**
+     * 总经理姓名
+     */
+    string managerName=27;
+    
+    /**
+     * 总经理性别
+     */
+    int32 managerSex=28;
+    
+    /**
+     * 总经理邮箱
+     */
+    string managerEmail=29;
+    
+    /**
+     * 技术接口人姓名
+     */
+    string techName=30;
+    
+    /**
+     * 技术接口人性别
+     */
+    int32 techSex=31;
+    
+    /**
+     * 技术接口人职务
+     */
+    string techPost=43;
+    
+    /**
+     * 技术接口人座机
+     */
+    string techTelephone=32;
+    
+    /**
+     * 技术接口人手机号
+     */
+    string techPhone=33;
+    
+    /**
+     * 技术接口人邮箱
+     */
+    string techEmail=34;
+    
+    /**
+     * 商务接口人姓名
+     */
+    string busName=35;
+    
+    /**
+     * 商务接口人性别
+     */
+    int32 busSex=36;
+    
+    /**
+     * 商务接口人职务
+     */
+    string busPost=37;
+    
+    /**
+     * 商务接口人座机
+     */
+    string busTelephone=38;
+    
+    /**
+     * 商务接口人手机号
+     */
+    string busPhone=39;
+    
+    /**
+     * 商务接口人邮箱
+     */
+    string busEmail=40;
+    
+    /**
+     * 审核不通过原因
+     */
+    string notPassCause=41;
+
+    /**
+     * 状态 0待审核1审核通过2审核不通过
+     */
+    int32 status=42;
+}
+
+
+
+
+//渠道技术人员信息
+message ChannelTechnicianInfo{
+    string companyId = 1;      //公司id
+    string companyName =2;     //公司名
+    string personName=3;      //技术人员姓名
+    int32 personGender=4;      //技术人性别  0为男 1为女
+    string pId=5;     //技术人员personId
+    string idCard=6;     //技术人员身份证号
+    string birthday=7;      //出生年月日 yyyy-MM-dd
+    string phone=8;      //手机号
+    string prov=9;     //所在省
+    string city=10;    //所在市
+    string county=11;      //所在区（县）
+    string address=12;      //详细地址
+    string job=13;      //职位
+    string email=14;//邮箱
+    string hireDate=15;//入职时间
+    string qqNum=16; //qq号
+    string telephone=17; //公司座机号
+    int32 reStatues =18; // 审核状态 0待审核 1审核通过 2审核不通过
+    repeated TechnicanCertificate tcInfo = 19; //人员证书信息
+}
+//技术人员证书信息
+message TechnicanCertificate{
+    string tcId = 1; //证书id
+    string tcDrt = 2; //证书方向
+    string tcLv = 3;//证书级别
+    string tcTime = 4;//证书失效时间 yyyy-MM-dd
+}

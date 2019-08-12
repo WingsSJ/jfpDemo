@@ -6,7 +6,7 @@
 
 <mapper namespace="com.demo.channel.mapper.ChannelTechnicanMapper">
     <select id="queryOneChannelTechnicanHaveRecord" parameterType="string" resultType="int">
-        select count(1) from channel_technician where identity_card = #{identityCard} and have_delete != 1 and review_status != 0 ;
+        select count(1) from channel_technician where identity_card = #{identityCard} and (have_delete != 1 or review_status != 0) ;
     </select>
 
     <select id="batchCheckTechnicans" parameterType="string" resultType="int">
@@ -14,7 +14,7 @@
         <foreach collection="identityCardList" index="index" item="identityCard" open="(" separator="," close=")">
             #{identityCard}
         </foreach>
-        AND have_delete ! = 1 AND review_status != 2
+        AND have_delete != 1 AND review_status != 2
     </select>
 
     <insert id="createOneChannelTechnicanRecord"
@@ -24,7 +24,7 @@
         #{channelTechnicanAddDTO.companyName},#{channelTechnicanAddDTO.personGender},#{channelTechnicanAddDTO.identityCard},
         #{channelTechnicanAddDTO.birthday},#{channelTechnicanAddDTO.phone},#{channelTechnicanAddDTO.province},#{channelTechnicanAddDTO.city},
         #{channelTechnicanAddDTO.county},#{channelTechnicanAddDTO.address},#{channelTechnicanAddDTO.job},#{channelTechnicanAddDTO.email},
-        #{channelTechnicanAddDTO.hireDate},#{channelTechnicanAddDTO.qqNum},#{channelTechnicanAddDTO.telephone},0,
+        #{channelTechnicanAddDTO.hireDate},#{channelTechnicanAddDTO.qqNum},#{channelTechnicanAddDTO.telephone},2,
         now(),now())
     </insert>
 
@@ -175,8 +175,8 @@
         WHERE
         ct.have_delete != 1
         <if test="searchCondition != null and  searchCondition !='' ">
-            AND (ct.company_name like CONCAT('%',#{searchCondition},'%')
-            OR ct.person_name like CONCAT('%',#{searchCondition},'%'))
+            AND (company_name like CONCAT('%',#{searchCondition},'%')
+            OR person_name like CONCAT('%',#{searchCondition},'%'))
         </if>
         ORDER BY
         ct.update_time DESC
@@ -191,8 +191,8 @@
         WHERE
         have_delete != 1
         <if test="searchCondition != null and  searchCondition !='' ">
-            AND (ct.company_name like CONCAT('%',#{searchCondition},'%')
-            OR ct.person_name like CONCAT('%',#{searchCondition},'%'))
+            AND (company_name like CONCAT('%',#{searchCondition},'%')
+            OR person_name like CONCAT('%',#{searchCondition},'%'))
         </if>
     </select>
 
@@ -272,16 +272,27 @@
         ct.person_Id = #{personId}
     </update>
 
-    <insert id="batchInsertTechnicans" parameterType="com.demo.common.module.DTO.ChannelTechnicanAddDTO">
-        insert into channel_technician (person_id, company_id, person_name, company_name, person_gender, identity_card, birthday, phone, province, city, county, address, job, email, hire_date, qq_num, telephone, review_status, create_time,update_time)
-        <foreach collection="channelTechnicanAddDTOS" index="index" item="channelTechnicanAddDTO"
+    <insert id="batchInsertTechnicans" parameterType="java.util.List">
+        INSERT INTO channel_technician (person_id, company_id, person_name, company_name,
+        person_gender, identity_card, birthday, phone, province, city, county, address,
+        job, email, hire_date, qq_num, telephone, review_status, create_time,update_time)
+        VALUES
+        <foreach collection="channelTechnicanAddDTOList" index="index" item="channelTechnicanBatchAddDTO"
                  separator=",">
-        values (#{channelTechnicanAddDTO.personId},#{channelTechnicanAddDTO.companyId},#{channelTechnicanAddDTO.personName},
-        #{channelTechnicanAddDTO.companyName},#{channelTechnicanAddDTO.personGender},#{channelTechnicanAddDTO.identityCard},
-        #{channelTechnicanAddDTO.birthday},#{channelTechnicanAddDTO.phone},#{channelTechnicanAddDTO.province},#{channelTechnicanAddDTO.city},
-        #{channelTechnicanAddDTO.county},#{channelTechnicanAddDTO.address},#{channelTechnicanAddDTO.job},#{channelTechnicanAddDTO.email},
-        #{channelTechnicanAddDTO.hireDate},#{channelTechnicanAddDTO.qqNum},#{channelTechnicanAddDTO.telephone},2,
-        now(),now())
+        (#{channelTechnicanBatchAddDTO.personId},
+        #{channelTechnicanBatchAddDTO.companyId},
+        #{channelTechnicanBatchAddDTO.personName},
+        #{channelTechnicanBatchAddDTO.companyName},
+        #{channelTechnicanBatchAddDTO.personGender},
+        #{channelTechnicanBatchAddDTO.identityCard},
+        #{channelTechnicanBatchAddDTO.birthday},
+        #{channelTechnicanBatchAddDTO.phone},
+        #{channelTechnicanBatchAddDTO.province},
+        #{channelTechnicanBatchAddDTO.city},
+        #{channelTechnicanBatchAddDTO.county},#{channelTechnicanBatchAddDTO.address},
+        #{channelTechnicanBatchAddDTO.job},#{channelTechnicanBatchAddDTO.email},
+        #{channelTechnicanBatchAddDTO.hireDate},#{channelTechnicanBatchAddDTO.qqNum},
+        #{channelTechnicanBatchAddDTO.telephone},2,now(),now())
         </foreach>
     </insert>
 </mapper>

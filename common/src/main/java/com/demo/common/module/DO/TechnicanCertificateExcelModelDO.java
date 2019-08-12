@@ -32,5 +32,5 @@ public class TechnicanCertificateExcelModelDO {
      *证书失效时间
      */
     @Excel(name = "证书有效期*", orderNum = "18")
-    private Date invalidCertificateTime;
+    private String invalidCertificateTime;
 }

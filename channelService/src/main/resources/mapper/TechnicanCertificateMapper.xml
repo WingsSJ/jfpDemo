@@ -21,7 +21,6 @@
             #{technicanCertificateAddDTO.certificateDirection},#{technicanCertificateAddDTO.certificateLevel},
             #{technicanCertificateAddDTO.invalidCertificateTime},now(),now(),0)
         </foreach>
-        where have_delete != 1
     </insert>
 
     <update id="updateTechnicanCertificateRecords" parameterType="java.util.List">

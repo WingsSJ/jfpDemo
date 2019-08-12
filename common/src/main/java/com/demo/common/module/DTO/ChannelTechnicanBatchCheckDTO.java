@@ -1,6 +1,7 @@
 package com.demo.common.module.DTO;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,5 +15,5 @@ public class ChannelTechnicanBatchCheckDTO {
     @NotBlank
     String companyId;
     @NotNull
-    File file;
+    MultipartFile file;
 }

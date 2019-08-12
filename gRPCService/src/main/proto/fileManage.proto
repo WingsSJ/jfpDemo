@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.topsec.mobiapi.proto;
+
+service FsmService {
+    rpc getFileList(FileQueryRequest) returns (GetFileInfoResponse);
+
+    rpc getFileUrl(FileUrlRequest) returns (FileUrlResponse);
+
+    rpc getTypeList(FileTypesRequest) returns (FileTypesResponse);
+}
+
+message FileQueryRequest {
+    string searchCondition = 1;
+    int32 times =2;//时间  0 一周内 1 一个月内 2 半年内
+    int32 pageSize = 3; //每页数据量大小
+    int32 currPage = 4; //当前页码
+}
+
+message GetFileInfoResponse {
+    int32 result   = 1; //结果 0 成功，1 失败
+    string messsage = 2; //说明（成功）    “结果”
+    FileInfoEntity objEntity = 3;//对象
+}
+
+message FileInfoEntity{
+    int32 pageSize = 1; //每页数据量大小
+    int32 currPage   = 2; //当前页码
+    int32 totalCount = 3; //总记录数
+    int32 totalPage = 4; //总页数
+    repeated FileInfo list = 5;//集合
+}
+
+//文件信息
+message FileInfo {
+    string fid         = 1; //文件ID
+    string name        = 2; //文件名称
+    string size        = 3;  //文件大小
+    string category    = 4;  //文件类型
+    string type        = 5;  //文件分类
+    string watchUrl    = 6;  //文件预览路径
+    int32 shareNumber = 7;  //文件分享次数
+    int32 downloadNumber = 8;  //文件下载次数
+    string createdId    = 9;  //创建人ID
+    string createdName    = 10; //创建人姓名
+    string ctime    = 11; //创建时间
+    string updatedId = 12; //更新人ID
+    string updatedName = 13; //更新人姓名
+    string utime   = 14; //更新时间
+    string version   = 15; //版本
+}
+
+message FileUrlRequest{
+    string fid = 1;//文件ID
+}
+
+message FileUrlResponse{
+    int32 result   = 1; //结果 0 成功，1 失败
+    string messsage = 2; //说明（成功）    “结果”
+    string objEntity = 3;//文件预览地址
+}
+
+message FileTypesRequest{
+    string typeId = 1;//文件分类ID(目录ID)
+    int32 pageSize = 2; //每页数据量大小
+    int32 currPage   = 3; //当前页码
+}
+
+message FileTypesResponse{
+    int32 result   = 1; //结果 0 成功，1 失败
+    string messsage = 2; //说明（成功）    “结果”
+    FileTypesObj objEntity = 3;//文件预览地址
+}
+
+message FileTypesObj{
+    repeated FileTypes types = 1;//文件分类列表
+    FileInfoEntity files = 2;//文件列表
+}
+
+message FileTypes{
+    string typeId = 1; //文件分类ID
+    string typeName = 2; //文件名称
+}

@@ -2,11 +2,11 @@ package com.demo.channel.repo;
 
 import com.demo.channel.mapper.ChannelTechnicanMapper;
 import com.demo.channel.mapper.TechnicanCertificateMapper;
-import com.demo.channel.utils.CodeMapUtil;
 import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
 import com.demo.common.module.DTO.TechnicanCertificateAddDTO;
+import com.demo.channel.util.CodeMapUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -36,8 +36,8 @@ public class ChannelTechnicanRepo {
     }
 
     public boolean queryOneChannelTechnicanHaveRecord(ChannelTechnicanAddDTO channelTechnicanAddDTO){
-        String personId = channelTechnicanAddDTO.getIdentityCard();
-        int queryOneChannelTechnicanHaveRecord = channelTechnicanMapper.queryOneChannelTechnicanHaveRecord(personId);
+        String identityCard = channelTechnicanAddDTO.getIdentityCard();
+        int queryOneChannelTechnicanHaveRecord = channelTechnicanMapper.queryOneChannelTechnicanHaveRecord(identityCard);
         return queryOneChannelTechnicanHaveRecord > 0;
     }
 
@@ -49,11 +49,6 @@ public class ChannelTechnicanRepo {
         if(channelTechnicanAddDTO.checkNull()){
             return false;
         }
-        //获取相应的地区编码
-        Map<String,String> areaCodeByAreaName = CodeMapUtil.getAreaCodeByAreaName(channelTechnicanAddDTO.getProvince(), channelTechnicanAddDTO.getCity(), channelTechnicanAddDTO.getCounty());
-        channelTechnicanAddDTO.setProvince(areaCodeByAreaName.get("province"));
-        channelTechnicanAddDTO.setCity(areaCodeByAreaName.get("city"));
-        channelTechnicanAddDTO.setCounty(areaCodeByAreaName.get("county"));
         //记录渠道技术人员信息
         int oneChannelTechnicanRecord = channelTechnicanMapper.createOneChannelTechnicanRecord(channelTechnicanAddDTO);
         List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList = channelTechnicanAddDTO.getTechnicanCertificateAddDTOS();
@@ -179,6 +174,8 @@ public class ChannelTechnicanRepo {
         for(ChannelTechnicanAddDTO channelTechnicanAddDTO:channelTechnicanAddDTOS){
             List<TechnicanCertificateAddDTO> technicanCertificateAddDTOS = channelTechnicanAddDTO.getTechnicanCertificateAddDTOS();
             if(CollectionUtils.isNotEmpty(technicanCertificateAddDTOS)){
+                //填入personId
+                technicanCertificateAddDTOS.forEach(dto->dto.setPersonId(channelTechnicanAddDTO.getPersonId()));
                 technicanCertificateMapper.recordTechnicanCertificateRecords(technicanCertificateAddDTOS);
             }
         }

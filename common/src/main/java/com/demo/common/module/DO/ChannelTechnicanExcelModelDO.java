@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -51,7 +50,7 @@ public class ChannelTechnicanExcelModelDO {
      */
     @Excel(name = "出生年月*",importFormat = "yyyy/MM/dd", orderNum = "3")
     @JsonFormat(pattern = "yyyy/MM/dd")
-    private Date birthday;
+    private String birthday;
     /**
      * 联系电话
      */
@@ -92,7 +91,7 @@ public class ChannelTechnicanExcelModelDO {
      */
     @Excel(name = "入职时间*",importFormat = "yyyy/MM/dd",exportFormat = "yyyy/MM/dd",orderNum = "1")
     @JsonFormat(pattern = "yyyy/MM/dd")
-    private Date hireDate;
+    private String hireDate;
     /**
      * qq号
      */
@@ -124,7 +123,32 @@ public class ChannelTechnicanExcelModelDO {
      * 非空校验
      */
     public boolean checkNull(){
-        return StringUtils.isAnyBlank(this.companyId,this.companyName,this.personName,
+        return StringUtils.isAnyBlank(this.personName,
                 this.personGender,this.identityCard,this.phone,this.province,this.city,this.county,this.address,this.job);
+    }
+    /**
+     *  指明那条数据非空
+     */
+    public String checkNullInfo(){
+        if(StringUtils.isBlank(this.personName)){
+            return "姓名不能为空";
+        }else if(StringUtils.isBlank(this.personGender)){
+            return "性别不能为空";
+        }else if(StringUtils.isBlank(this.identityCard)){
+            return "身份证不能为空";
+        }else if(StringUtils.isBlank(this.phone)){
+            return "手机号不能为空";
+        }else if(StringUtils.isBlank(this.province)){
+            return "所在省不能为空";
+        }else if(StringUtils.isBlank(this.city)){
+            return "所在市不能为空";
+        }else if(StringUtils.isBlank(this.county)){
+            return "所在区县不能为空";
+        }else if(StringUtils.isBlank(this.address)){
+            return "详细地址不能为空";
+        }else if(StringUtils.isBlank(this.job)){
+            return "职务信息不能为空";
+        }
+        return "必填字段不能为空";
     }
 }

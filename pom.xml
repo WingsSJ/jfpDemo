@@ -12,10 +12,11 @@
         <module>eureka</module>
         <module>channelService</module>
         <module>admin</module>
-        <module>serviceGRPC</module>
+        <module>gRPCService</module>
         <module>zipkin</module>
-        <module>serviceGraphQL</module>
+        <module>graphQLService</module>
         <module>common</module>
+        <module>appApiService</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

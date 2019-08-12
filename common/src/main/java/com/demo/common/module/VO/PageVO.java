@@ -23,6 +23,10 @@ public class PageVO<T>{
      */
     private List<T> list;
 
+    public PageVO(){
+
+    }
+
     public PageVO(Integer currPage, Integer pageSize, Integer totalCount, List<T> list) {
         this.currPage = currPage;
         this.pageSize = pageSize;

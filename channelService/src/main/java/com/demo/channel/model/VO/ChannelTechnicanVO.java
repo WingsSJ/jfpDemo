@@ -1,6 +1,6 @@
 package com.demo.channel.model.VO;
 
-import com.demo.channel.utils.CodeMapUtil;
+import com.demo.channel.util.CodeMapUtil;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
 import com.demo.common.module.VO.TechnicanCertificateVO;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 技术人员
  */
 @Data
-public class ChannelTechnicanVO{
+public class ChannelTechnicanVO {
     /**
      * 技术人员Id （唯一属性）
      */
@@ -173,14 +173,6 @@ public class ChannelTechnicanVO{
         channelTechnicanVO.setCity(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCity()));
         channelTechnicanVO.setProvince(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getProvince()));
         channelTechnicanVO.setReviewStatus(channelTechnicanQueryDTO.getReviewStatus());
-        //转成实际需要显示值
-//        if(Integer.valueOf(2).equals(channelTechnicanQueryDTO.getReviewStatus())){
-//            channelTechnicanVO.setReviewStatus("审核未通过");
-//        }else if (Integer.valueOf(1).equals(channelTechnicanQueryDTO.getReviewStatus())){
-//            channelTechnicanVO.setReviewStatus("通过");
-//        }else {
-//            channelTechnicanVO.setReviewStatus("待审核");
-//        }
         channelTechnicanVO.setTelephone(channelTechnicanQueryDTO.getTelephone());
         return channelTechnicanVO;
     }

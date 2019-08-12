@@ -8,38 +8,41 @@
         <outputRelativeToContentRoot value="true" />
         <module name="serivceB" />
         <module name="serivceA" />
-        <module name="serviceGRPC" />
+        <module name="gRPCservice" />
+        <module name="graphQLservice" />
         <module name="common" />
-        <module name="serviceGraphQL" />
         <module name="eureka" />
-        <module name="admin" />
-        <module name="zipkin" />
+        <module name="appApiservice" />
         <module name="channelService" />
+        <module name="zipkin" />
+        <module name="admin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="admin" target="1.8" />
+      <module name="appApiservice" target="1.8" />
       <module name="channelService" target="1.8" />
       <module name="clientGRPC" target="1.8" />
       <module name="common" target="1.8" />
       <module name="eureka" target="1.8" />
+      <module name="graphQLservice" target="1.8" />
+      <module name="gRPCservice" target="1.8" />
       <module name="jfp" target="1.8" />
       <module name="serivceA" target="1.8" />
       <module name="serivceB" target="1.8" />
-      <module name="serviceGraphQL" target="1.8" />
-      <module name="serviceGRPC" target="1.8" />
       <module name="zipkin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="admin" options="-parameters" />
+      <module name="appApiservice" options="-parameters" />
       <module name="channelService" options="-parameters" />
       <module name="clientGRPC" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="eureka" options="-parameters" />
-      <module name="serviceGRPC" options="-parameters" />
-      <module name="serviceGraphQL" options="-parameters -parameters" />
+      <module name="gRPCservice" options="-parameters" />
+      <module name="graphQLservice" options="-parameters -parameters" />
       <module name="zipkin" options="-parameters" />
     </option>
   </component>

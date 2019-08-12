@@ -21,6 +21,6 @@ public interface ChannelTechnicanMapper {
     ChannelTechnicanQueryDTO previewTechnicanInfo(@Param("personId") String personId);
     int updateTechnicanInfo(@Param("channelTechnicanUpdateDTO") ChannelTechnicanUpdateDTO channelTechnicanUpdateDTO);
     int deleteTechnican(@Param("personId") String personId);
-    int batchInsertTechnicans(@Param("channelTechnicanAddDTOS") List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS);
+    int batchInsertTechnicans(@Param("channelTechnicanAddDTOList") List<ChannelTechnicanAddDTO> channelTechnicanAddDTOList);
     int batchCheckTechnicans(@Param("identityCardList") List<String> identityCardList);
 }

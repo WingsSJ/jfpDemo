@@ -47,4 +47,4 @@ eureka:
     health-check-url-path: /actuator/health #健康检查的地址（依赖spring-boot-starter-actuator）
 logging:
   level:
-    com.demo.serviceA.mapper: DEBUG
+    com.demo.*: DEBUG

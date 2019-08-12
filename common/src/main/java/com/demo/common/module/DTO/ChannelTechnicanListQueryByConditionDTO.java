@@ -14,12 +14,12 @@ public class ChannelTechnicanListQueryByConditionDTO implements Serializable,Clo
     @NotNull
     int pageSize;
     @NotNull
-    int pageNum;
+    int currPage;
     String searchCondition;
 
-    public ChannelTechnicanListQueryByConditionDTO(int pageSize,int pageNum, String searchCondition) {
+    public ChannelTechnicanListQueryByConditionDTO(int pageSize,int currPage, String searchCondition) {
         this.pageSize = pageSize;
-        this.pageNum = pageNum;
+        this.currPage = currPage;
         this.searchCondition = searchCondition;
     }
 }

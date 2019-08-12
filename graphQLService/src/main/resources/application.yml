@@ -1,0 +1,46 @@
+graphql:
+  spqr:
+    gui:
+      enabled: true
+    relay:
+      connection-check-relaxed: false
+spring:
+  application:
+    name: graphQLService
+  profiles:
+    active: local
+server:
+  port: 23110
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+---
+spring:
+  profiles: local
+  #  #日志配置
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1 #采样比例 默认为0.1 修改为1.0为全部采样
+  #zipkin 服务地址
+  zipkin:
+    base-url: http://localhost:23010
+eureka:
+  client:
+    registryFetchIntervalSeconds: 10
+    serviceUrl:
+      defaultZone: http://localhost:21002/eureka/
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+logging:
+  level:
+    io.*: DEBUG
