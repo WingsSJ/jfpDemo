@@ -3,13 +3,14 @@ package com.demo.common.module.VO;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 技术人员
  */
 @Data
-public class ChannelTechnicanVO {
+public class ChannelTechnicanVO implements Serializable {
     /**
      * 技术人员Id （唯一属性）
      */

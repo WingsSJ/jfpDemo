@@ -1,4 +1,4 @@
-package com.demo.common.module.VO;
+package com.demo.common.module.VO.app;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 2019-07-18 14:35:08
  */
 @Data
-public class FileTypeVO implements Serializable {
+public class FileTypeAppVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -16,7 +16,7 @@ import lombok.Data;
  * @date 2019-07-18 14:35:08
  */
 @Data
-public class TssFsmCategory implements Serializable {
+public class TssFsmCategoryVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -56,5 +56,5 @@ public class TssFsmCategory implements Serializable {
 	/**
 	 * 	子分类
 	 */
-	private List<TssFsmCategory> children;
+	private List<TssFsmCategoryVO> children;
 }

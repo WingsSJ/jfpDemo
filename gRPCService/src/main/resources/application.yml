@@ -10,8 +10,6 @@ spring:
     name: serviceGRPC
   profiles:
     active: local
-mybatis:
-  mapper-locations: mapper/*Mapper.xml
 server:
   port: 23001
 #management 配置 服务端点信息  （依赖spring-boot-starter-actuator）
@@ -23,8 +21,6 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-grpc:
-  port: 51900
 ---
 spring:
   profiles: local

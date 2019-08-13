@@ -16,7 +16,7 @@ public class ChannelClient {
 
     public String queryAllChannelTechnicians(ChannelTechnicianInfoRequest request) {
         ManagedChannel managedChannel = ManagedChannelBuilder
-                .forAddress("127.0.0.1", 51900).usePlaintext().build();
+                .forAddress("localhost", 50121).usePlaintext().build();
 
         channelServiceBlockingStub =
                 ChannelServiceGrpc.newBlockingStub(managedChannel);
@@ -29,4 +29,7 @@ public class ChannelClient {
 
         return channelTechnicianInfoListResponse.getMesssage();
     }
+
+
+
 }

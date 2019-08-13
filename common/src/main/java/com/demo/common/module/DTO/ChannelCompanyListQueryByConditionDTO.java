@@ -19,4 +19,11 @@ public class ChannelCompanyListQueryByConditionDTO implements Serializable,Clone
      * 搜索条件
      */
     String searchCondition;
+
+    public ChannelCompanyListQueryByConditionDTO(@NotNull int pageSize, @NotNull int currPage, int starLevel, String searchCondition) {
+        this.pageSize = pageSize;
+        this.currPage = currPage;
+        this.starLevel = starLevel;
+        this.searchCondition = searchCondition;
+    }
 }

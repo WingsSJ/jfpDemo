@@ -2,7 +2,6 @@ package com.demo.grpc.server;
 
 import com.demo.grpc.annotation.GrpcInterceptor;
 import com.demo.grpc.interceptor.BaseServerInterceptor;
-import com.demo.grpc.interceptor.UnknownStatusDescriptionInterceptor;
 import io.grpc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,11 @@ public class GrpcServer {
 
     @PostConstruct
     public void startGrpcServer() throws IOException {
-        int port = 50051;
+        int port = 50121;
 
         ServerBuilder<?> serverBuilder = ServerBuilder.forPort(port);
 
-        serverBuilder.intercept(new UnknownStatusDescriptionInterceptor());
+//        serverBuilder.intercept(new UnknownStatusDescriptionInterceptor());
         for (BindableService service : services) {
 
             GrpcInterceptor grpcInterceptor = AnnotationUtils.findAnnotation(service.getClass(), GrpcInterceptor.class);
@@ -64,8 +63,8 @@ public class GrpcServer {
         grpcServer = serverBuilder.build();
 
         grpcServer.start();
-        log.info("gRPC Server started, listening on " + port);
-
+        log.info("gRPC Server started, listening on {}", port);
+        log.info("gRPC Server started, sockets {}" , grpcServer.getListenSockets());
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test")
-public class ChannelController {
+public class AppController {
     @Autowired
     private ChannelClient channelClient;
     @RequestMapping("/queryAll")

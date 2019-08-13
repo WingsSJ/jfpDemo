@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2019-07-18 14:35:08
  */
 @Data
-public class TssFsmDoc implements Serializable {
+public class TssFsmDocVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

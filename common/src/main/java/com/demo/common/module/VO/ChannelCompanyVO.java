@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class ChannelVO implements Serializable {
+public class ChannelCompanyVO implements Serializable {
 
     /**
      * 主键id

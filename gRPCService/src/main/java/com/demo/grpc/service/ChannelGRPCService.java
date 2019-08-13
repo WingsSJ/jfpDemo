@@ -1,16 +1,18 @@
 package com.demo.grpc.service;
 
+import com.demo.common.module.DTO.ChannelCompanyListQueryByConditionDTO;
 import com.demo.common.module.DTO.ChannelTechnicanListQueryByConditionDTO;
 import com.demo.common.module.VO.ChannelTechnicanVO;
-import com.demo.common.module.VO.ChannelVO;
+import com.demo.common.module.VO.ChannelCompanyVO;
 import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
-import com.demo.grpc.feginService.ChannelFeginService;
+import com.demo.common.module.VO.app.ChannelCompanyAppVO;
+import com.demo.common.module.VO.app.ChannelTechnicanAppVO;
+import com.demo.grpc.feginService.AppApiFeginService;
 import com.topsec.mobiapi.proto.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +25,14 @@ import java.util.List;
 @Component
 public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBase {
     @Autowired
-    ChannelFeginService channelFeginService;
+    AppApiFeginService appApiFeginService;
     @Override
     public void queryAllChannelTechnicians(ChannelTechnicianInfoRequest request, StreamObserver<ChannelTechnicianInfoListResponse> responseObserver) {
         //获取请求
         log.info("getPageSize: {}", request.getPageSize());
         log.info("getCurrPage: {}", request.getCurrPage());
         log.info("getSearchCondition: {}", request.getSearchCondition());
-        JsonObject<PageVO<ChannelTechnicanVO>> channelTechnicanVOPageVO = channelFeginService.conditionQueryTechnicans(new ChannelTechnicanListQueryByConditionDTO(
+        JsonObject<PageVO<ChannelTechnicanAppVO>> channelTechnicanVOPageVO = appApiFeginService.queryChannelTechnicanInfoList(new ChannelTechnicanListQueryByConditionDTO(
                 request.getPageSize(),
                 request.getCurrPage(),
                 request.getSearchCondition()
@@ -49,7 +51,7 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
                                 setCompanyName(dto.getCompanyName()).
                                 setPersonName(dto.getPersonName()).
                                 setPersonGender(dto.getPersonGender()).
-                                setPId(dto.getPersonId()).
+                                setPId(dto.getPId()).
                                 setIdCard(dto.getIdentityCard()).
                                 setBirthday(dto.getBirthday()).
                                 setPhone(dto.getPhone()).
@@ -62,7 +64,7 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
                                 setHireDate(dto.getHireDate()).
                                 setQqNum(dto.getQqNum()).
                                 setTelephone(dto.getTelephone()).
-                                setReStatues(dto.getReviewStatus()).build()
+                                setReStatues(dto.getReStatues()).build()
                 )
         );
         Integer currPage = channelTechnicanVOPageVO.getObjEntity().getCurrPage();
@@ -82,9 +84,10 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
         log.info("getPageSize: {}", request.getPageSize());
         log.info("getCurrPage: {}", request.getCurrPage());
         log.info("getSearchCondition: {}", request.getSearchCondition());
-        JsonObject<PageVO<ChannelVO>> channelCompanyPageVO = channelFeginService.conditionQueryCompanys(new ChannelTechnicanListQueryByConditionDTO(
+        JsonObject<PageVO<ChannelCompanyAppVO>> channelCompanyPageVO = appApiFeginService.queryChannelCompanyInfoList(new ChannelCompanyListQueryByConditionDTO(
                 request.getPageSize(),
                 request.getCurrPage(),
+                request.getStarLevel(),
                 request.getSearchCondition()
         ));
         //

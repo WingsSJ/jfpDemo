@@ -1,40 +1,37 @@
 //package com.demo.grpc.service;
 //
 //import com.demo.common.module.DTO.FileInfoQueryDTO;
-//import com.demo.common.module.DTO.FilePreViewQueryDTO;
+//import com.demo.common.module.DTO.FileTypeListQueryDTO;
 //import com.demo.common.module.VO.JsonObject;
 //import com.demo.common.module.VO.PageVO;
-//import com.demo.grpc.feginService.FileManageFeginService;
-//import com.demo.grpc.model.FilePreViewVO;
-//import com.demo.grpc.model.FileTypeVO;
-//import com.demo.grpc.model.FileTypeVOS;
-//import com.demo.grpc.model.FileVO;
+//import com.demo.common.module.VO.app.FileAppVO;
+//import com.demo.common.module.VO.app.FileInfoTypeAppVO;
+//import com.demo.grpc.feginService.AppApiFeginService;
 //import com.topsec.mobiapi.proto.*;
 //import io.grpc.Status;
 //import io.grpc.stub.StreamObserver;
 //import lombok.extern.slf4j.Slf4j;
-//import org.lognet.springboot.grpc.GRpcService;
 //import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
 //
 //import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//@GRpcService
+//@Component
 //@Slf4j
 //public class FileManageGRPCService extends FsmServiceGrpc.FsmServiceImplBase{
 //    @Autowired
-//    FileManageFeginService fileManageFeginService;
-//
-//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//    AppApiFeginService appApiFeginService;
 //    @Override
 //    public void getFileList(FileQueryRequest request, StreamObserver<GetFileInfoResponse> responseObserver) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //        //获取请求
 //        log.info("getPageSize: {}", request.getPageSize());
 //        log.info("getCurrPage: {}", request.getCurrPage());
 //        log.info("times: {}", request.getTimes());
 //        log.info("getSearchCondition: {}", request.getSearchCondition());
-//        JsonObject<PageVO<FileVO>> fileVOPageVO = fileManageFeginService.getFileList(new FileInfoQueryDTO(
+//        JsonObject<PageVO<FileAppVO>> fileVOPageVO = appApiFeginService.queryCategoryInfoList(new FileInfoQueryDTO(
 //                request.getPageSize(),
 //                request.getCurrPage(),
 //                request.getSearchCondition(),
@@ -85,9 +82,8 @@
 //    public void getFileUrl(FileUrlRequest request, StreamObserver<FileUrlResponse> responseObserver) {
 //        //获取请求
 //        log.info("getFid: {}", request.getFid());
-//        JsonObject<FilePreViewVO> filePreViewVOJsonObject = fileManageFeginService.getFileUrl(new FilePreViewQueryDTO(
-//                request.getFid()
-//        ));
+//        JsonObject<String> filePreViewVOJsonObject = appApiFeginService.filePreView(
+//                request.getFid());
 //        if (filePreViewVOJsonObject.getResult() != 0) {
 //            responseObserver.onError(Status.NOT_FOUND
 //                    .withDescription("预览文件信息失败!")
@@ -95,39 +91,31 @@
 //            return;
 //        }
 //        FileUrlResponse fileUrlResponse
-//                = FileUrlResponse.newBuilder().setObjEntity(filePreViewVOJsonObject.getObjEntity().getObjEntity()
+//                = FileUrlResponse.newBuilder().setObjEntity(filePreViewVOJsonObject.getObjEntity()
 //        ).setMesssage("success").setResult(0).build();
 //        responseObserver.onNext(fileUrlResponse);
 //        responseObserver.onCompleted();
 //    }
 //
 //    /**
-//     * 资料目录列表 (调用两个接口之后做数据拼接)
+//     * 资料 + 目录列表 (调用两个接口之后做数据拼接)
 //     * @param request
 //     * @param responseObserver
 //     */
 //    @Override
 //    public void getTypeList(FileTypesRequest request, StreamObserver<FileTypesResponse> responseObserver) {
-//        //获取到目录列表 List<FileTypeVO>
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        //获取到目录列表 List<FileTypeAppVO>
 //        String typeId = request.getTypeId();
-//        List<FileTypeVO> fileTypeVOList = new ArrayList<>();
-//        PageVO<FileVO> fileVOPageVO = new PageVO<>();
+//        FileInfoTypeAppVO objEntity;
 //        if(!"0".equals(typeId)) {
 //            //获取到分类列表
-//            fileTypeVOList = fileManageFeginService.getTypeList(request.getTypeId()).getObjEntity();
-//            //获取到文件列表
-//            fileVOPageVO = fileManageFeginService.getFileList(new FileInfoQueryDTO(
-//                    request.getCurrPage(),
-//                    request.getPageSize(),
-//                    request.getTypeId()
-//                    )
-//            ).getObjEntity();
+//            objEntity = appApiFeginService.queryFileInfoList(new FileTypeListQueryDTO(Integer.valueOf(request.getTypeId()), request.getPageSize(), request.getCurrPage())).getObjEntity();
 //        }else{
 //            //如果typeId 为 "0" 表示为首页 只获取到分类列表
-//            fileTypeVOList = fileManageFeginService.getTypeList(request.getTypeId()).getObjEntity();
+//            objEntity = appApiFeginService.queryFileInfoList(new FileTypeListQueryDTO(0)).getObjEntity();
 //        }
-//        FileTypeVOS fileTypeVOS = new FileTypeVOS(fileTypeVOList,fileVOPageVO);
-//        JsonObject<FileTypeVOS> result = new JsonObject<>(0,"query success",fileTypeVOS);
+//        JsonObject<FileInfoTypeAppVO> result = new JsonObject<>(0,"query success",fileVOPageVO);
 //        //将result存入response
 //        List<FileTypes> fileTypesList = new ArrayList<>();
 //        fileTypeVOList.stream().forEach(dto->

@@ -21,4 +21,14 @@ public class FileTypeListQueryDTO {
      * 时间  0 一周内 1 一个月内 2 半年内
      */
     private Integer times;
+
+    public FileTypeListQueryDTO(Integer typeId, @NotNull int pageSize, @NotNull int currPage) {
+        this.typeId = typeId;
+        this.pageSize = pageSize;
+        this.currPage = currPage;
+    }
+
+    public FileTypeListQueryDTO(Integer typeId) {
+        this.typeId = typeId;
+    }
 }
