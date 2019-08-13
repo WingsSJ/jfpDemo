@@ -12,14 +12,15 @@ import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO 自测
-@GRpcService
+//@GRpcService
 @Slf4j
-//@Component
+@Component
 public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBase {
     @Autowired
     ChannelFeginService channelFeginService;
