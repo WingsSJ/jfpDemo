@@ -13,6 +13,7 @@ import com.topsec.mobiapi.proto.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +43,15 @@ public class ChannelGRPCService extends ChannelServiceGrpc.ChannelServiceImplBas
             responseObserver.onError(Status.NOT_FOUND
                     .withDescription("查询人员信息失败!")
                     .asRuntimeException());
+            return;
+        }
+        //如果查询结果为空直接返回
+        if(CollectionUtils.isEmpty(channelTechnicanVOPageVO.getObjEntity().getList())){
+            ChannelTechnicianEntity channelTechnicianEntity = ChannelTechnicianEntity.newBuilder().addAllList(new ArrayList<>()).setCurrPage(0).setPageSize(0).setTotalCount(0).setTotalPage(0).build();
+            ChannelTechnicianInfoListResponse channelTechnicianInfoListResponse
+                    = ChannelTechnicianInfoListResponse.newBuilder().setObjEntity(channelTechnicianEntity).setMesssage("success").setResult(0).build();
+            responseObserver.onNext(channelTechnicianInfoListResponse);
+            responseObserver.onCompleted();
             return;
         }
         List<ChannelTechnicianInfo> channelTechnicianInfos = new ArrayList<>();

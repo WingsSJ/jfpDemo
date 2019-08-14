@@ -205,7 +205,7 @@
         WHERE
         have_delete != 1
         <if test="reviewStatus != null">
-            AND ct.review_status = #{reviewStatus}
+            AND review_status = #{reviewStatus}
         </if>
         <if test="companyName != null and  companyName !='' ">
             AND company_name like CONCAT('%',#{companyName},'%')

@@ -29,7 +29,7 @@ public interface AppApiFeginService {
      * @author Wings
      * @apiNote 根据条件查询出所有渠道服务商的信息
      */
-    @PostMapping("/query/channel/company/info/list")
+    @PostMapping("/app/query/channel/company/info/list")
     JsonObject<PageVO<ChannelCompanyAppVO>> queryChannelCompanyInfoList(@RequestBody @Valid ChannelCompanyListQueryByConditionDTO channelCompanyListQueryByConditionDTO);
 
 
@@ -37,7 +37,7 @@ public interface AppApiFeginService {
      * @author Wings
      * @apiNote 根据条件查询出所有技术人员的信息
      */
-    @PostMapping("/query/channel/technican/info/list")
+    @PostMapping("/app/query/channel/technican/info/list")
     JsonObject<PageVO<ChannelTechnicanAppVO>> queryChannelTechnicanInfoList(@RequestBody @Valid ChannelTechnicanListQueryByConditionDTO channelTechnicanListQueryByConditionDTO);
 
 
@@ -45,20 +45,20 @@ public interface AppApiFeginService {
      * @author Wings
      * @apiNote 根据条件查询出所有 文件+目录 列表 信息
      */
-    @PostMapping("/query/file/info/list")
+    @PostMapping("/app/query/file/info/list")
     JsonObject<FileInfoTypeAppVO> queryFileInfoList(@RequestBody @Valid FileTypeListQueryDTO fileInfoQueryDTO);
 
     /**
      * @author Wings
      * @apiNote 根据条件查询出所有文件列表
      */
-    @PostMapping("/query/category/info/list")
+    @PostMapping("/app/query/category/info/list")
     JsonObject<PageVO<FileAppVO>> queryCategoryInfoList(@RequestBody @Valid FileInfoQueryDTO fileInfoQueryDTO);
 
     /**
      * @author Wings
      * @apiNote 文件资料预览地址
      */
-    @PostMapping("/file/pre/view")
+    @PostMapping("/app/file/pre/view")
     JsonObject<String> filePreView(@RequestParam("fid")@NotNull String fid);
 }
