@@ -29,7 +29,4 @@ public class ChannelClient {
 
         return channelTechnicianInfoListResponse.getMesssage();
     }
-
-
-
 }
