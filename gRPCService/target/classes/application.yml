@@ -47,4 +47,21 @@ eureka:
 logging:
   level:
     com.demo.*: DEBUG
-
+#newsService需要调用的服务
+feign:
+  user:
+    name: getwayserver
+    url: http://getwayserver:8765/
+    path: userdata
+  cms:
+    name: getwayserver
+    url: http://getwayserver:8765/
+    path: cmsdata
+  crm:
+    name: crmservice
+    url: https://192.168.1.18
+    path:
+  clockin:
+    name: getwayserver
+    url: http://getwayserver:8765/
+    path: clockin

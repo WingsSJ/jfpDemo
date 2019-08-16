@@ -1,0 +1,301 @@
+/*
+接口名：手机APP端通信接口
+版本：0.0.6
+*/
+
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.topsec.mobiapi.proto";
+option java_outer_classname = "MobileApiProto";
+option objc_class_prefix = "MOBIAPI";
+
+package mobiapi;
+
+import "google/protobuf/empty.proto";
+
+//用户登录认证相关接口
+service AuthServ {
+    /**
+    * 接口描述：使用用户名与密码登录获得ptoken
+    *
+    * #头信息:
+    *    mobiid: [xxxxxxx] (文本 | 手机唯一标示 | *非空)
+    *    softver: [1] (数字文本 |手机软件版本 | *非空)
+    *    ptoken: [xxxxxx] (文本 |登录标示 | 为空)
+    * >参数:
+    *   LoginRequest
+    * <返回：
+    *   Person
+    * -异常：
+    *   400102#登录失败! : LoginRequest.moblid为空
+    *   400200#请升级软件 : 手机软件版本和服务器不符
+    *   400201#认证错误 : 手机软件版本为空或不是一个数字
+    *   400400#用户名或密码不能为空! : 参数中username为空或password为空
+    *   400401#用户名或密码错误! : 用户名或密码错误
+    *   500000# [xxxx] 服务器内部错误! : 未知异常
+    */
+    rpc Login (LoginRequest) returns (MobiPtoken);
+    /**
+    * 接口描述：获得新ptoken
+    *
+    * #头信息:
+    *    mobiid: [xxxxxxx] (文本 | 手机唯一标示 | *非空)
+    *    softver: [1] (数字文本 |手机软件版本 | *非空)
+    *    ptoken: [xxxxxx] (文本 |登录标示 | *非空)
+    * >参数:
+    *   无
+    * <返回：
+    *   MobiPtoken
+    * -异常：
+    *   400100#缺少有效认证凭证 : 手机唯一标示为空
+    *   400101#认证错误 : sn标示不匹配
+    *   400102#登录失败! : LoginRequest.moblid为空
+    *   400200#请升级软件 : 手机软件版本和服务器不符
+    *   400201#认证错误 : 手机软件版本为空或不是一个数字
+    *   400301#认证错误 : token失效或不合法
+    *   400402#未登录! : 头信息ptoken 为空
+    *   500000# [xxxx] 服务器内部错误! : 未知异常
+    */
+    rpc RenewToken (Empty) returns (MobiPtoken);
+}
+
+//用户基础信息相关接口
+service UserServ {
+
+    /**
+    * 接口描述：获取用户基础信息
+    *
+    * #头信息:
+    *    mobiid: [xxxxxxx] (文本 | 手机唯一标示 | *非空)
+    *    softver: [1] (数字文本 |手机软件版本 | *非空)
+    *    ptoken: [xxxxxx] (文本 |登录标示 | 非空)
+    * >参数:
+    *   LoginRequest
+    * <返回：
+    *   Person
+    * -异常：
+    *   400100#缺少有效认证凭证 : 手机唯一标示为空
+    *   400101#认证错误 : sn标示不匹配
+    *   400102#登录失败! : LoginRequest.moblid为空
+    *   400200#请升级软件 : 手机软件版本和服务器不符
+    *   400201#认证错误 : 手机软件版本为空或不是一个数字
+    *   400301#认证错误 : token失效或不合法
+    *   400550#获取人员信息失败 : 查询人员信息失败
+    *   400551#获取账户权限失败 : 获取账户权限失败
+    *   500000# [xxxx] 服务器内部错误! : 未知异常
+    */
+    rpc GetPersonInfo (Empty) returns (Person);
+    /**
+    * 接口描述：发送设备信息到服务器
+    *
+    * #头信息:
+    *    mobiid: [xxxxxxx] (文本 | 手机唯一标示 | *非空)
+    *    softver: [1] (数字文本 |手机软件版本 | *非空)
+    *    ptoken: [xxxxxx] (文本 |登录标示 | 非空)
+    * >参数:
+    *   LoginRequest
+    * <返回：
+    *   Person
+    * -异常：
+    *   400100#缺少有效认证凭证 : 手机唯一标示为空
+    *   400101#认证错误 : sn标示不匹配
+    *   400102#登录失败! : LoginRequest.moblid为空
+    *   400200#请升级软件 : 手机软件版本和服务器不符
+    *   400201#认证错误 : 手机软件版本为空或不是一个数字
+    *   400301#认证错误 : token失效或不合法
+    *   400600#添加设备信息错误 : 添加设备信息错误
+    *   500000# [xxxx] 服务器内部错误! : 未知异常
+    */
+    rpc SentMobileInfo (Mobile) returns (Empty);
+}
+
+service NewsServ {
+    /**
+    * 接口描述：发送设备信息到服务器
+    *
+    * #头信息:
+    *    mobiid: [xxxxxxx] (文本 | 手机唯一标示 | *非空)
+    *    softver: [1] (数字文本 |手机软件版本 | *非空)
+    *    ptoken: [xxxxxx] (文本 |登录标示 | 为空)
+    * >参数:
+    *   LoginRequest
+    * <返回：
+    *   Person
+    * -异常：
+    *   400100#缺少有效认证凭证 : 手机唯一标示为空
+    *   400101#认证错误 : sn标示不匹配
+    *   400102#登录失败! : LoginRequest.moblid为空
+    *   400200#请升级软件 : 手机软件版本和服务器不符
+    *   400201#认证错误 : 手机软件版本为空或不是一个数字
+    *   400301#认证错误 : token失效或不合法
+    *   500000# [xxxx] 服务器内部错误! : 未知异常
+    */
+    rpc GetNews (GetNewsRequest) returns (GetNewsResponse);
+}
+
+service MsgServ {
+    //rpc 获取未读消息统计（按类型）
+    rpc GetTopicMsgCount(Empty) returns (GetNoticeTopicCountResponse);
+    //rpc 获取消息汇总与列表（类型，分页信息） --->响应（已读，）
+    rpc GetMessagesByTopic(GetNoticeRequest) returns (GetNoticeResponse);
+    //rpc 设置消息已读
+    rpc MarkMessageRead(GetMarkMessageRequest) returns (Empty);
+}
+
+//登录请求
+message LoginRequest {
+    string username = 1; //用户名
+    string password = 2; //密码
+    string mobileId = 3; //设备ID
+}
+
+//手机端用Ptoken
+message MobiPtoken {
+    string ptoekn = 1; //认证用token
+    string expire = 2; //过期时间(严格按RFC3339标准)
+    string accountid = 3; // accountid
+}
+
+//人员基础信息
+message Person {
+    string chnName = 1; //中文名
+    string email = 2;
+    Gender gender = 3; //性别
+    string phoneNum = 4; //手机号
+
+    bytes photo = 10; //头像二进制图像数据（png）
+
+    repeated string roles = 100; //角色
+
+    //性别
+    enum Gender {
+        Unknown = 0;
+        Male = 1;
+        Female = 2;
+    }
+
+}
+
+//设备信息
+message Mobile {
+    MobileType mobiType = 1; //设备类型
+    string mobiBrand = 2; //设备品牌
+    string mobiModel = 3; //设备型号
+    string mobiVer = 4; //设备版本
+
+    bool rooted = 10; //是否越狱root
+
+    Location mobiLocation = 100;
+
+    //设备类型
+    enum MobileType {
+        Unknown = 0;
+        Ios = 1; //ios
+        Android = 2; //android
+    }
+}
+
+//位置信息
+message Location {
+    double latitude = 1; //纬度
+    double longitude = 2; //经度
+    LocationType locationType = 3;
+
+    //位置信息类型
+    enum LocationType {
+        Unknown = 0; //未知
+        Gps = 1; //GPS定位
+        Station = 2; //基站定位
+        Wifi = 3; //WiFi定位
+    }
+}
+
+//获取新闻请求
+message GetNewsRequest {
+    string whichColumn = 1; //需要获取栏目的英文标识，如为空就是全部栏目
+
+    PagingCondition pagingCond = 2; //请求分页信息
+}
+
+//获取新闻响应
+message GetNewsResponse {
+    map<string,NewsList> newsMap=1;
+}
+
+message NewsList {
+    repeated News newsList = 1; //响应列表
+    PagingResult pagingResult = 2; //分页结果信息
+}
+
+//新闻内容
+message News {
+    string id = 1; //新闻id
+    string title = 2; //新闻标题
+    string author = 3; //作者
+    string pubDate = 4; //发布日期(严格按RFC3339标准)
+    string htmlUrl = 5; //新闻内容url
+    string imgUrl = 6; //新闻图片url
+
+    string column = 10; //栏目英文标识
+}
+
+//分页查询条件
+message PagingCondition {
+    int32 sizePerPage = 1; //每页数据量大小
+    int32 currentPage = 2; //当前页码
+}
+
+//结果中的分页信息
+message PagingResult {
+    int32 sizeTotal = 1; //数据总数
+    int32 sizePerPage = 2; //每页数据量大小
+    int32 currentPage = 3; //当前页码
+}
+
+//返回消息类型对象
+message GetNoticeTopicCountResponse {
+    repeated NoticeTopics topicList=1;
+}
+
+message NoticeTopics {
+    Notice lastNotice=1; //最新消息
+
+    string topicCode=2;//消息类型唯一标示英文
+    string topicName=3;//消息类型名称
+    int32 unread=4;//未读消息数量
+
+}
+
+message GetNoticeRequest {
+    string topicCode = 1; //需要获取通知类型的英文标识，如为空就是全部通知类型.system:系统消息，remind：提醒消息，work：工作消息
+    PagingCondition pagingCond = 4; //请求分页信息
+}
+
+//获取消息响应
+message GetNoticeResponse {
+    repeated Notice noticeList=1;//消息数据
+    int32 unreadCount = 2; //未读通知数量
+    int32 readCount = 3; //已读通知数量
+    PagingResult pagingResult = 4; //分页结果信息
+}
+
+//消息内容
+message Notice {
+    string id = 1; //消息唯一标示
+    string title = 2; //消息标题
+    string content = 3; //消息内容
+    string url = 4; //消息详情url地址
+    string time = 5; //消息时间(严格按RFC3339标准)
+    string imgUrl = 6; //图片url
+    bool read = 7; //是否已读false未读true已读
+
+    string topic = 10; //通知类型英文标识
+    string subTopic = 11; //子类详细类型（如篡改告警/挂马告警等 对于系统/提醒消息默认为null）
+}
+message GetMarkMessageRequest{
+    string id = 1; //消息唯一标示
+
+}
+message Empty{
+
+}
