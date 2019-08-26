@@ -1,6 +1,6 @@
 package io.leangen.graphql.samples.feginService;
 
-import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
 import com.demo.common.module.DTO.*;
 import com.demo.common.module.VO.ChannelTechnicanVO;
 import com.demo.common.module.VO.JsonObject;
@@ -50,7 +50,7 @@ public class ChannelFeginServiceImpl implements ChannelFeginService {
     }
 
     @Override
-    public List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO) {
+    public List<ChannelTechnicanExcelModelDTO> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO) {
         log.error("fall back");
         return null;
     }

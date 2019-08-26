@@ -15,6 +15,7 @@ com\topsec\mobiapi\proto\FileManage.class
 com\topsec\mobiapi\proto\GetNoticeResponse$1.class
 com\topsec\mobiapi\proto\ChannelServiceGrpc$MethodHandlers.class
 com\topsec\mobiapi\proto\PagingConditionOrBuilder.class
+com\demo\grpc\service\NewsService.class
 com\topsec\mobiapi\proto\Location$LocationType.class
 com\topsec\mobiapi\proto\PagingCondition$Builder.class
 com\topsec\mobiapi\proto\ChannelServiceGrpc$1.class
@@ -140,6 +141,7 @@ com\topsec\mobiapi\proto\NoticeTopics$Builder.class
 com\topsec\mobiapi\proto\GetNoticeRequest.class
 com\topsec\mobiapi\proto\NoticeOrBuilder.class
 com\topsec\mobiapi\proto\FsmServiceGrpc$FsmServiceBlockingStub.class
+com\demo\grpc\feginService\IRestCmsAdvisoryController.class
 com\topsec\mobiapi\proto\FileTypesObj.class
 com\topsec\mobiapi\proto\Person$1.class
 com\topsec\mobiapi\proto\NewsServGrpc$MethodHandlers.class

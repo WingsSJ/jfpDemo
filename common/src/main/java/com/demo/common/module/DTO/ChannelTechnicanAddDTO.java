@@ -1,8 +1,8 @@
 package com.demo.common.module.DTO;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
-import com.demo.common.module.DO.TechnicanCertificateExcelModelDO;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
+import com.demo.common.module.DO.TechnicanCertificateExcelModelDTO;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -120,68 +120,68 @@ public class ChannelTechnicanAddDTO implements Serializable,Cloneable{
     }
 
     //将ModelDTO转未AddDTO
-    public static List<ChannelTechnicanAddDTO> transExcelModelDTOStoAddDTOS(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOList){
+    public static List<ChannelTechnicanAddDTO> transExcelModelDTOStoAddDTOS(List<ChannelTechnicanExcelModelDTO> channelTechnicanExcelModelDTOList){
 
         List<ChannelTechnicanAddDTO> channelTechnicanAddDTOS = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDOList)){
-            for(ChannelTechnicanExcelModelDO channelTechnicanExcelModelDO:channelTechnicanExcelModelDOList){
+        if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDTOList)){
+            for(ChannelTechnicanExcelModelDTO channelTechnicanExcelModelDTO : channelTechnicanExcelModelDTOList){
                 ChannelTechnicanAddDTO channelTechnicanAddDTO = new ChannelTechnicanAddDTO();
-                channelTechnicanAddDTO.setCounty(channelTechnicanExcelModelDO.getCounty());
-                channelTechnicanAddDTO.setCity(channelTechnicanExcelModelDO.getCity());
-                channelTechnicanAddDTO.setProvince(channelTechnicanExcelModelDO.getProvince());
-                channelTechnicanAddDTO.setPersonId(channelTechnicanExcelModelDO.getPersonId());
-                channelTechnicanAddDTO.setPersonName(channelTechnicanExcelModelDO.getPersonName());
-                channelTechnicanAddDTO.setAddress(channelTechnicanExcelModelDO.getAddress());
+                channelTechnicanAddDTO.setCounty(channelTechnicanExcelModelDTO.getCounty());
+                channelTechnicanAddDTO.setCity(channelTechnicanExcelModelDTO.getCity());
+                channelTechnicanAddDTO.setProvince(channelTechnicanExcelModelDTO.getProvince());
+                channelTechnicanAddDTO.setPersonId(channelTechnicanExcelModelDTO.getPersonId());
+                channelTechnicanAddDTO.setPersonName(channelTechnicanExcelModelDTO.getPersonName());
+                channelTechnicanAddDTO.setAddress(channelTechnicanExcelModelDTO.getAddress());
                 //处理异常 字符串时间戳转化为yyyy/MM/dd
                 try {
                     //考虑到SimpleDateFormat线程安全的问题 后面改为工具类
                     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-                    Date birthday = sdf.parse(channelTechnicanExcelModelDO.getBirthday());
+                    Date birthday = sdf.parse(channelTechnicanExcelModelDTO.getBirthday());
                     sdf=new SimpleDateFormat("yyyy/MM/dd");
                     channelTechnicanAddDTO.setBirthday(sdf.format(birthday));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                channelTechnicanAddDTO.setCompanyId(channelTechnicanExcelModelDO.getCompanyId());
-                channelTechnicanAddDTO.setCompanyName(channelTechnicanExcelModelDO.getCompanyName());
-                channelTechnicanAddDTO.setEmail(channelTechnicanExcelModelDO.getEmail());
+                channelTechnicanAddDTO.setCompanyId(channelTechnicanExcelModelDTO.getCompanyId());
+                channelTechnicanAddDTO.setCompanyName(channelTechnicanExcelModelDTO.getCompanyName());
+                channelTechnicanAddDTO.setEmail(channelTechnicanExcelModelDTO.getEmail());
                 //处理异常
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-                    Date hireday = sdf.parse(channelTechnicanExcelModelDO.getBirthday());
+                    Date hireday = sdf.parse(channelTechnicanExcelModelDTO.getBirthday());
                     sdf=new SimpleDateFormat("yyyy/MM/dd");
                     channelTechnicanAddDTO.setHireDate(sdf.format(hireday));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                channelTechnicanAddDTO.setIdentityCard(channelTechnicanExcelModelDO.getIdentityCard());
-                channelTechnicanAddDTO.setJob(channelTechnicanExcelModelDO.getJob());
+                channelTechnicanAddDTO.setIdentityCard(channelTechnicanExcelModelDTO.getIdentityCard());
+                channelTechnicanAddDTO.setJob(channelTechnicanExcelModelDTO.getJob());
                 //男0 女1
-                if("男".equals(channelTechnicanExcelModelDO.getPersonGender().trim())) {
+                if("男".equals(channelTechnicanExcelModelDTO.getPersonGender().trim())) {
                     channelTechnicanAddDTO.setPersonGender(0);
                 }else {
                     channelTechnicanAddDTO.setPersonGender(1);
                 }
-                channelTechnicanAddDTO.setTelephone(channelTechnicanExcelModelDO.getTelephone());
-                channelTechnicanAddDTO.setPhone(channelTechnicanExcelModelDO.getPhone());
+                channelTechnicanAddDTO.setTelephone(channelTechnicanExcelModelDTO.getTelephone());
+                channelTechnicanAddDTO.setPhone(channelTechnicanExcelModelDTO.getPhone());
                 //审核状态 （0代表为未通过） （1 代表通过）（2代表待审核）
                 channelTechnicanAddDTO.setReviewStatus(2);
-                channelTechnicanAddDTO.setQqNum(channelTechnicanExcelModelDO.getQqNum());
-                if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDO.getTechnicanCertificateExcelModelDOS())){
-                    List<TechnicanCertificateExcelModelDO> technicanCertificateExcelModelDOS = channelTechnicanExcelModelDO.getTechnicanCertificateExcelModelDOS();
+                channelTechnicanAddDTO.setQqNum(channelTechnicanExcelModelDTO.getQqNum());
+                if(CollectionUtils.isNotEmpty(channelTechnicanExcelModelDTO.getTechnicanCertificateExcelModelDTOS())){
+                    List<TechnicanCertificateExcelModelDTO> technicanCertificateExcelModelDTOS = channelTechnicanExcelModelDTO.getTechnicanCertificateExcelModelDTOS();
                     List<TechnicanCertificateAddDTO> technicanCertificateAddDTOList = new ArrayList<>();
                     //转换
-                    for(TechnicanCertificateExcelModelDO technicanCertificateExcelModelDO:technicanCertificateExcelModelDOS){
+                    for(TechnicanCertificateExcelModelDTO technicanCertificateExcelModelDTO : technicanCertificateExcelModelDTOS){
                         TechnicanCertificateAddDTO technicanCertificateAddDTO = new TechnicanCertificateAddDTO();
-                        technicanCertificateAddDTO.setPersonId(technicanCertificateExcelModelDO.getPersonId());
-                        technicanCertificateAddDTO.setCertificateDirection(technicanCertificateExcelModelDO.getCertificateDirection());
-                        technicanCertificateAddDTO.setCertificateId(technicanCertificateExcelModelDO.getCertificateId());
-                        technicanCertificateAddDTO.setCertificateLevel(technicanCertificateExcelModelDO.getCertificateLevel());
+                        technicanCertificateAddDTO.setPersonId(technicanCertificateExcelModelDTO.getPersonId());
+                        technicanCertificateAddDTO.setCertificateDirection(technicanCertificateExcelModelDTO.getCertificateDirection());
+                        technicanCertificateAddDTO.setCertificateId(technicanCertificateExcelModelDTO.getCertificateId());
+                        technicanCertificateAddDTO.setCertificateLevel(technicanCertificateExcelModelDTO.getCertificateLevel());
                         //处理时间戳
                         try {
                             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-                            Date invalidCertificateDate = sdf.parse(technicanCertificateExcelModelDO.getInvalidCertificateTime());
+                            Date invalidCertificateDate = sdf.parse(technicanCertificateExcelModelDTO.getInvalidCertificateTime());
                             sdf=new SimpleDateFormat("yyyy/MM/dd");
                             technicanCertificateAddDTO.setInvalidCertificateTime(sdf.format(invalidCertificateDate));
                         } catch (ParseException e) {

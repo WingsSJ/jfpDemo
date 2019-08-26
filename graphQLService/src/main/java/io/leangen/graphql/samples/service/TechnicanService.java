@@ -1,6 +1,6 @@
 package io.leangen.graphql.samples.service;
 
-import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
 import com.demo.common.module.DTO.*;
 import com.demo.common.module.VO.ChannelTechnicanVO;
 import com.demo.common.module.VO.JsonObject;
@@ -84,9 +84,9 @@ public class TechnicanService {
      * 导入数据校验
      */
     @GraphQLMutation
-    public JsonObject<List<ChannelTechnicanExcelModelDO>> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){
-        List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOList = channelFeginService.batchCheckTechnicans(channelTechnicanBatchCheckDTO);
-        return new JsonObject<List<ChannelTechnicanExcelModelDO>>(0,"query success",channelTechnicanExcelModelDOList);
+    public JsonObject<List<ChannelTechnicanExcelModelDTO>> batchCheckTechnicans(ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO){
+        List<ChannelTechnicanExcelModelDTO> channelTechnicanExcelModelDTOList = channelFeginService.batchCheckTechnicans(channelTechnicanBatchCheckDTO);
+        return new JsonObject<List<ChannelTechnicanExcelModelDTO>>(0,"query success", channelTechnicanExcelModelDTOList);
     }
 
 
@@ -94,7 +94,7 @@ public class TechnicanService {
      * excel数据批量录入 //TODO 服务测试
      */
     @GraphQLMutation
-    public JsonObject<Void> batchInsertTechnicans(List<ChannelTechnicanExcelModelDO> channelTechnicanExcelModelDOS,String companyName,String companyId){
-        return channelFeginService.batchInsertTechnicans(new ChannelTechnicanBatchInsertDTO(channelTechnicanExcelModelDOS,companyName,companyId));
+    public JsonObject<Void> batchInsertTechnicans(List<ChannelTechnicanExcelModelDTO> channelTechnicanExcelModelDTOS, String companyName, String companyId){
+        return channelFeginService.batchInsertTechnicans(new ChannelTechnicanBatchInsertDTO(channelTechnicanExcelModelDTOS,companyName,companyId));
     }
 }

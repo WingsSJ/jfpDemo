@@ -1,5 +1,6 @@
 package com.demo.channel.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.demo.common.module.DTO.ChannelTechnicanAddDTO;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.ChannelTechnicanUpdateDTO;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ChannelTechnicanMapper {
+public interface ChannelTechnicanMapper extends BaseMapper {
     int queryOneChannelTechnicanHaveRecord(@Param("identityCard") String identityCard);
     int createOneChannelTechnicanRecord(@Param("channelTechnicanAddDTO") ChannelTechnicanAddDTO channelTechnicanAddDTO);
     List<ChannelTechnicanQueryDTO> queryAllTechnicans(Map params);

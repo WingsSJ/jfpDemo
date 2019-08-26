@@ -1,5 +1,6 @@
 package com.demo.api.controller;
 
+import com.demo.api.interceptor.TokenRequired;
 import com.demo.api.service.AppService;
 import com.demo.common.module.DTO.ChannelCompanyListQueryByConditionDTO;
 import com.demo.common.module.DTO.ChannelTechnicanListQueryByConditionDTO;
@@ -36,9 +37,9 @@ public class AppController {
      * @apiNote 根据条件查询出所有渠道服务商的信息
      */
     @PostMapping("/query/channel/company/info/list")
+    @TokenRequired
     public JsonObject<PageVO<ChannelCompanyAppVO>> queryChannelCompanyInfoList(@RequestBody @Valid ChannelCompanyListQueryByConditionDTO channelCompanyListQueryByConditionDTO) {
         JsonObject<PageVO<ChannelCompanyVO>> pageVOJsonObject = appService.queryChannelCompanyInfoList(channelCompanyListQueryByConditionDTO);
-        //TODO 将VO转APPVO
         return new JsonObject(0,"query success",pageVOJsonObject);
     }
 

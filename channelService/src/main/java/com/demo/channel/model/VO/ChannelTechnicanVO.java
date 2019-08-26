@@ -1,6 +1,5 @@
 package com.demo.channel.model.VO;
 
-import com.demo.channel.util.CodeMapUtil;
 import com.demo.common.module.DTO.ChannelTechnicanQueryDTO;
 import com.demo.common.module.DTO.TechnicanCertificateQueryDTO;
 import com.demo.common.module.VO.TechnicanCertificateVO;
@@ -169,9 +168,9 @@ public class ChannelTechnicanVO {
         channelTechnicanVO.setPhone(channelTechnicanQueryDTO.getPhone());
         channelTechnicanVO.setQqNum(channelTechnicanQueryDTO.getQqNum());
         //code 转化为实际的名字
-        channelTechnicanVO.setCounty(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCounty()));
-        channelTechnicanVO.setCity(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getCity()));
-        channelTechnicanVO.setProvince(CodeMapUtil.getAreaNameByAreaCode(channelTechnicanQueryDTO.getProvince()));
+        channelTechnicanVO.setCounty(channelTechnicanQueryDTO.getCounty());
+        channelTechnicanVO.setCity(channelTechnicanQueryDTO.getCity());
+        channelTechnicanVO.setProvince(channelTechnicanQueryDTO.getProvince());
         channelTechnicanVO.setReviewStatus(channelTechnicanQueryDTO.getReviewStatus());
         channelTechnicanVO.setTelephone(channelTechnicanQueryDTO.getTelephone());
         return channelTechnicanVO;

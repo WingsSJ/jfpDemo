@@ -3,7 +3,7 @@ spring:
     name: channelService
   profiles:
     active: local
-mybatis:
+mybatis-plus:
   mapper-locations: mapper/*Mapper.xml
 server:
   port: 21009

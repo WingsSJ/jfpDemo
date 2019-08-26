@@ -2,7 +2,7 @@ package com.demo.channel.controller;
 
 import com.demo.channel.model.VO.ChannelTechnicanVO;
 import com.demo.channel.service.ChannelTechnicanService;
-import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
 import com.demo.common.module.DTO.*;
 import com.demo.common.module.VO.JsonObject;
 import com.demo.common.module.VO.PageVO;
@@ -98,7 +98,7 @@ public class ChannelTechnicanController {
      * @apiNote 批量校验导入excel文件数据
      */
     @PostMapping("/batch/check")
-    public JsonObject<List<ChannelTechnicanExcelModelDO>> batchCheckTechnicans(@NotNull @RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public JsonObject<List<ChannelTechnicanExcelModelDTO>> batchCheckTechnicans(@NotNull @RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
         return channelTechnicanService.batchCheckTechnicans(
                 file,
                 request,
@@ -112,7 +112,7 @@ public class ChannelTechnicanController {
      */
     @PostMapping("/batch/insert")
     public JsonObject batchInsertTechnicans(@RequestBody ChannelTechnicanBatchInsertDTO channelTechnicanBatchInsertDTO) {
-        return channelTechnicanService.batchInsertTechnicans(channelTechnicanBatchInsertDTO.getChannelTechnicanExcelModelDOS(), channelTechnicanBatchInsertDTO.getCompanyName(), channelTechnicanBatchInsertDTO.getCompanyId());
+        return channelTechnicanService.batchInsertTechnicans(channelTechnicanBatchInsertDTO.getChannelTechnicanExcelModelDTOS(), channelTechnicanBatchInsertDTO.getCompanyName(), channelTechnicanBatchInsertDTO.getCompanyId());
     }
 
 

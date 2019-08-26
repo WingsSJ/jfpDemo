@@ -5,6 +5,7 @@ D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topse
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\TechnicanCertificate.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\grpc-java\com\topsec\mobiapi\proto\MsgServGrpc.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\ChannelCompanyInfoOrBuilder.java
+D:\IdeaProjects\jfp\gRPCService\src\main\java\com\demo\grpc\feginService\IRestCmsAdvisoryController.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\GetNoticeTopicCountResponseOrBuilder.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\ChannelCompanyInfo.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\grpc-java\com\topsec\mobiapi\proto\UserServGrpc.java
@@ -91,6 +92,7 @@ D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topse
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\NoticeOrBuilder.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\GetNoticeTopicCountResponse.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\NewsList.java
+D:\IdeaProjects\jfp\gRPCService\src\main\java\com\demo\grpc\service\NewsService.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\GetNewsRequestOrBuilder.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\PagingConditionOrBuilder.java
 D:\IdeaProjects\jfp\gRPCService\target\generated-sources\protobuf\java\com\topsec\mobiapi\proto\FileUrlResponseOrBuilder.java

@@ -2,7 +2,7 @@
 //
 //import cn.afterturn.easypoi.excel.ExcelImportUtil;
 //import cn.afterturn.easypoi.excel.entity.ImportParams;
-//import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+//import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
 //
 //import org.junit.Test;
 //
@@ -59,8 +59,8 @@
 ////        ImportParams importParams = new ImportParams();
 ////        importParams.setTitleRows(0);
 ////        importParams.setHeadRows(2);
-////        List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest2.xlsx"),
-////                ChannelTechnicanExcelModelDO.class,importParams);
+////        List<ChannelTechnicanExcelModelDTO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest2.xlsx"),
+////                ChannelTechnicanExcelModelDTO.class,importParams);
 ////        System.out.println(list.get(0));
 ////        Date hireDate = list.get(0).getHireDate();
 ////        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -78,8 +78,8 @@
 ////        ImportParams importParams = new ImportParams();
 ////        importParams.setTitleRows(0);
 ////        importParams.setHeadRows(0);
-////        List<ChannelTechnicanExcelModelDO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest.xlsx"),
-////                ChannelTechnicanExcelModelDO.class,importParams);
+////        List<ChannelTechnicanExcelModelDTO> list = ExcelImportUtil.importExcel(new File("C:\\Users\\Administrator\\Desktop\\tctest.xlsx"),
+////                ChannelTechnicanExcelModelDTO.class,importParams);
 ////        System.out.println(list.get(0));
 ////    }
 //}

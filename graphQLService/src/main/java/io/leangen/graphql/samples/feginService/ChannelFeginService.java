@@ -1,6 +1,6 @@
 package io.leangen.graphql.samples.feginService;
 
-import com.demo.common.module.DO.ChannelTechnicanExcelModelDO;
+import com.demo.common.module.DO.ChannelTechnicanExcelModelDTO;
 import com.demo.common.module.DTO.*;
 import com.demo.common.module.VO.ChannelTechnicanVO;
 import com.demo.common.module.VO.JsonObject;
@@ -30,7 +30,7 @@ public interface ChannelFeginService {
     @RequestMapping("/channel/delete/technican/{personId}")
     JsonObject deleteTechnican(@PathVariable(name = "personId") String personId);
     @PostMapping("/channel/batch/check")
-    List<ChannelTechnicanExcelModelDO> batchCheckTechnicans(@RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO);
+    List<ChannelTechnicanExcelModelDTO> batchCheckTechnicans(@RequestBody ChannelTechnicanBatchCheckDTO channelTechnicanBatchCheckDTO);
     @PostMapping("/channel/batch/insert")
     JsonObject batchInsertTechnicans(@RequestBody ChannelTechnicanBatchInsertDTO channelTechnicanBatchInsertDTO);
 }

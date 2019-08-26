@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -127,5 +129,26 @@ public class BestTest {
         }
         sdf=new SimpleDateFormat("yyyy/MM/dd");
         System.out.println(sdf.format(d));
+    }
+
+    @Test
+    public void testsj(){
+        String localDateTime1 = LocalDateTime.now().minusDays(7).toString().replace("T"," ");
+        LocalDateTime localDateTime2 =LocalDateTime.now().minusMonths(1);
+        LocalDateTime localDateTime3 =LocalDateTime.now().minusYears(1);
+        System.out.println(localDateTime1);
+        System.out.println(localDateTime2);
+        System.out.println(localDateTime3);
+    }
+
+    @Test
+    public void testjj(){
+        String ptoken = "ftw";
+        String expire = LocalDateTime.now().minusDays(1).toString();
+        String accountid = "ftw000111";
+        System.out.println(accountid);
+        MobiToken mobiToken = new MobiToken(ptoken,expire,accountid);
+        String s = JSON.toJSONString(mobiToken);
+        System.out.println(s);
     }
 }

@@ -3,7 +3,6 @@ package com.demo.common.module.DTO;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
